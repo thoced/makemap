@@ -5,6 +5,7 @@ import java.awt.Dialog;
 
 import CorePanelCenter.panelCenter;
 import CorePanelInfo.panelInfo;
+import CorePanelViewer.panelViewer;
 import CoreTexturesManager.TexturesManager;
 import GUI.*;
 
@@ -38,6 +39,9 @@ public class mainProgram {
 	private JMenuItem mProperties;
 	
 	private panelCenter pCenter;
+	
+	
+	
 	private JMenuItem mNouveau;
 	
 	// Texture Manager
@@ -87,9 +91,11 @@ public class mainProgram {
 		
 		pInfo = new panelInfo();
 		
+		
 		try 
 		{
 			pCenter = new panelCenter();
+			
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
