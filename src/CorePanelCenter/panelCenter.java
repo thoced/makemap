@@ -2,7 +2,6 @@ package CorePanelCenter;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,6 +13,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.jsfml.graphics.Image;
+import org.jsfml.graphics.IntRect;
+import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
@@ -25,6 +27,7 @@ import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import CoreTexturesManager.TexturesManager;
 import makemap.DataManager;
 
 import java.awt.event.ComponentAdapter;
@@ -49,7 +52,10 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 	 */
 	// render texture jsfml
 	private RenderTexture render;
-	// 
+	
+	// Shape
+	private RectangleShape shape;
+	
 	private View v;
 	private float zoom = 1f;
 	private Sprite sprite;
@@ -58,6 +64,15 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 	
 	// taille de la map
 	private int widthMap,heightMap;
+	// echelle 
+	private final int size = 32;
+	// ismap
+	private boolean isMapCreate = false;
+	// Grid
+	private Grid grid;
+	private boolean isViewGrid = false;
+	// Snap grid
+	private boolean isSnapGrid = false;
 	
 	// private 
 	private static panelCenter parent;
@@ -74,9 +89,16 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		
 		// ajout dans le datamanager de la réference this
 		DataManager.panelCenter = this;
-		
+	
 		
 		render= new RenderTexture();
+		
+		// rectangle shape
+		shape = new RectangleShape();
+		shape.setOutlineThickness(8);
+		shape.setFillColor(org.jsfml.graphics.Color.TRANSPARENT);
+		shape.setOutlineColor(org.jsfml.graphics.Color.RED);
+		
 		
 		try {
 			render.create(800, 600);
@@ -86,13 +108,13 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 			e.printStackTrace();
 		}
 		
-	
-	
+
 		
 		v = new View();
 		v.zoom(zoom);
 		v.setSize(render.getSize().x,render.getSize().y);
-		v.setCenter(new Vector2f(0,0));
+		v.setCenter(0f,0f);
+		
 	
 				
 
@@ -105,10 +127,7 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		setLayout(new BorderLayout(0, 0));
 		
 		scrollBarVerticale = new JScrollBar();
-		scrollBarVerticale.addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent arg0) {
-			}
-		});
+		
 		
 		add(scrollBarVerticale, BorderLayout.WEST);
 		
@@ -132,6 +151,13 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		render.clear(org.jsfml.graphics.Color.TRANSPARENT);
 		render.setView(v);
 		
+		// dessin du carre
+		if(isViewGrid)
+		{
+			//render.draw(shape);
+			render.draw(grid);
+		}
+		
 		for(Calque calque : this.listCalques)
 		{
 			render.draw(calque.getSprite());
@@ -153,14 +179,65 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		parent.repaint();
 	}
 	
-	public  void createMap(int width,int height)
+	public  void createMap(int width,int height) throws IOException, TextureCreationException
 	{
 		// taille de l'image
 		this.widthMap = width;
 		this.heightMap = height;
 		
+		// creatino du shape 
+		this.shape.setSize(new Vector2f(this.widthMap * this.size,this.heightMap * this.size));
+		
 		this.scrollBarHorizontale.setMaximum(this.widthMap);
 		this.scrollBarVerticale.setMaximum(this.heightMap);
+		// on place 
+		// on active le rectangle
+		this.isMapCreate = true;
+		// repaint
+		// création du grid
+		this.createGrid();
+		
+		this.repaint();
+	}
+	
+	
+	
+	/**
+	 * @return the isSnapGrid
+	 */
+	public boolean isSnapGrid() {
+		return isSnapGrid;
+	}
+
+	/**
+	 * @param isSnapGrid the isSnapGrid to set
+	 */
+	public void setSnapGrid(boolean isSnapGrid) {
+		this.isSnapGrid = isSnapGrid;
+	}
+
+	/**
+	 * @return the isViewGrid
+	 */
+	public boolean isViewGrid() {
+		return isViewGrid;
+	}
+
+	/**
+	 * @param isViewGrid the isViewGrid to set
+	 */
+	public void setViewGrid(boolean isViewGrid) 
+	{
+		// afficher la grille
+		this.isViewGrid = isViewGrid;
+		// repaint
+		this.repaint();
+	}
+
+	public void createGrid() throws IOException, TextureCreationException
+	{
+		grid = new Grid((int)this.shape.getSize().x,(int)this.shape.getSize().y);
+		
 	}
 	
 	public void setSizeOfMap(int width,int height)
@@ -194,7 +271,15 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		// TODO Auto-generated method stub
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
+		
+		if(this.isSnapGrid)
+		{
+			// Si on a activé le snap grid
+			int x = (int) (posWorld.x / this.size) * this.size;
+			int y = (int) (posWorld.y / this.size) * this.size;
+			posWorld = new Vector2f(x,y);
 				
+		}
 		for(Calque calque : this.listCalques)
 		{
 			calque.mousePosition(posWorld);
@@ -219,7 +304,7 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		
 	}
 
-
+	
 
 	@Override
 	public void mouseExited(MouseEvent e) {
@@ -304,21 +389,21 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		// TODO Auto-generated method stub
 		float x,y;
 		Vector2f currentPositionView = v.getCenter();
-		x = currentPositionView.x;
-		y = currentPositionView.y;
+		x = currentPositionView.x / this.size;
+		y = currentPositionView.y / this.size;
 		
 		if(e.getSource() == scrollBarHorizontale)
 		{
-			x = e.getValue();
+			x = scrollBarHorizontale.getValue();
 		}
 		
 		if(e.getSource() == scrollBarVerticale)
 		{
-			y = e.getValue();
+			y = scrollBarVerticale.getValue();
 			
 		}
 		
-		v.setCenter(new Vector2f(x * 32,y * 32));
+		v.setCenter(new Vector2f(x * this.size,y * this.size));
 		repaint();
 	}
 
@@ -333,12 +418,22 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		System.out.println(ret);
 		
 		if(ret > 0)
+		{
+			// on aggrandit
 			zoom = 2f;
-		
+			//this.scrollBarHorizontale.setMaximum(this.scrollBarHorizontale.getMaximum() / 2);
+			//this.scrollBarVerticale.setMaximum(this.scrollBarVerticale.getMaximum() / 2);
+			
+		}
 		
 		if(ret < 0)
+		{
+			// on diminue
 			zoom = 0.5f;
-		
+			//this.scrollBarHorizontale.setMaximum(this.scrollBarHorizontale.getMaximum() * 2);
+			//this.scrollBarVerticale.setMaximum(this.scrollBarVerticale.getMaximum() * 2);
+			
+		}
 		v.zoom(zoom);
 		this.repaint();
 	}

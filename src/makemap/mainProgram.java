@@ -21,13 +21,16 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.JTable;
+import javax.swing.JCheckBoxMenuItem;
 
 public class mainProgram {
 
@@ -50,6 +53,9 @@ public class mainProgram {
 	 * @wbp.nonvisual location=51,-33
 	 */
 	private final JTable table = new JTable();
+	private JMenu menuView;
+	private JCheckBoxMenuItem mAffGrid;
+	private JCheckBoxMenuItem mSnapGrid;
 
 	/**
 	 * Launch the application.
@@ -132,7 +138,12 @@ public class mainProgram {
 				dia.setVisible(true);
 				
 				//on créer la map
-				pCenter.createMap(DataManager.widthMap, DataManager.heigthMap);
+				try {
+					pCenter.createMap(DataManager.widthMap, DataManager.heigthMap);
+				} catch (IOException | TextureCreationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		menuFichier.add(mNouveau);
@@ -146,6 +157,35 @@ public class mainProgram {
 			}
 		});
 		menuFichier.add(mFermer);
+		
+		menuView = new JMenu("View");
+		menuBar.add(menuView);
+		
+		mAffGrid = new JCheckBoxMenuItem("Afficher la grille");
+		mAffGrid.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				// afficher la grille
+				if(!pCenter.isViewGrid())
+					pCenter.setViewGrid(true);
+				else
+					pCenter.setViewGrid(false);
+			}
+		});
+		menuView.add(mAffGrid);
+		
+		mSnapGrid = new JCheckBoxMenuItem("Coller à la grille");
+		mSnapGrid.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				//activation du snapgrid
+				if(!pCenter.isSnapGrid())
+						pCenter.setSnapGrid(true);
+				else
+						pCenter.setSnapGrid(false);
+			}
+		});
+		menuView.add(mSnapGrid);
 	}
 
 }
