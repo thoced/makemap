@@ -53,7 +53,7 @@ public class TexturesManager
 				return null;
 			}
 		}
-		return null;
+		return hashTextures.get(path.getName());
 		
 		
 		

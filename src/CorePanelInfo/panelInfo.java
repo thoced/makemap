@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.peer.PanelPeer;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,33 +20,48 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
 import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.TextureCreationException;
 
 import CorePanelCenter.Calque;
 import CorePanelCenter.panelCenter;
+import CorePanelViewer.panelViewer;
 import CoreTexturesManager.TexturesManager;
 import makemap.DataManager;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 public class panelInfo extends JPanel implements MouseListener 
 {
+	
 	private JList listCalques;
+	private panelViewer pViewer;
 	private JList listTextures;
 	
 	public panelInfo()
 	{
-		setLayout(new BorderLayout(0, 0));
-		
+		setLayout(new GridLayout(3,1,0,16));
 		listCalques = new JList();
 		JScrollPane scrollPaneCalques = new JScrollPane(listCalques);
-		add(scrollPaneCalques, BorderLayout.NORTH);
+		add(scrollPaneCalques);
+		
+		try 
+		{
+			pViewer = new panelViewer();
+			add(pViewer);
+			
+		} catch (TextureCreationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		listTextures = new JList();
-		
-		
 		JScrollPane scrollPaneTextures = new JScrollPane(listTextures);
-		add(scrollPaneTextures, BorderLayout.CENTER);
+		add(scrollPaneTextures);
 		
 		// listener
 		listTextures.addMouseListener(this);
+	
 		
 		
 	}
@@ -89,9 +105,18 @@ public class panelInfo extends JPanel implements MouseListener
 			{
 				try 
 				{
-					Calque calque = new Calque(text);
-					// insert du calque
-					panelCenter.insertCalque(calque);
+					if(arg0.getClickCount() == 2)
+					{
+						Calque calque = new Calque(text);
+						// insert du calque
+						panelCenter.insertCalque(calque);
+					}
+					else
+					{
+						panelViewer.setTexture(text);
+					}
+					
+				
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
