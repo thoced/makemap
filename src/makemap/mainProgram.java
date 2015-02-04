@@ -31,8 +31,11 @@ import java.io.IOException;
 
 import javax.swing.JTable;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
-public class mainProgram {
+public class mainProgram implements ActionListener{
 
 	private JFrame frame;
 	
@@ -56,6 +59,9 @@ public class mainProgram {
 	private JMenu menuView;
 	private JCheckBoxMenuItem mAffGrid;
 	private JCheckBoxMenuItem mSnapGrid;
+	private JToolBar toolBar;
+	private JCheckBox cGridView;
+	private JCheckBox cSnapGrid;
 
 	/**
 	 * Launch the application.
@@ -109,6 +115,22 @@ public class mainProgram {
 		
 		frame.getContentPane().add(pInfo, BorderLayout.EAST);
 		frame.getContentPane().add(pCenter,BorderLayout.CENTER);
+		
+		toolBar = new JToolBar();
+		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
+		
+		// Affiche grid
+		cGridView = new JCheckBox("Afficher la grille");
+		cGridView.setActionCommand("AFFICHE_GRID");
+		cGridView.addActionListener(this);
+		toolBar.add(cGridView);
+		
+		cSnapGrid = new JCheckBox("Aligner sur la grille");
+		cSnapGrid.setActionCommand("SNAP_GRID");
+		cSnapGrid.addActionListener(this);
+		toolBar.add(cSnapGrid);
+		
+		
 		frame.setTitle("make map");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -158,34 +180,32 @@ public class mainProgram {
 		});
 		menuFichier.add(mFermer);
 		
-		menuView = new JMenu("View");
-		menuBar.add(menuView);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		// afficher la grille
 		
-		mAffGrid = new JCheckBoxMenuItem("Afficher la grille");
-		mAffGrid.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				// afficher la grille
-				if(!pCenter.isViewGrid())
-					pCenter.setViewGrid(true);
-				else
-					pCenter.setViewGrid(false);
-			}
-		});
-		menuView.add(mAffGrid);
+		if(arg0.getActionCommand() == "AFFICHE_GRID")
+		{
+			if(!pCenter.isViewGrid())
+				pCenter.setViewGrid(true);
+			else
+				pCenter.setViewGrid(false);
+		}
 		
-		mSnapGrid = new JCheckBoxMenuItem("Coller à la grille");
-		mSnapGrid.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				//activation du snapgrid
-				if(!pCenter.isSnapGrid())
-						pCenter.setSnapGrid(true);
-				else
-						pCenter.setSnapGrid(false);
-			}
-		});
-		menuView.add(mSnapGrid);
+		if(arg0.getActionCommand() == "SNAP_GRID")
+		{
+			//activation du snapgrid
+			if(!pCenter.isSnapGrid())
+					pCenter.setSnapGrid(true);
+			else
+					pCenter.setSnapGrid(false);
+		}
+		
+		
 	}
 
 }

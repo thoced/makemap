@@ -371,6 +371,10 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		
 	}
 
+	public static void repaintCalques()
+	{
+		parent.repaint();
+	}
 
 
 	@Override

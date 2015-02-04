@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
@@ -64,6 +65,8 @@ public class Calque
 		if(this.sprite.getGlobalBounds().contains(pos))
 		{
 			this.isSelected = true;
+			// modification de la couleur
+			this.getSprite().setColor(Color.BLUE);
 		}
 	}
 	
@@ -94,6 +97,10 @@ public class Calque
 	public void setSelected(boolean selected)
 	{
 		isSelected = selected;
+		if(isSelected)
+			this.getSprite().setColor(Color.BLUE);
+		else
+			this.getSprite().setColor(Color.WHITE);
 	}
 	
 	public String toString()

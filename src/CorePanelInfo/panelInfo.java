@@ -65,7 +65,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		// ajout du parent pour les appels static
 		parent = this;
 		
-		setLayout(new GridLayout(3,1,0,16));
+		setLayout(new GridLayout(3,1,8,8));
 		listCalques = new JList();
 		JScrollPane scrollPaneCalques = new JScrollPane(listCalques);
 		add(scrollPaneCalques);
@@ -174,9 +174,16 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 			// gestion des évenement sur la liste des calques
 			if(arg0.getButton() == MouseEvent.BUTTON1)
 			{
+				// si il y a déja un calque selectionné, on le déselectionne
+				if(currentCalqueSelected != null)
+					currentCalqueSelected.setSelected(false);
+				
 				// on selectoinne le calque 
 				currentCalqueSelected = (Calque) listCalques.getSelectedValue();
 				currentCalqueSelected.setSelected(true);
+				// on demande le rafraichissement
+				panelCenter.repaintCalques();
+				
 			}
 			
 			if(arg0.getButton() == MouseEvent.BUTTON3)
