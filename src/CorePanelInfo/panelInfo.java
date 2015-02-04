@@ -3,6 +3,12 @@ package CorePanelInfo;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.peer.PanelPeer;
@@ -12,6 +18,10 @@ import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -27,22 +37,45 @@ import CorePanelCenter.panelCenter;
 import CorePanelViewer.panelViewer;
 import CoreTexturesManager.TexturesManager;
 import makemap.DataManager;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
-public class panelInfo extends JPanel implements MouseListener 
+public class panelInfo extends JPanel implements MouseListener,KeyListener 
 {
 	
 	private JList listCalques;
 	private panelViewer pViewer;
 	private JList listTextures;
 	
+	
+	// calque selectionné courant
+	private  Calque currentCalqueSelected;
+	
+	// parent
+	private static panelInfo parent;
+	
+	// rename popup
+	private  JTextField rename;
+	// popup
+	private  Popup pop;
+	
 	public panelInfo()
 	{
+		// ajout du parent pour les appels static
+		parent = this;
+		
 		setLayout(new GridLayout(3,1,0,16));
 		listCalques = new JList();
 		JScrollPane scrollPaneCalques = new JScrollPane(listCalques);
 		add(scrollPaneCalques);
+		
+		// ajout du model pour le calque
+		DefaultListModel modelCalque = new DefaultListModel();
+		listCalques.setModel(modelCalque);
+		
+		// creation du listener pour le listCalques
+		listCalques.addMouseListener(this);
 		
 		try 
 		{
@@ -94,6 +127,10 @@ public class panelInfo extends JPanel implements MouseListener
 	{
 		// on place un calque
 		
+		if(arg0.getSource() == listTextures)
+		{
+		// gestion des évenements sur la liste des textures
+			
 		DataListTextures data = (DataListTextures) listTextures.getSelectedValue();
 		
 		if(data!=null)
@@ -107,12 +144,17 @@ public class panelInfo extends JPanel implements MouseListener
 				{
 					if(arg0.getClickCount() == 2)
 					{
-						Calque calque = new Calque(text);
+						Calque calque = new Calque(text,data.getFile());
 						// insert du calque
 						panelCenter.insertCalque(calque);
+						//insert du nom du calque dans la listeCalque
+						DefaultListModel model = (DefaultListModel) listCalques.getModel();
+						model.addElement(calque);
+						listCalques.setModel(model);
 					}
 					else
 					{
+						// un seul clic, on affiche juste dans l'aperçu
 						panelViewer.setTexture(text);
 					}
 					
@@ -124,6 +166,57 @@ public class panelInfo extends JPanel implements MouseListener
 				}
 			}
 		}
+		
+		}
+		
+		if(arg0.getSource() == listCalques)
+		{
+			// gestion des évenement sur la liste des calques
+			if(arg0.getButton() == MouseEvent.BUTTON1)
+			{
+				// on selectoinne le calque 
+				currentCalqueSelected = (Calque) listCalques.getSelectedValue();
+				currentCalqueSelected.setSelected(true);
+			}
+			
+			if(arg0.getButton() == MouseEvent.BUTTON3)
+			{
+				
+				
+				// on veut renomer le calque
+				   PopupFactory factory = PopupFactory.getSharedInstance();
+				   rename = new JTextField();
+				   rename.setColumns(16);
+				   rename.setActionCommand("POPUPTEXTFIELD");
+				   rename.addKeyListener(this);
+				   // on passe le nom du calque selectionné
+				   if(currentCalqueSelected != null)
+				   {
+					   rename.setText(currentCalqueSelected.toString()); rename.setColumns(16);
+					   rename.setEnabled(true);
+					   rename.setEditable(true);
+					   pop = factory.getPopup(this, rename, this.getX(),arg0.getYOnScreen());
+					   pop.show();
+					   // désactivé la possibilité de changer de calque
+					   listCalques.setEnabled(false);
+					   
+					   
+				   }
+				
+				  
+				   
+				  
+			}
+		}
+	}
+	
+	public static Calque getCurrentCalqueSelected() throws NullPointerException
+	{
+		// retourne le calque courant selectionné
+		if(parent.currentCalqueSelected != null) 
+			return parent.currentCalqueSelected;
+		else
+			throw new NullPointerException();
 	}
 
 	@Override
@@ -144,8 +237,42 @@ public class panelInfo extends JPanel implements MouseListener
 		
 	}
 
+
+	
+
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		if(arg0.getSource() == rename )
+		{
+			
+			if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+			{
+				if(currentCalqueSelected !=null)
+					currentCalqueSelected.setVirtualName(rename.getText());
+				
+				pop.hide();
+				// on redonne la possibilité de selectionné un calque
+				 listCalques.setEnabled(true);
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}

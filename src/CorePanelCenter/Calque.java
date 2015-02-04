@@ -18,14 +18,36 @@ public class Calque
 {
 	// fichier de la texture corresondante
 	private Texture fileTexture;
+	// File
+	private File nameFileCalque;
 	// sprite
 	private Sprite sprite;
 	// selected
 	private boolean isSelected = false;
+	// virtual name
+	private String virtualName;
 	
-	public Calque(Texture texture) throws IOException
+	
+	
+	/**
+	 * @return the virtualName
+	 */
+	public String getVirtualName() {
+		return virtualName;
+	}
+
+	/**
+	 * @param virtualName the virtualName to set
+	 */
+	public void setVirtualName(String virtualName) {
+		this.virtualName = virtualName;
+	}
+
+	public Calque(Texture texture,File nameFile) throws IOException
 	{
 		this.fileTexture = texture;
+		this.nameFileCalque = nameFile;
+		this.virtualName = (String) this.nameFileCalque.getName();
 		
 		if(this.fileTexture != null)
 		{
@@ -74,6 +96,17 @@ public class Calque
 		isSelected = selected;
 	}
 	
+	public String toString()
+	{
+		if(this.virtualName != null)
+		{
+			return this.virtualName;
+		}
+			
+		else
+			return "NO NAME";
+			
+	}
 
 	
 }

@@ -18,8 +18,16 @@ public class DataListTextures
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		String temp = file.getName().substring(0, file.getName().length() - 4);
-		return temp;
+		if(file.getName().length() >= 4)
+		{
+			String temp = file.getName().substring(0, file.getName().length() - 4);
+			return temp;
+		}
+		else
+		{
+			return file.getName();
+		}
+		
 	}
 
 	/**

@@ -27,6 +27,7 @@ import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import CorePanelInfo.panelInfo;
 import CoreTexturesManager.TexturesManager;
 import makemap.DataManager;
 
@@ -73,6 +74,9 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 	private boolean isViewGrid = false;
 	// Snap grid
 	private boolean isSnapGrid = false;
+	
+	// position start pour le déplacement
+	private Vector2f posStart,posDiff;
 	
 	// private 
 	private static panelCenter parent;
@@ -152,7 +156,7 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		render.setView(v);
 		
 		// dessin du carre
-		if(isViewGrid)
+		if(grid != null && isViewGrid)
 		{
 			//render.draw(shape);
 			render.draw(grid);
@@ -275,15 +279,19 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		if(this.isSnapGrid)
 		{
 			// Si on a activé le snap grid
+			
 			int x = (int) (posWorld.x / this.size) * this.size;
 			int y = (int) (posWorld.y / this.size) * this.size;
 			posWorld = new Vector2f(x,y);
 				
 		}
-		for(Calque calque : this.listCalques)
+		/*for(Calque calque : this.listCalques)
 		{
 			calque.mousePosition(posWorld);
-		}
+		}*/
+		
+		if(panelInfo.getCurrentCalqueSelected() != null)
+			panelInfo.getCurrentCalqueSelected().mousePosition(Vector2f.sub(posWorld, posDiff));
 		
 		// 
 		this.repaint();
@@ -318,12 +326,38 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 	public void mousePressed(MouseEvent e) 
 	{
 		// TODO Auto-generated method stub
-		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
-		Vector2f posWorld = render.mapPixelToCoords(posPanel);
 		
-		for(Calque calque : this.listCalques)
+		// clic droit
+					Vector2i posPanel = new Vector2i(e.getX(),e.getY());
+					Vector2f posWorld = render.mapPixelToCoords(posPanel);
+		
+		if(e.getButton() == MouseEvent.BUTTON2)
 		{
-			calque.selected(posWorld);
+			
+			for(Calque calque : this.listCalques)
+			{
+				calque.selected(posWorld);
+			}
+			
+		}
+		
+		// clic gauche
+		if(e.getButton() == MouseEvent.BUTTON1)
+		{
+			posStart = posWorld;
+			// on calque le vecteur diff entre le posStart et la position du calque
+			if(panelInfo.getCurrentCalqueSelected() != null)
+			{
+				// valeur a soustraire sur le calque lors du déplacement
+				posDiff = Vector2f.sub(posStart, panelInfo.getCurrentCalqueSelected().getSprite().getPosition());
+				// valeur modifié pour calquer sur la grille
+				if(this.isSnapGrid)
+				{
+					int x = (int) (posDiff.x / this.size) * this.size;
+					int y = (int) (posDiff.y / this.size) * this.size;
+					posDiff = new Vector2f(x,y);
+				}
+			}
 		}
 		
 		// reaffichage
@@ -333,11 +367,7 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 
 	public void mouseReleased(MouseEvent e) 
 	{
-		// TODO Auto-generated method stub
-		for(Calque calque : this.listCalques)
-		{
-			calque.setSelected(false);
-		}
+		
 		
 	}
 
