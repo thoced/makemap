@@ -40,7 +40,7 @@ public class Grid implements Drawable
 		
 		Color color = new Color(152,152,152);
 		
-		for(int x=0;x<width;x+=32)
+		for(int x=0;x<=width;x+=32)
 		{
 			Vertex v1 = new Vertex(new Vector2f(x,0),color);
 			Vertex v2 = new Vertex(new Vector2f(x ,height),color);
@@ -49,7 +49,7 @@ public class Grid implements Drawable
 			vectors.add(v2);
 		}
 		
-		for(int y=0;y<height;y+=32)
+		for(int y=0;y<=height;y+=32)
 		{
 			Vertex v1 = new Vertex(new Vector2f(0,y),color);
 			Vertex v2 = new Vertex(new Vector2f(width ,y),color);

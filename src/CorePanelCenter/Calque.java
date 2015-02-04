@@ -54,7 +54,8 @@ public class Calque
 		{
 			sprite = new Sprite(this.fileTexture);
 			sprite.setPosition(new Vector2f(0,0));
-			Vector2f v = new Vector2f(sprite.getTexture().getSize());
+			
+			
 		//	sprite.setOrigin(Vector2f.div(v,2f));
 		}
 		

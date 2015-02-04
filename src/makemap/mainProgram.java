@@ -34,6 +34,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 
 public class mainProgram implements ActionListener{
 
@@ -62,6 +63,7 @@ public class mainProgram implements ActionListener{
 	private JToolBar toolBar;
 	private JCheckBox cGridView;
 	private JCheckBox cSnapGrid;
+	private JLabel labelZoom;
 
 	/**
 	 * Launch the application.
@@ -129,6 +131,9 @@ public class mainProgram implements ActionListener{
 		cSnapGrid.setActionCommand("SNAP_GRID");
 		cSnapGrid.addActionListener(this);
 		toolBar.add(cSnapGrid);
+		
+		labelZoom = new JLabel("Zoom :");
+		toolBar.add(labelZoom);
 		
 		
 		frame.setTitle("make map");

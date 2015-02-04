@@ -13,12 +13,14 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.jsfml.graphics.Font;
 import org.jsfml.graphics.Image;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RectangleShape;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
+import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.View;
@@ -59,6 +61,7 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 	
 	private View v;
 	private float zoom = 1f;
+	private int   levelZoom = 0;
 	private Sprite sprite;
 	private JScrollBar scrollBarHorizontale;
 	private JScrollBar scrollBarVerticale;
@@ -77,6 +80,11 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 	
 	// position start pour le déplacement
 	private Vector2f posStart,posDiff;
+	
+	// Font
+	private Font font;
+	// Text
+	private Text text;
 	
 	// private 
 	private static panelCenter parent;
@@ -144,6 +152,13 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		scrollBarVerticale.addAdjustmentListener(this);
 		
 		parent = this;
+		
+		// chargement du font
+		font = new Font();
+		font.loadFromStream(panelCenter.class.getResourceAsStream("/Fonts/ManilaSansReg.otf"));
+		// text
+		text = new Text();
+		
 	}
 	
 
@@ -166,6 +181,12 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		{
 			render.draw(calque.getSprite());
 		}
+		
+		
+		// Affichage du text
+		render.setView(new View());
+		render.draw(this.text);
+		//Display
 		render.display();
 		
 		Texture mytexture = (Texture) render.getTexture();
@@ -400,6 +421,14 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		try 
 		{
 			render.create(this.getSize().width, this.getSize().height);
+			
+			// positionnement du text
+			this.text.setPosition(32, 32);
+			this.text.setCharacterSize(16);
+			this.text.setColor(org.jsfml.graphics.Color.BLUE);
+			
+			this.repaint();
+			
 		} catch (TextureCreationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -449,7 +478,12 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		// TODO Auto-generageted method stub
 	
 		int ret = e.getWheelRotation();
-		System.out.println(ret);
+		
+		// ajout au levelZoom
+		this.levelZoom += ret;
+		this.text.setString("Zoom");
+		
+		
 		
 		if(ret > 0)
 		{
