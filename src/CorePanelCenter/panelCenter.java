@@ -381,6 +381,13 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 			}
 		}
 		
+		// deselection de tous les calques
+		if(e.getButton() == MouseEvent.BUTTON3)
+		{
+			if(panelInfo.getCurrentCalqueSelected() != null)
+				panelInfo.getCurrentCalqueSelected().setSelected(false);
+		}
+		
 		// reaffichage
 		this.repaint();
 	}
