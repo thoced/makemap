@@ -2,6 +2,7 @@ package CorePanelCenter;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.RenderingHints.Key;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -29,6 +30,8 @@ import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import CoreObstacles.Obstacle;
+import CoreObstacles.ObstaclesManager;
 import CorePanelInfo.panelInfo;
 import CoreTexturesManager.TexturesManager;
 import makemap.DataManager;
@@ -43,12 +46,14 @@ import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.AdjustmentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
-public class panelCenter extends JPanel implements MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener
+public class panelCenter extends JPanel implements KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener
 {
 	/**
 	 * 
@@ -80,6 +85,12 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 	
 	// position start pour le déplacement
 	private Vector2f posStart,posDiff;
+	// si c'est un obstacle
+	private ObstaclesManager obstaclesManager;
+	// Obstacle en cours
+	private Obstacle currentObstacle;
+	
+	private  boolean isManagerObstacle = false;
 	
 	// Font
 	private Font font;
@@ -94,9 +105,12 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 
 	public panelCenter() throws IOException, TextureCreationException
 	{
-		
+		this.setFocusable(true);
+		this.requestFocusInWindow();
 		
 		this.setBackground(Color.GRAY);
+		// set double buffered
+		this.setDoubleBuffered(true);
 		// layout
 		
 		// ajout dans le datamanager de la réference this
@@ -135,6 +149,7 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		this.addMouseMotionListener(this);
 		this.addComponentListener(this);
 		this.addMouseWheelListener(this);
+		this.addKeyListener(this);
 		
 		setLayout(new BorderLayout(0, 0));
 		
@@ -158,6 +173,8 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		font.loadFromStream(panelCenter.class.getResourceAsStream("/Fonts/ManilaSansReg.otf"));
 		// text
 		text = new Text();
+		// Obstacle Manager
+		obstaclesManager = new ObstaclesManager();
 		
 	}
 	
@@ -182,18 +199,16 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 			render.draw(calque.getSprite());
 		}
 		
+		// dessin des obstacles
+		render.draw(obstaclesManager);
 		
-		// Affichage du text
-		render.setView(new View());
-		render.draw(this.text);
-		//Display
 		render.display();
 		
 		Texture mytexture = (Texture) render.getTexture();
 		BufferedImage bi = mytexture.copyToImage().toBufferedImage();
 		g.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
 	
-		//this.setDoubleBuffered(true);
+		
 	}
 	
 	public static void insertCalque(Calque calque)
@@ -225,7 +240,16 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		this.repaint();
 	}
 	
-	
+	public  void setObstacleManager(boolean active)
+	{
+		parent.isManagerObstacle = active;
+		if(!active && currentObstacle != null)
+		{
+			currentObstacle.setFixObstalce();
+			currentObstacle = null;
+			this.repaint();
+		}
+	}
 	
 	/**
 	 * @return the isSnapGrid
@@ -290,12 +314,23 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		
 	}
 	
-	@Override
-	public void mouseDragged(MouseEvent e) {
+
+	public void mouseDragged(MouseEvent e) 
+	{
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
+		
+		if(this.isManagerObstacle)
+		{
+			if(currentObstacle != null)
+			{
+				currentObstacle.dragPoint(posWorld);
+				this.repaint();
+			}
+		}
+		
 		
 		if(this.isSnapGrid)
 		{
@@ -316,6 +351,7 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		
 		// 
 		this.repaint();
+		
 	}
 
 
@@ -349,9 +385,49 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		// TODO Auto-generated method stub
 		
 		// clic droit
-					Vector2i posPanel = new Vector2i(e.getX(),e.getY());
-					Vector2f posWorld = render.mapPixelToCoords(posPanel);
+		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
+		Vector2f posWorld = render.mapPixelToCoords(posPanel);
 		
+		if(this.isManagerObstacle)
+		{
+			if(e.getButton() == MouseEvent.BUTTON1)
+			{
+				// il s'agit de la gestion des obstacles
+				if(currentObstacle == null)
+				{
+					// il s'agit d'un nouvelle obstacle
+					currentObstacle = obstaclesManager.createNewObstacle();
+					// c'est le premier clic, on va positionner le premier point
+					currentObstacle.insertPoint(posWorld);
+				}
+				else
+				{
+					// on insère le point dans un obstacle déja instancié
+					currentObstacle.insertPoint(posWorld);
+				}
+			}
+			
+			if(e.getButton() == MouseEvent.BUTTON3)
+			{
+				if(currentObstacle != null)
+				{
+					// on selectionne un point d'un obstacle si on est dessus
+					currentObstacle.hitPoint(posWorld);
+				}
+			}
+			
+			if(e.getButton() == MouseEvent.BUTTON2)
+			{
+				// on utilise le clic de la molette pour fixer l'objet obstacle
+				this.currentObstacle.setFixObstalce();
+				this.currentObstacle = null;
+			}
+			
+			this.repaint();
+			return;
+		}
+		
+				
 		if(e.getButton() == MouseEvent.BUTTON2)
 		{
 			
@@ -511,6 +587,40 @@ public class panelCenter extends JPanel implements MouseWheelListener,MouseListe
 		}
 		v.zoom(zoom);
 		this.repaint();
+	}
+
+
+
+	@Override
+	public void keyPressed(KeyEvent arg0) 
+	{
+
+		if(this.isManagerObstacle)
+		{
+			if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+			{
+				// on tape sur enter et on doit terminé l'objet obstacle
+				currentObstacle = null;
+			}
+		}
+	}
+
+
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void keyTyped(KeyEvent arg0)
+	{
+		// TODO Auto-generated method stub
+	
+		
 	}
 
 

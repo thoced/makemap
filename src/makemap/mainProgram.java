@@ -27,16 +27,19 @@ import org.jsfml.window.event.Event;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import javax.swing.JTable;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
-public class mainProgram implements ActionListener{
+public class mainProgram implements KeyListener,ActionListener{
 
 	private JFrame frame;
 	
@@ -63,7 +66,7 @@ public class mainProgram implements ActionListener{
 	private JToolBar toolBar;
 	private JCheckBox cGridView;
 	private JCheckBox cSnapGrid;
-	private JLabel labelZoom;
+	private JToggleButton buttonObstacle;
 
 	/**
 	 * Launch the application.
@@ -105,6 +108,8 @@ public class mainProgram implements ActionListener{
 		
 		pInfo = new panelInfo();
 		
+		frame.addKeyListener(this);
+		
 		
 		try 
 		{
@@ -132,8 +137,10 @@ public class mainProgram implements ActionListener{
 		cSnapGrid.addActionListener(this);
 		toolBar.add(cSnapGrid);
 		
-		labelZoom = new JLabel("Zoom :");
-		toolBar.add(labelZoom);
+		buttonObstacle = new JToggleButton("Obstacles");
+		buttonObstacle.addActionListener(this);
+		buttonObstacle.setActionCommand("BUTTON_OBSTACLE");
+		toolBar.add(buttonObstacle);
 		
 		
 		frame.setTitle("make map");
@@ -210,6 +217,31 @@ public class mainProgram implements ActionListener{
 					pCenter.setSnapGrid(false);
 		}
 		
+		if(arg0.getActionCommand() == "BUTTON_OBSTACLE")
+		{
+			pCenter.setObstacleManager(buttonObstacle.isSelected());
+		}
+		
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) 
+	{
+		// TODO Auto-generated method stub
+		int i=0;
+		i++;
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
