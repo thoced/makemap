@@ -22,6 +22,8 @@ import javax.swing.JMenuItem;
 
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.TextureCreationException;
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
@@ -41,6 +43,8 @@ import javax.swing.JLabel;
 
 public class mainProgram implements KeyListener,ActionListener{
 
+	private RenderWindow win;
+	
 	private JFrame frame;
 	
 	private panelInfo pInfo;
@@ -191,6 +195,8 @@ public class mainProgram implements KeyListener,ActionListener{
 			}
 		});
 		menuFichier.add(mFermer);
+		
+		
 		
 	}
 

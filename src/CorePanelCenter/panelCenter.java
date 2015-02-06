@@ -27,6 +27,8 @@ import org.jsfml.graphics.TextureCreationException;
 import org.jsfml.graphics.View;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
+import org.jsfml.window.Context;
+import org.jsfml.window.ContextActivationException;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
@@ -58,6 +60,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	/**
 	 * 
 	 */
+	
+	
 	// render texture jsfml
 	private RenderTexture render;
 	
@@ -103,7 +107,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	// private list des calques
 	private List<Calque> listCalques = new ArrayList<Calque>();
 
-	public panelCenter() throws IOException, TextureCreationException
+	public panelCenter() throws IOException, TextureCreationException, ContextActivationException
 	{
 		this.setFocusable(true);
 		this.requestFocusInWindow();
@@ -176,6 +180,12 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		// Obstacle Manager
 		obstaclesManager = new ObstaclesManager();
 		
+	
+		
+		
+		
+		
+		
 	}
 	
 
@@ -204,10 +214,11 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		
 		render.display();
 		
+		// copie de l'image généré par jsfml dans le panel
 		Texture mytexture = (Texture) render.getTexture();
 		BufferedImage bi = mytexture.copyToImage().toBufferedImage();
 		g.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
-	
+		
 		
 	}
 	
@@ -322,16 +333,6 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
 		
-		if(this.isManagerObstacle)
-		{
-			if(currentObstacle != null)
-			{
-				currentObstacle.dragPoint(posWorld);
-				this.repaint();
-			}
-		}
-		
-		
 		if(this.isSnapGrid)
 		{
 			// Si on a activé le snap grid
@@ -341,13 +342,25 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			posWorld = new Vector2f(x,y);
 				
 		}
-		/*for(Calque calque : this.listCalques)
-		{
-			calque.mousePosition(posWorld);
-		}*/
 		
-		if(panelInfo.getCurrentCalqueSelected() != null)
-			panelInfo.getCurrentCalqueSelected().mousePosition(Vector2f.sub(posWorld, posDiff));
+		if(this.isManagerObstacle)
+		{
+			// drag dans la mode obstacle
+			if(currentObstacle != null)
+			{
+				currentObstacle.dragPoint(posWorld);
+				this.repaint();
+			}
+		}
+		else
+		{
+			// drag dans le mode calque
+			if(panelInfo.getCurrentCalqueSelected() != null)
+				panelInfo.getCurrentCalqueSelected().mousePosition(Vector2f.sub(posWorld, posDiff));
+		}
+		
+	
+		
 		
 		// 
 		this.repaint();
@@ -387,6 +400,16 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		// clic droit
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
+		
+		if(this.isSnapGrid)
+		{
+			// Si on a activé le snap grid
+			
+			int x = (int) (posWorld.x / this.size) * this.size;
+			int y = (int) (posWorld.y / this.size) * this.size;
+			posWorld = new Vector2f(x,y);
+				
+		}
 		
 		if(this.isManagerObstacle)
 		{
