@@ -28,8 +28,106 @@ public class Calque
 	// virtual name
 	private String virtualName;
 	
+	// proprietés
+	
+	private String type_calque;
+	
+	private float masse;
+	
+	private boolean danger;
+	
+	private float targetX;
+	
+	private float targetY;
+	
+	private float speed;
 	
 	
+	
+	/**
+	 * @return the type_calque
+	 */
+	public String getType_calque() {
+		return type_calque;
+	}
+
+	/**
+	 * @param type_calque the type_calque to set
+	 */
+	public void setType_calque(String type_calque) {
+		this.type_calque = type_calque;
+	}
+
+	/**
+	 * @return the masse
+	 */
+	public float getMasse() {
+		return masse;
+	}
+
+	/**
+	 * @param masse the masse to set
+	 */
+	public void setMasse(float masse) {
+		this.masse = masse;
+	}
+
+	/**
+	 * @return the danger
+	 */
+	public boolean isDanger() {
+		return danger;
+	}
+
+	/**
+	 * @param danger the danger to set
+	 */
+	public void setDanger(boolean danger) {
+		this.danger = danger;
+	}
+
+	/**
+	 * @return the targetX
+	 */
+	public float getTargetX() {
+		return targetX;
+	}
+
+	/**
+	 * @param targetX the targetX to set
+	 */
+	public void setTargetX(float targetX) {
+		this.targetX = targetX;
+	}
+
+	/**
+	 * @return the targetY
+	 */
+	public float getTargetY() {
+		return targetY;
+	}
+
+	/**
+	 * @param targetY the targetY to set
+	 */
+	public void setTargetY(float targetY) {
+		this.targetY = targetY;
+	}
+
+	/**
+	 * @return the speed
+	 */
+	public float getSpeed() {
+		return speed;
+	}
+
+	/**
+	 * @param speed the speed to set
+	 */
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
 	/**
 	 * @return the virtualName
 	 */

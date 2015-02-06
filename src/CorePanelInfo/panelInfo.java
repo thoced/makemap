@@ -40,6 +40,8 @@ import makemap.DataManager;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import javax.swing.JLayeredPane;
+import javax.swing.JTabbedPane;
 
 public class panelInfo extends JPanel implements MouseListener,KeyListener 
 {
@@ -48,6 +50,8 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 	private panelViewer pViewer;
 	private JList listTextures;
 	
+	// Properties panel
+	private PropertiesPanel prop;
 	
 	// calque selectionné courant
 	private  Calque currentCalqueSelected;
@@ -59,6 +63,8 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 	private  JTextField rename;
 	// popup
 	private  Popup pop;
+	private JLayeredPane layered;
+	private JTabbedPane tabbedPane;
 	
 	public panelInfo()
 	{
@@ -87,13 +93,30 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 			e.printStackTrace();
 		}
 		
+		// tabbed
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		add(tabbedPane);
 		
 		listTextures = new JList();
 		JScrollPane scrollPaneTextures = new JScrollPane(listTextures);
-		add(scrollPaneTextures);
+	
+		
+		prop = new PropertiesPanel();
+
+		tabbedPane.add("Textures", scrollPaneTextures);
+		
+		JScrollPane scrollProperties = new JScrollPane(prop);
+		
+		tabbedPane.add("Properties",scrollProperties);
+		
+		
 		
 		// listener
 		listTextures.addMouseListener(this);
+		
+		
+		
+		
 	
 		
 		
@@ -183,6 +206,9 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 				currentCalqueSelected.setSelected(true);
 				// on demande le rafraichissement
 				panelCenter.repaintCalques();
+				// on modifie le panel de propriété
+				PropertiesPanel.setCalque(currentCalqueSelected);
+				PropertiesPanel.refreshProperties();
 				
 			}
 			
@@ -268,6 +294,8 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 				pop.hide();
 				// on redonne la possibilité de selectionné un calque
 				 listCalques.setEnabled(true);
+				 
+				 PropertiesPanel.refreshProperties();
 			}
 		}
 	}
