@@ -89,6 +89,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	
 	// position start pour le déplacement
 	private Vector2f posStart,posDiff;
+	
+	// current Calque
+	private Calque currentCalque;
+	
 	// si c'est un obstacle
 	private ObstaclesManager obstaclesManager;
 	// Obstacle en cours
@@ -453,11 +457,36 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				
 		if(e.getButton() == MouseEvent.BUTTON2)
 		{
+			boolean isOneCalqueSelected = false;
 			
-			for(Calque calque : this.listCalques)
-			{
-				calque.selected(posWorld);
+			for(Calque c : this.listCalques)
+			{   
+				if(isOneCalqueSelected)
+					c.selected(posWorld);
+				else
+				{
+					isOneCalqueSelected = c.selected(posWorld);
+					
+					if(isOneCalqueSelected)
+					{
+						currentCalque = c;
+						currentCalque.setSelected(true);
+					}
+				
+				}
 			}
+			
+			if(!isOneCalqueSelected)
+			{
+				// aucun calque n'est selectionné, on deselectionne tous
+				if(currentCalque != null)
+				{
+					currentCalque.setSelected(false);
+					currentCalque = null;
+					panelInfo.deselectAllCalque();
+				}
+			}
+				
 			
 		}
 		
