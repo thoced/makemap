@@ -34,6 +34,7 @@ import org.jsfml.window.event.Event;
 
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
+import CorePanelInfo.PropertiesPanel;
 import CorePanelInfo.panelInfo;
 import CoreTexturesManager.TexturesManager;
 import makemap.DataManager;
@@ -471,6 +472,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					{
 						currentCalque = c;
 						currentCalque.setSelected(true);
+						panelInfo.selectedCalque(currentCalque);
+						PropertiesPanel.setCalque(currentCalque);
 					}
 				
 				}

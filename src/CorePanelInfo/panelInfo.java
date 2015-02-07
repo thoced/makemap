@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.peer.PanelPeer;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 import javax.swing.DefaultListModel;
@@ -40,6 +41,7 @@ import makemap.DataManager;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+
 import javax.swing.JLayeredPane;
 import javax.swing.JTabbedPane;
 
@@ -137,6 +139,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		parent.listCalques.setSelectedValue(currentCalqueSelected, true);
 		parent.currentCalqueSelected = currentCalqueSelected;
 		parent.currentCalqueSelected.setSelected(true);
+		PropertiesPanel.setCalque(currentCalqueSelected);
 		
 	}
 	
@@ -144,7 +147,16 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 	{
 		if(repertoire != null && repertoire.isDirectory())
 		{
-			File[] files = repertoire.listFiles();
+			// on filtre pour n'afficher que les fichier portant les extensions png
+			 FilenameFilter filter = new FilenameFilter() {
+			        public boolean accept(File directory, String fileName) {
+			            return fileName.endsWith(".png");
+			        }
+			        };
+			        
+			       
+			
+			File[] files = repertoire.listFiles(filter);
 			
 		
 			DefaultListModel dlm = new DefaultListModel();

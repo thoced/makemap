@@ -95,6 +95,7 @@ public class panelViewer extends JPanel implements ComponentListener
 	{
 		 parent.texture = texture; 
 		
+		 // on recrée le vectors
 		 parent.refreshVectors();
 	
 		// parent.sprite.setScale(new Vector2f(divx,divy));
