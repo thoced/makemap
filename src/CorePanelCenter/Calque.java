@@ -32,7 +32,7 @@ public class Calque
 	
 	// proprietés
 	
-	private String type_calque;
+	private String type_calque = "statique";
 	
 	private float masse;
 	
@@ -44,9 +44,25 @@ public class Calque
 	
 	private float speed;
 	
+	private String layer = "middleground"; // background_level01,background_level02,middleground,foreground_level01,foreground_leve02
 	
 	
 	
+	
+	/**
+	 * @return the layer
+	 */
+	public String getLayer() {
+		return layer;
+	}
+
+	/**
+	 * @param layer the layer to set
+	 */
+	public void setLayer(String layer) {
+		this.layer = layer;
+	}
+
 	/**
 	 * @return the type_calque
 	 */

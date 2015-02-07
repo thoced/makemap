@@ -56,6 +56,8 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 	
 	// calque
 	private static Calque currentCalque;
+	private JLabel lblNewLabel;
+	private JComboBox cLayer;
 	
 	public PropertiesPanel()
 	{
@@ -141,6 +143,13 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 		add(tTargetY, "6, 14, fill, default");
 		tTargetY.setColumns(10);
 		
+		lblNewLabel = new JLabel("Layer");
+		add(lblNewLabel, "2, 16");
+		
+		cLayer = new JComboBox();
+		cLayer.setModel(new DefaultComboBoxModel(new String[] {"background_level02", "background_level01", "middleground", "foreground_level01", "foreground_level02"}));
+		add(cLayer, "6, 16, fill, default");
+		
 		
 		// listener
 		Component[] comps = this.getComponents();
@@ -156,6 +165,9 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 	public static void setCalque(Calque currentCalqueSelected) 
 	{
 		// TODO Auto-generated method stub	
+		// on sauvegarde d'abord ce qui a déja été modifié sur le currentCalque
+		parent.saveInfo();
+		
 		currentCalque = currentCalqueSelected;
 		
 		if(currentCalque!=null)
@@ -167,6 +179,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 			parent.tSpeed.setText(String.valueOf(currentCalque.getSpeed()));
 			parent.tTargetX.setText(String.valueOf(currentCalque.getTargetX()));
 			parent.tTargetY.setText(String.valueOf(currentCalque.getTargetY()));
+			parent.cLayer.setSelectedItem(currentCalque.getLayer());
 			
 			
 			
@@ -180,11 +193,8 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 	}
 
 
-
-	@Override
-	public void focusLost(FocusEvent arg0)
+	public void saveInfo()
 	{
-		// TODO Auto-generated method stub
 		if(currentCalque != null)
 		{
 			// on update les modidications
@@ -194,7 +204,15 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 			currentCalque.setSpeed(Float.parseFloat(this.tSpeed.getText()));
 			currentCalque.setTargetX(Float.parseFloat(this.tTargetX.getText()));
 			currentCalque.setTargetY(Float.parseFloat(this.tTargetY.getText()));
+			currentCalque.setLayer((String)this.cLayer.getSelectedItem());
 		}
+	}
+	
+	@Override
+	public void focusLost(FocusEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		this.saveInfo();
 	}
 
 
