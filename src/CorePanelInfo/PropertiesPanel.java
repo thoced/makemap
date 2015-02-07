@@ -1,9 +1,13 @@
 package CorePanelInfo;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowListener;
 
 import javax.swing.JLabel;
@@ -23,13 +27,15 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.jsfml.system.Vector2f;
 
-public class PropertiesPanel extends JPanel 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+public  class PropertiesPanel extends JPanel implements KeyListener,FocusListener
 {
-	private JTextField tName;
-	private JTextField tX;
-	private JTextField tY;
-	private JTextField tWidth;
-	private JTextField tHeight;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
 	private JComboBox cTypeCalque;
@@ -90,82 +96,60 @@ public class PropertiesPanel extends JPanel
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblNewLabel = new JLabel("Nom:\n");
-		add(lblNewLabel, "2, 4");
-		
-		tName = new JTextField();
-		add(tName, "6, 4, fill, top");
-		
-		JLabel lblNewLabel_1 = new JLabel("X");
-		add(lblNewLabel_1, "2, 6");
-		
-		tX = new JTextField();
-		add(tX, "6, 6, fill, default");
-		tX.setColumns(10);
-		
-		JLabel lblNewLabel_2 = new JLabel("Y");
-		add(lblNewLabel_2, "2, 8");
-		
-		tY = new JTextField();
-		add(tY, "6, 8, fill, default");
-		tY.setColumns(10);
-		
-		JLabel lblNewLabel_3 = new JLabel("Width");
-		add(lblNewLabel_3, "2, 10");
-		
-		tWidth = new JTextField();
-		add(tWidth, "6, 10, fill, default");
-		tWidth.setColumns(10);
-		
-		JLabel lblNewLabel_4 = new JLabel("Height");
-		add(lblNewLabel_4, "2, 12");
-		
-		tHeight = new JTextField();
-		add(tHeight, "6, 12, fill, default");
-		tHeight.setColumns(10);
-		
 		lblNewLabel_6 = new JLabel("type calque");
-		add(lblNewLabel_6, "2, 14");
+		add(lblNewLabel_6, "2, 4");
 		
 		cTypeCalque = new JComboBox();
+		
 		cTypeCalque.setModel(new DefaultComboBoxModel(new String[] {"statique", "physique", "dynamique"}));
-		add(cTypeCalque, "6, 14, fill, default");
+		add(cTypeCalque, "6, 4, fill, default");
 		
 		lblNewLabel_7 = new JLabel("masse");
-		add(lblNewLabel_7, "2, 16");
+		add(lblNewLabel_7, "2, 6");
 		
 		tMasse = new JTextField();
-		add(tMasse, "6, 16, fill, default");
+		
+		
+		add(tMasse, "6, 6, fill, default");
 		tMasse.setColumns(10);
 		
 		lblNewLabel_8 = new JLabel("danger");
-		add(lblNewLabel_8, "2, 18");
+		add(lblNewLabel_8, "2, 8");
 		
 		cDanger = new JComboBox();
 		cDanger.setModel(new DefaultComboBoxModel(new String[] {"false", "true"}));
-		add(cDanger, "6, 18, fill, default");
+		add(cDanger, "6, 8, fill, default");
 		
 		lblNewLabel_9 = new JLabel("speed");
-		add(lblNewLabel_9, "2, 20");
+		add(lblNewLabel_9, "2, 10");
 		
 		tSpeed = new JTextField();
-		add(tSpeed, "6, 20, fill, default");
+		add(tSpeed, "6, 10, fill, default");
 		tSpeed.setColumns(10);
 		
 		lblNewLabel_10 = new JLabel("target X");
-		add(lblNewLabel_10, "2, 22");
+		add(lblNewLabel_10, "2, 12");
 		
 		tTargetX = new JTextField();
-		add(tTargetX, "6, 22, fill, default");
+		add(tTargetX, "6, 12, fill, default");
 		tTargetX.setColumns(10);
 		
 		lblNewLabel_11 = new JLabel("target Y");
-		add(lblNewLabel_11, "2, 24");
+		add(lblNewLabel_11, "2, 14");
 		
 		tTargetY = new JTextField();
-		add(tTargetY, "6, 24, fill, default");
+		add(tTargetY, "6, 14, fill, default");
 		tTargetY.setColumns(10);
 		
+		
+		// listener
+		Component[] comps = this.getComponents();
+		for(Component c : comps)
+		{
+			c.addKeyListener(this);
+			c.addFocusListener(this);
+			
+		}
 		
 	}
 	
@@ -175,23 +159,90 @@ public class PropertiesPanel extends JPanel
 	{
 		// TODO Auto-generated method stub	
 		currentCalque = currentCalqueSelected;
-	}
-
-
-	public static void refreshProperties()
-	{
-		// TODO Auto-generated method stub
-		if(currentCalque != null)
+		
+		if(currentCalque!=null)
 		{
-			// nom du calque
-			parent.tName.setText(currentCalque.getVirtualName());
-			// x,y
-			Vector2f pos = currentCalque.getSprite().getPosition();
-			parent.tX.setText(String.valueOf(pos.x));
-			parent.tY.setText(String.valueOf(pos.y));
+			// on modifie les propriété en fonction du calque selectionné
+			parent.cTypeCalque.setSelectedItem(currentCalque.getType_calque());
+			parent.cDanger.setSelectedItem(currentCalque.isDanger() == true ? "true" : "false");
+			parent.tMasse.setText(String.valueOf(currentCalque.getMasse()));
+			parent.tSpeed.setText(String.valueOf(currentCalque.getSpeed()));
+			parent.tTargetX.setText(String.valueOf(currentCalque.getTargetX()));
+			parent.tTargetY.setText(String.valueOf(currentCalque.getTargetY()));
+			
 			
 			
 		}
 	}
+
+
+
+	@Override
+	public void keyPressed(KeyEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		if(currentCalque != null)
+		{
+			// on update les modidications
+			currentCalque.setType_calque((String)this.cTypeCalque.getSelectedItem());
+			currentCalque.setDanger(this.cDanger.getSelectedItem() == "true" ? true : false);
+			currentCalque.setMasse(Float.parseFloat(this.tMasse.getText()));
+			currentCalque.setSpeed(Float.parseFloat(this.tSpeed.getText()));
+			currentCalque.setTargetX(Float.parseFloat(this.tTargetX.getText()));
+			currentCalque.setTargetY(Float.parseFloat(this.tTargetY.getText()));
+		}
+		
+	}
+
+
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void focusGained(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void focusLost(FocusEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		if(currentCalque != null)
+		{
+			// on update les modidications
+			currentCalque.setType_calque((String)this.cTypeCalque.getSelectedItem());
+			currentCalque.setDanger(this.cDanger.getSelectedItem() == "true" ? true : false);
+			currentCalque.setMasse(Float.parseFloat(this.tMasse.getText()));
+			currentCalque.setSpeed(Float.parseFloat(this.tSpeed.getText()));
+			currentCalque.setTargetX(Float.parseFloat(this.tTargetX.getText()));
+			currentCalque.setTargetY(Float.parseFloat(this.tTargetY.getText()));
+		}
+	}
+
+
+
+	
+
+
+	
+
+
+	
 
 }
