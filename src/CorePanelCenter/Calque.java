@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -17,7 +18,7 @@ import org.jsfml.system.Vector2i;
 
 import CorePanelInfo.panelInfo;
 
-public class Calque 
+public class Calque implements java.lang.Comparable
 {
 	// fichier de la texture corresondante
 	private Texture fileTexture;
@@ -44,7 +45,7 @@ public class Calque
 	
 	private float speed;
 	
-	private String layer = "middleground"; // background_level01,background_level02,middleground,foreground_level01,foreground_leve02
+	private int layer = 2; // middleground	
 	
 	
 	
@@ -52,14 +53,14 @@ public class Calque
 	/**
 	 * @return the layer
 	 */
-	public String getLayer() {
+	public int getLayer() {
 		return layer;
 	}
 
 	/**
 	 * @param layer the layer to set
 	 */
-	public void setLayer(String layer) {
+	public void setLayer(int layer) {
 		this.layer = layer;
 	}
 
@@ -238,6 +239,21 @@ public class Calque
 		else
 			return "NO NAME";
 			
+	}
+
+	
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		
+		Calque other = (Calque)arg0;
+		
+		if(other.getLayer() > this.getLayer())
+			return -1;
+		else if(other.getLayer() == this.getLayer())
+			return 0;
+		else return 1;
 	}
 
 	
