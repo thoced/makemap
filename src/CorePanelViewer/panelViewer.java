@@ -6,11 +6,15 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import org.jsfml.graphics.PrimitiveType;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
+import org.jsfml.graphics.Vertex;
+import org.jsfml.graphics.VertexArray;
 import org.jsfml.graphics.View;
 import org.jsfml.system.Vector2f;
 
@@ -27,6 +31,10 @@ public class panelViewer extends JPanel implements ComponentListener
 	private Sprite sprite = null;
 	
 	private static panelViewer parent;
+	
+	// creation du vertexarray
+	private VertexArray vectors;
+	private Texture texture;
 	
 	public panelViewer() throws TextureCreationException
 	{
@@ -50,6 +58,10 @@ public class panelViewer extends JPanel implements ComponentListener
 		// ajout des listeners
 		this.addComponentListener(this);
 		
+		// instance
+		vectors = new VertexArray(PrimitiveType.QUADS);
+		
+		
 		
 		
 	}
@@ -63,12 +75,15 @@ public class panelViewer extends JPanel implements ComponentListener
 		// TODO Auto-generated method stub
 		super.paintComponent(g);
 		
+		// creation du renderstate
+		RenderStates state = new RenderStates(this.texture);		
 		//render.setView(v);
 		render.clear(org.jsfml.graphics.Color.TRANSPARENT);
-		if(sprite!=null)
-			render.draw(sprite);
+		render.setView(v);
+			render.draw(this.vectors,state);
 		render.display();
 		
+		// affichage sur le panel
 		Texture mytexture = (Texture) render.getTexture();
 		BufferedImage bi = mytexture.copyToImage().toBufferedImage();
 		g.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
@@ -78,29 +93,10 @@ public class panelViewer extends JPanel implements ComponentListener
 	
 	public static void setTexture(Texture texture)
 	{
-		 
-		 parent.sprite.setTexture(texture);
-		// Vector2f ori = new Vector2f(texture.getSize());
-		 //sprite.setOrigin(Vector2f.div(ori, 2f));
-		// parent.sprite.setOrigin(new Vector2f(texture.getSize().x / 2f,texture.getSize().y / 2f));
-		 parent.sprite.setPosition(new Vector2f(0f,0f));
-		 
-		 // création du scale
-		 float widthpanel = parent.getWidth();
-		 float heightpanel = parent.getHeight();
-		 
-		 float widthTexture = texture.getSize().x;
-		 float heightTexture = texture.getSize().y;
-		 
-		 float divx = widthpanel / widthTexture;
-		 float divy = heightpanel / heightTexture;
-		 
-
-
-		 parent.sprite.setScale(new Vector2f(divx,divy));
-		 
+		 parent.texture = texture; 
 		
-		 
+		 parent.refreshVectors();
+	
 		// parent.sprite.setScale(new Vector2f(divx,divy));
 		// parent.v.setSize(widthTexture, heightTexture);
 		 
@@ -118,6 +114,33 @@ public class panelViewer extends JPanel implements ComponentListener
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void refreshVectors()
+	{
+		Vector2f p1 = new Vector2f(0,0);
+		Vector2f p2 = new Vector2f(this.getSize().width,0);
+		Vector2f p3 = new Vector2f(this.getSize().width,this.getSize().height);
+		Vector2f p4 = new Vector2f(0,this.getSize().height);
+		
+		// texture
+		Vector2f t1 = new Vector2f(0,0);
+		Vector2f t2 = new Vector2f(texture.getSize().x,0);
+		Vector2f t3 = new Vector2f(texture.getSize().x,texture.getSize().y);
+		Vector2f t4 = new Vector2f(0,texture.getSize().y);
+		
+		// modif du vectors
+		Vertex v1 = new Vertex(p1,t1);
+		Vertex v2 = new Vertex(p2,t2);
+		Vertex v3 = new Vertex(p3,t3);
+		Vertex v4 = new Vertex(p4,t4);
+		
+		// update du vectors
+		vectors.clear();
+		vectors.add(v1);
+		vectors.add(v2);
+		vectors.add(v3);
+		vectors.add(v4);
+	}
 
 	@Override
 	public void componentResized(ComponentEvent e)
@@ -130,7 +153,12 @@ public class panelViewer extends JPanel implements ComponentListener
 			v.setSize(new Vector2f(this.getSize().width,this.getSize().height));
 			v.setCenter(new Vector2f(this.getSize().width/2, this.getSize().height/2));
 			
+			if(this.texture != null)
+				this.refreshVectors();
+			
+			// repaint()
 			this.repaint();
+			
 		} catch (TextureCreationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
