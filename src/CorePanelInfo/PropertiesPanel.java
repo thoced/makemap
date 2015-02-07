@@ -34,7 +34,7 @@ import java.awt.event.InputMethodEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public  class PropertiesPanel extends JPanel implements KeyListener,FocusListener
+public  class PropertiesPanel extends JPanel implements FocusListener
 {
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
@@ -146,9 +146,7 @@ public  class PropertiesPanel extends JPanel implements KeyListener,FocusListene
 		Component[] comps = this.getComponents();
 		for(Component c : comps)
 		{
-			c.addKeyListener(this);
-			c.addFocusListener(this);
-			
+			c.addFocusListener(this);	
 		}
 		
 	}
@@ -174,42 +172,6 @@ public  class PropertiesPanel extends JPanel implements KeyListener,FocusListene
 			
 		}
 	}
-
-
-
-	@Override
-	public void keyPressed(KeyEvent arg0) 
-	{
-		// TODO Auto-generated method stub
-		if(currentCalque != null)
-		{
-			// on update les modidications
-			currentCalque.setType_calque((String)this.cTypeCalque.getSelectedItem());
-			currentCalque.setDanger(this.cDanger.getSelectedItem() == "true" ? true : false);
-			currentCalque.setMasse(Float.parseFloat(this.tMasse.getText()));
-			currentCalque.setSpeed(Float.parseFloat(this.tSpeed.getText()));
-			currentCalque.setTargetX(Float.parseFloat(this.tTargetX.getText()));
-			currentCalque.setTargetY(Float.parseFloat(this.tTargetY.getText()));
-		}
-		
-	}
-
-
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public void focusGained(FocusEvent arg0) {
