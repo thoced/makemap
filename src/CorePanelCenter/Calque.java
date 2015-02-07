@@ -44,6 +44,7 @@ public class Calque
 	
 	
 	
+	
 	/**
 	 * @return the type_calque
 	 */

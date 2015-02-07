@@ -208,7 +208,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 				panelCenter.repaintCalques();
 				// on modifie le panel de propriété
 				PropertiesPanel.setCalque(currentCalqueSelected);
-				PropertiesPanel.refreshProperties();
+				
 				
 			}
 			
@@ -295,7 +295,6 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 				// on redonne la possibilité de selectionné un calque
 				 listCalques.setEnabled(true);
 				 
-				 PropertiesPanel.refreshProperties();
 			}
 		}
 	}
