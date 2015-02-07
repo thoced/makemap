@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -227,10 +229,22 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		
 	}
 	
+	public static void sortCalques()
+	{
+		// tri
+		Collections.sort(parent.listCalques);
+		// repaint
+		parent.repaint();
+		// on rafraichit également la liste des calques
+		panelInfo.refreshListCalque(parent.listCalques);
+	}
+	
 	public static void insertCalque(Calque calque)
 	{
 		// ajout du calque
 		parent.listCalques.add(calque);
+		// on trie le calque
+		sortCalques();
 		// affichage
 		parent.repaint();
 	}
