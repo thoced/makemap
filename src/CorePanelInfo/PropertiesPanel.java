@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import CorePanelCenter.Calque;
+import CorePanelCenter.panelCenter;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -29,6 +30,7 @@ import org.jsfml.system.Vector2f;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.util.Collections;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.FocusAdapter;
@@ -179,7 +181,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 			parent.tSpeed.setText(String.valueOf(currentCalque.getSpeed()));
 			parent.tTargetX.setText(String.valueOf(currentCalque.getTargetX()));
 			parent.tTargetY.setText(String.valueOf(currentCalque.getTargetY()));
-			parent.cLayer.setSelectedItem(currentCalque.getLayer());
+			parent.cLayer.setSelectedIndex(currentCalque.getLayer());
 			
 			
 			
@@ -204,7 +206,11 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 			currentCalque.setSpeed(Float.parseFloat(this.tSpeed.getText()));
 			currentCalque.setTargetX(Float.parseFloat(this.tTargetX.getText()));
 			currentCalque.setTargetY(Float.parseFloat(this.tTargetY.getText()));
-			currentCalque.setLayer((String)this.cLayer.getSelectedItem());
+			currentCalque.setLayer(this.cLayer.getSelectedIndex());
+			
+			// il faut retrier la liste
+			panelCenter.sortCalques();
+			
 		}
 	}
 	

@@ -15,6 +15,9 @@ import java.awt.peer.PanelPeer;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -143,6 +146,16 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		
 	}
 	
+	public static void refreshListCalque(List<Calque> lc)
+	{
+		// on efface la liste
+		DefaultListModel m = (DefaultListModel) parent.listCalques.getModel();
+		m.clear();
+		// on 
+		for(Calque c : lc)
+			m.addElement(c);
+	}
+	
 	public void loadTextures(File repertoire)
 	{
 		if(repertoire != null && repertoire.isDirectory())
@@ -153,12 +166,14 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 			            return fileName.endsWith(".png");
 			        }
 			        };
-			        
-			       
 			
-			File[] files = repertoire.listFiles(filter);
+			File[] files =repertoire.listFiles(filter);
 			
-		
+			// on créer le vecteur pour le tri
+			List<DataListTextures> listFiles = new ArrayList<DataListTextures>();
+			
+			
+			
 			DefaultListModel dlm = new DefaultListModel();
 			
 			for(File file : files)
@@ -166,11 +181,25 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 				if(!file.isDirectory())
 				{
 					DataListTextures dlt = new DataListTextures(file);
-					dlm.addElement(dlt);
+					// on copie la liste pour le tri
+					listFiles.add(dlt);
+				
+					
+				
 				}
 			}
 			
+			// on trie
+			Collections.sort(listFiles);
+			
+			// on recopie le tout dans le default listmodel
+			for(DataListTextures d : listFiles)
+				dlm.addElement(d);
+			
 			listTextures.setModel(dlm);
+			
+			// on trie
+			
 			
 		}
 	}
