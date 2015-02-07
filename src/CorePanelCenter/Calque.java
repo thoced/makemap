@@ -15,6 +15,8 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
+import CorePanelInfo.panelInfo;
+
 public class Calque 
 {
 	// fichier de la texture corresondante
@@ -154,20 +156,27 @@ public class Calque
 			sprite = new Sprite(this.fileTexture);
 			sprite.setPosition(new Vector2f(0,0));
 			
-			
-		//	sprite.setOrigin(Vector2f.div(v,2f));
+			sprite.setOrigin(new Vector2f(0,0));
 		}
 		
 	}
 	
-	public void selected(Vector2f pos)
+	public boolean selected(Vector2f pos)
 	{
 		if(this.sprite.getGlobalBounds().contains(pos))
 		{
 			this.isSelected = true;
 			// modification de la couleur
 			this.getSprite().setColor(Color.BLUE);
+			
+			// selection dans la listCalque
+			panelInfo.selectedCalque(this);
+			
+			return true;
 		}
+		// deselection dans la listCalque
+			//panelInfo.deselectAllCalque();
+		return false;
 	}
 	
 	

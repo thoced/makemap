@@ -116,9 +116,27 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		
 		
 		
-		
+	}
 	
-		
+	public static void deselectAllCalque()
+	{
+		parent.listCalques.clearSelection();
+		parent.currentCalqueSelected.setSelected(false);
+		parent.currentCalqueSelected = null;
+	}
+	
+	public static void selectedCalque(Calque currentCalqueSelected)
+	{
+		// on deselectionne l'ancien currentCalque
+		if(parent.currentCalqueSelected != null)
+		{
+			parent.currentCalqueSelected.setSelected(false);
+			parent.currentCalqueSelected = null;
+		}
+		// on selectionne le nouveau
+		parent.listCalques.setSelectedValue(currentCalqueSelected, true);
+		parent.currentCalqueSelected = currentCalqueSelected;
+		parent.currentCalqueSelected.setSelected(true);
 		
 	}
 	
