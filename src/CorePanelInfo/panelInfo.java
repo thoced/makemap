@@ -36,6 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 
+import CoreObstacles.ObstaclesManager;
 import CorePanelCenter.Calque;
 import CorePanelCenter.panelCenter;
 import CorePanelViewer.panelViewer;
@@ -51,8 +52,13 @@ import javax.swing.JTabbedPane;
 public class panelInfo extends JPanel implements MouseListener,KeyListener 
 {
 	
+	// JList des calques
 	private JList listCalques;
+	// JList des obstacles
+	private JListObstacles listObstacles;
+	// panel des aperçus
 	private panelViewer pViewer;
+	// JList des textures disponibles
 	private JList listTextures;
 	
 	// Properties panel
@@ -68,18 +74,34 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 	private  JTextField rename;
 	// popup
 	private  Popup pop;
-	private JLayeredPane layered;
 	private JTabbedPane tabbedPane;
+	
+	// tabbedPane pour les obstacle et calques
+	private JTabbedPane tabbedPaneUp;
 	
 	public panelInfo()
 	{
 		// ajout du parent pour les appels static
 		parent = this;
-		
+		// layout
 		setLayout(new GridLayout(3,1,8,8));
+		
+		// tabbed pane obstacle
+		tabbedPaneUp = new JTabbedPane(JTabbedPane.TOP);
+		
+		// ajout du tab listcalques
 		listCalques = new JList();
 		JScrollPane scrollPaneCalques = new JScrollPane(listCalques);
-		add(scrollPaneCalques);
+		tabbedPaneUp.add("Calques", scrollPaneCalques);
+	
+		// ajout du tab listObstacles
+		listObstacles = new JListObstacles();
+		JScrollPane scrollPaneObstacles = new JScrollPane(listObstacles);
+		tabbedPaneUp.add("Obstacles", scrollPaneObstacles);
+		// attachement mvc de listObstacles
+		ObstaclesManager.attachMVC(listObstacles);
+		
+		add(tabbedPaneUp);
 		
 		// ajout du model pour le calque
 		DefaultListModel modelCalque = new DefaultListModel();
@@ -113,6 +135,9 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		JScrollPane scrollProperties = new JScrollPane(prop);
 		
 		tabbedPane.add("Properties",scrollProperties);
+		
+		
+		
 		
 		
 		
