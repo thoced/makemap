@@ -365,9 +365,9 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		if(this.isManagerObstacle)
 		{
 			// drag dans la mode obstacle
-			if(currentObstacle != null)
+			if(ObstaclesManager.getCurrentObstacle() != null)
 			{
-				currentObstacle.dragPoint(posWorld);
+				ObstaclesManager.getCurrentObstacle().dragPoint(posWorld);
 				this.repaint();
 			}
 		}
@@ -435,7 +435,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			if(e.getButton() == MouseEvent.BUTTON1)
 			{
 				// il s'agit de la gestion des obstacles
-				if(currentObstacle == null)
+				if(ObstaclesManager.getCurrentObstacle() == null)
 				{
 					// il s'agit d'un nouvelle obstacle
 					currentObstacle = obstaclesManager.createNewObstacle();
@@ -445,24 +445,24 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				else
 				{
 					// on insère le point dans un obstacle déja instancié
-					currentObstacle.insertPoint(posWorld);
+					ObstaclesManager.getCurrentObstacle().insertPoint(posWorld);
 				}
 			}
 			
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
-				if(currentObstacle != null)
+				if(ObstaclesManager.getCurrentObstacle() != null)
 				{
 					// on selectionne un point d'un obstacle si on est dessus
-					currentObstacle.hitPoint(posWorld);
+					ObstaclesManager.getCurrentObstacle().hitPoint(posWorld);
 				}
 			}
 			
 			if(e.getButton() == MouseEvent.BUTTON2)
 			{
 				// on utilise le clic de la molette pour fixer l'objet obstacle
-				this.currentObstacle.setFixObstalce();
-				this.currentObstacle = null;
+				ObstaclesManager.getCurrentObstacle().setFixObstalce();
+				ObstaclesManager.setCurrentObstacle(null);
 			}
 			
 			this.repaint();
