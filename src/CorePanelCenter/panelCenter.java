@@ -34,6 +34,7 @@ import org.jsfml.window.ContextActivationException;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
 import CorePanelInfo.PropertiesPanel;
@@ -58,7 +59,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
-public class panelCenter extends JPanel implements KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener
+public class panelCenter extends JPanel implements KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener,IObstacleMVC
 {
 	/**
 	 * 
@@ -186,6 +187,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		text = new Text();
 		// Obstacle Manager
 		obstaclesManager = new ObstaclesManager();
+		obstaclesManager.attachMVC(this);
 		
 	
 		
@@ -689,6 +691,16 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	{
 		// TODO Auto-generated method stub
 	
+		
+	}
+
+
+
+	@Override
+	public void updateObstacleMVC(List<Obstacle> list) 
+	{
+		// TODO Auto-generated method stub
+		this.repaintCalques();
 		
 	}
 
