@@ -100,8 +100,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	
 	// si c'est un obstacle
 	private ObstaclesManager obstaclesManager;
-	// Obstacle en cours
-	private Obstacle currentObstacle;
+	
 	
 	private  boolean isManagerObstacle = false;
 	
@@ -276,11 +275,11 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	public  void setObstacleManager(boolean active)
 	{
 		parent.isManagerObstacle = active;
-		if(!active && currentObstacle != null)
+		if(!active && ObstaclesManager.getCurrentObstacle() != null)
 		{
-			currentObstacle.setFixObstalce();
-			currentObstacle = null;
-			this.repaint();
+			ObstaclesManager.getCurrentObstacle().setFixObstalce();
+			ObstaclesManager.setCurrentObstacle(null);
+			this.repaintCalques();
 		}
 	}
 	
@@ -441,9 +440,9 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				if(ObstaclesManager.getCurrentObstacle() == null)
 				{
 					// il s'agit d'un nouvelle obstacle
-					currentObstacle = obstaclesManager.createNewObstacle();
+					ObstaclesManager.setCurrentObstacle(ObstaclesManager.createNewObstacle());
 					// c'est le premier clic, on va positionner le premier point
-					currentObstacle.insertPoint(posWorld);
+					ObstaclesManager.getCurrentObstacle().insertPoint(posWorld);
 				}
 				else
 				{
@@ -667,14 +666,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	public void keyPressed(KeyEvent arg0) 
 	{
 
-		if(this.isManagerObstacle)
-		{
-			if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
-			{
-				// on tape sur enter et on doit terminé l'objet obstacle
-				currentObstacle = null;
-			}
-		}
+		
 	}
 
 
