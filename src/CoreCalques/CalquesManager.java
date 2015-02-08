@@ -3,7 +3,11 @@ package CoreCalques;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalquesManager 
+import org.jsfml.graphics.Drawable;
+import org.jsfml.graphics.RenderStates;
+import org.jsfml.graphics.RenderTarget;
+
+public class CalquesManager implements Drawable
 {
 	// list des calques
 	private List<Calque> listCalques;
@@ -60,6 +64,31 @@ public class CalquesManager
 	public void setCurrentCalque(Calque currentCalque) {
 		this.currentCalque = currentCalque;
 	}
+
+	@Override
+	public void draw(RenderTarget render, RenderStates state) 
+	{
+		// TODO Auto-generated method stub
+		for(Calque c : this.listCalques)
+			render.draw(c.getSprite(),state);
+		
+	}
+
+	/**
+	 * @return the listCalques
+	 */
+	public List<Calque> getListCalques() {
+		return listCalques;
+	}
+
+	/**
+	 * @param listCalques the listCalques to set
+	 */
+	public void setListCalques(List<Calque> listCalques) {
+		this.listCalques = listCalques;
+	}
+	
+	
 	
 	
 }

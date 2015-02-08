@@ -35,6 +35,8 @@ import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import CoreCalques.Calque;
+import CoreCalques.CalquesManager;
+import CoreCalques.ICalqueMVC;
 import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
@@ -60,7 +62,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
-public class panelCenter extends JPanel implements KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener,IObstacleMVC
+public class panelCenter extends JPanel implements KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener,ICalqueMVC,IObstacleMVC
 {
 	/**
 	 * 
@@ -98,6 +100,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	// current Calque
 	private Calque currentCalque;
 	
+	// Calque manager
+	private CalquesManager calquesManager;
 	// si c'est un obstacle
 	private ObstaclesManager obstaclesManager;
 	
@@ -113,7 +117,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	private static panelCenter parent;
 	
 	// private list des calques
-	private List<Calque> listCalques = new ArrayList<Calque>();
+	//private List<Calque> listCalques = new ArrayList<Calque>();
 
 	public panelCenter() throws IOException, TextureCreationException, ContextActivationException
 	{
@@ -185,6 +189,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		font.loadFromStream(panelCenter.class.getResourceAsStream("/Fonts/ManilaSansReg.otf"));
 		// text
 		text = new Text();
+		
+		// Calques manager
+		calquesManager = new CalquesManager();
+		calquesManager.attachMVC(this);
 		// Obstacle Manager
 		obstaclesManager = new ObstaclesManager();
 		obstaclesManager.attachMVC(this);
@@ -212,12 +220,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			//render.draw(shape);
 			render.draw(grid);
 		}
-		
-		for(Calque calque : this.listCalques)
-		{
-			render.draw(calque.getSprite());
-		}
-		
+		// dessin des calques
+		render.draw(calquesManager);
 		// dessin des obstacles
 		render.draw(obstaclesManager);
 		
@@ -234,17 +238,17 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	public static void sortCalques()
 	{
 		// tri
-		Collections.sort(parent.listCalques);
+		Collections.sort(parent.calquesManager.getListCalques());
 		// repaint
 		parent.repaint();
 		// on rafraichit également la liste des calques
-		panelInfo.refreshListCalque(parent.listCalques);
+		panelInfo.refreshListCalque(parent.calquesManager.getListCalques());
 	}
 	
 	public static void insertCalque(Calque calque)
 	{
 		// ajout du calque
-		parent.listCalques.add(calque);
+		CalquesManager.insertNewCalque(calque);
 		// on trie le calque
 		sortCalques();
 		// affichage
@@ -476,7 +480,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			boolean isOneCalqueSelected = false;
 			
-			for(Calque c : this.listCalques)
+			for(Calque c : calquesManager.getListCalques())
 			{   
 				if(isOneCalqueSelected)
 					c.selected(posWorld);
@@ -694,6 +698,14 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	{
 		// TODO Auto-generated method stub
 		this.repaintCalques();
+		
+	}
+
+
+
+	@Override
+	public void updateCalqueMVC(List<Calque> list) {
+		// TODO Auto-generated method stub
 		
 	}
 
