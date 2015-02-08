@@ -94,6 +94,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		listCalques = new JListCalques();
 		JScrollPane scrollPaneCalques = new JScrollPane(listCalques);
 		tabbedPaneUp.add("Calques", scrollPaneCalques);
+		
 		// attachement mvc de listCalques
 		CalquesManager.attachMVC(listCalques);
 	

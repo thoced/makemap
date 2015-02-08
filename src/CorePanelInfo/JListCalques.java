@@ -69,8 +69,8 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 			// création du menu
 			JMenuItem duplic = new JMenuItem("Dupliquer");
 			JMenuItem rename = new JMenuItem("Renommer");
-			JMenuItem up = new JMenuItem("Remonter (Up)");
-			JMenuItem down = new JMenuItem("Descendre (Down)");
+			JMenuItem up = new JMenuItem("Remonter (P)");
+			JMenuItem down = new JMenuItem("Descendre (M)");
 			// listener
 			duplic.addActionListener(this);
 			rename.addActionListener(this);
@@ -132,15 +132,15 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 			if(this.getSelectedValue() != null)
 				CalquesManager.deleteCalque((Calque)this.getSelectedValue());
 		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_A)
+		else if(arg0.getKeyCode() == KeyEvent.VK_P)
 		{
 			// touche plus pour remonter un objet dans la liste
 			if(this.getSelectedValue() != null)
 				CalquesManager.upCalque((Calque)this.getSelectedValue());
 		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_Q)
+		else if(arg0.getKeyCode() == KeyEvent.VK_M)
 		{
-			// touche plus pour remonter un objet dans la liste
+			// touche plus pour descendre un objet dans la liste
 				if(this.getSelectedValue() != null)
 					CalquesManager.downCalque((Calque)this.getSelectedValue());
 		}
