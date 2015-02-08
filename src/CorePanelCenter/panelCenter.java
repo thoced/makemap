@@ -480,36 +480,37 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			boolean isOneCalqueSelected = false;
 			
-			for(Calque c : calquesManager.getListCalques())
+			for(Calque c : CalquesManager.getListCalques())
 			{   
-				if(isOneCalqueSelected)
-					c.selected(posWorld);
-				else
-				{
+		
 					isOneCalqueSelected = c.selected(posWorld);
 					
 					if(isOneCalqueSelected)
 					{
-						currentCalque = c;
-						currentCalque.setSelected(true);
-						panelInfo.selectedCalque(currentCalque);
-						PropertiesPanel.setCalque(currentCalque);
+						CalquesManager.setCurrentCalque(c);
+						CalquesManager.getCurrentCalque().setSelected(true);
+						PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
+						this.repaintCalques();
+						
+
+						
+							
 					}
 				
-				}
+				
 			}
-			
+			/*
 			if(!isOneCalqueSelected)
 			{
 				// aucun calque n'est selectionné, on deselectionne tous
-				if(currentCalque != null)
+				if(CalquesManager.getCurrentCalque() != null)
 				{
-					currentCalque.setSelected(false);
-					currentCalque = null;
+					CalquesManager.getCurrentCalque().setSelected(false);
+					CalquesManager.setCurrentCalque(null);
 					panelInfo.deselectAllCalque();
 				}
 			}
-				
+				*/
 			
 		}
 		
@@ -704,9 +705,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 
 
 	@Override
-	public void updateCalqueMVC(List<Calque> list) {
+	public void updateCalqueMVC(List<Calque> list)
+	{
 		// TODO Auto-generated method stub
-		
+		this.repaintCalques();
 	}
 
 

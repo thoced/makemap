@@ -14,7 +14,7 @@ public class PointObstacle
 	public PointObstacle(Vector2f p)
 	{
 		// creation de la hitbox point
-		hitBoxPoint = new FloatRect(p.x-4,p.y-4,8,8);
+		hitBoxPoint = new FloatRect(p.x-8,p.y-8,16,16);
 		// on place le point
 		point = p;
 	}
@@ -32,7 +32,7 @@ public class PointObstacle
 	public void setPoint(Vector2f p)
 {
 		this.point = p;
-		hitBoxPoint = new FloatRect(p.x-4,p.y-4,8,8);
+		hitBoxPoint = new FloatRect(p.x-8,p.y-8,16,16);
 	}
 
 	/**

@@ -18,7 +18,7 @@ import org.jsfml.system.Vector2i;
 
 import CorePanelInfo.panelInfo;
 
-public class Calque implements java.lang.Comparable
+public class Calque implements java.lang.Comparable,Cloneable
 {
 	// fichier de la texture corresondante
 	private Texture fileTexture;
@@ -48,8 +48,11 @@ public class Calque implements java.lang.Comparable
 	private int layer = 2; // middleground	
 	
 	
-	
-	
+	public void rename(String name)
+	{
+		this.virtualName = name;
+	}
+
 	/**
 	 * @return the layer
 	 */
@@ -256,5 +259,38 @@ public class Calque implements java.lang.Comparable
 		else return 1;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException 
+	{
+		// TODO Auto-generated method stub
+		Calque clone = null;
+		
+		try 
+		{
+			clone = new Calque((Texture)this.getSprite().getTexture(), this.nameFileCalque);
+			clone.setDanger(this.isDanger());
+			clone.setLayer(this.getLayer());
+			clone.setMasse(this.getMasse());
+			clone.setSpeed(this.getSpeed());
+			clone.setTargetX(this.getTargetX());
+			clone.setTargetY(this.getTargetY());
+			clone.setType_calque(this.getType_calque());
+			clone.setVirtualName(this.getVirtualName());
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return clone;
+		
+	}
+
+	
 	
 }

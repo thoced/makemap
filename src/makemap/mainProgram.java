@@ -110,7 +110,7 @@ public class mainProgram implements KeyListener,ActionListener{
 		frame.getContentPane().setBackground(Color.GRAY);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		pInfo = new panelInfo();
+		
 		
 		frame.addKeyListener(this);
 		
@@ -123,6 +123,8 @@ public class mainProgram implements KeyListener,ActionListener{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		// panel info
+		pInfo = new panelInfo();
 		
 		frame.getContentPane().add(pInfo, BorderLayout.EAST);
 		frame.getContentPane().add(pCenter,BorderLayout.CENTER);

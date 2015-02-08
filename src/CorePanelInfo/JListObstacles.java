@@ -10,6 +10,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListModel;
 
+import CoreCalques.CalquesManager;
 import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
@@ -38,6 +39,9 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 			model.addElement(o);
 		// on replace le default list model
 		this.setModel(model);
+		// si un currentObstacle est selectionné
+			if(ObstaclesManager.getCurrentObstacle() != null)
+				this.setSelectedValue(ObstaclesManager.getCurrentObstacle(), false);
 		
 	}
 
@@ -45,19 +49,24 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 	public void mouseClicked(MouseEvent arg0) 
 	{
 		// TODO Auto-generated method stub
-		Obstacle o = (Obstacle)this.getSelectedValue();
-		// on défini l'obstacle comme étant selected
-		o.setSelected(true);
-		// on précise au manager d'obstacle que l'obstacle est selectionné
 		
-		// on spécifie à l'ancien objet obstacle selectionné, qu'il ne l'est plus
-		if(ObstaclesManager.getCurrentObstacle() != null)
-			ObstaclesManager.getCurrentObstacle().setSelected(false);
-		// on spécifie le nouvelle obstacle selectionné
-		ObstaclesManager.setCurrentObstacle(o);
+		if(arg0.getButton() == MouseEvent.BUTTON1)
+		{
+		
+			Obstacle o = (Obstacle)this.getSelectedValue();
+			// on défini l'obstacle comme étant selected
+			o.setSelected(true);
+			// on précise au manager d'obstacle que l'obstacle est selectionné
+			
+			// on spécifie à l'ancien objet obstacle selectionné, qu'il ne l'est plus
+			if(ObstaclesManager.getCurrentObstacle() != null)
+				ObstaclesManager.getCurrentObstacle().setSelected(false);
+			// on spécifie le nouvelle obstacle selectionné
+			ObstaclesManager.setCurrentObstacle(o);
+		}
 		
 		// on rafraichit
-		panelCenter.repaintCalques();
+		//panelCenter.repaintCalques();
 	}
 
 	@Override

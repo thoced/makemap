@@ -1,31 +1,30 @@
 package CoreCalques;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTarget;
 
+import CoreObstacles.Obstacle;
+
 public class CalquesManager implements Drawable
 {
 	// list des calques
-	private List<Calque> listCalques;
+	private static List<Calque> listCalques = new ArrayList();
 	// list des referecens mvc
-	private List<ICalqueMVC> listMVC;
+	private static List<ICalqueMVC> listMVC = new ArrayList();
 	
 	// currentCalque
-	private Calque currentCalque;
+	private static Calque currentCalque;
 	
 	// parent
 	private static CalquesManager parent;
 	
 	public CalquesManager()
 	{
-		//instanc de la liste
-		listCalques = new ArrayList();
-		// instance de la liste MVC
-		listMVC = new ArrayList();
 		// parent
 		parent = this;
 	}
@@ -35,6 +34,7 @@ public class CalquesManager implements Drawable
 		// ajout du calque dans la liste
 		parent.listCalques.add(nc);
 		// refresh mvc
+		parent.refreshMVC();
 		
 	}
 	
@@ -54,15 +54,18 @@ public class CalquesManager implements Drawable
 	/**
 	 * @return the currentCalque
 	 */
-	public Calque getCurrentCalque() {
-		return currentCalque;
+	public static Calque getCurrentCalque() {
+		return CalquesManager.currentCalque;
 	}
 
 	/**
 	 * @param currentCalque the currentCalque to set
 	 */
-	public void setCurrentCalque(Calque currentCalque) {
-		this.currentCalque = currentCalque;
+	public static void setCurrentCalque(Calque currentCalque)
+	{
+		CalquesManager.currentCalque = currentCalque;
+		// refresh mvc
+		parent.refreshMVC();
 	}
 
 	@Override
@@ -77,15 +80,38 @@ public class CalquesManager implements Drawable
 	/**
 	 * @return the listCalques
 	 */
-	public List<Calque> getListCalques() {
-		return listCalques;
+	public static List<Calque> getListCalques() {
+		return CalquesManager.listCalques;
 	}
 
-	/**
+	/**selected
 	 * @param listCalques the listCalques to set
 	 */
-	public void setListCalques(List<Calque> listCalques) {
-		this.listCalques = listCalques;
+	public static void setListCalques(List<Calque> listCalques) {
+		CalquesManager.listCalques = listCalques;
+	}
+	
+	public static void deleteCalque(Calque obj)
+	{
+		// si l'obstacle est celui qui est selectionné, 
+		if(parent.getCurrentCalque() == obj)
+		{
+			obj.setSelected(false);
+			parent.setCurrentCalque(null);
+		}
+		// suppression de l'obstacle
+		parent.listCalques.remove(obj);
+		// appel MVC
+		parent.refreshMVC();
+	}
+	
+	
+	public static void sortCalques()
+	{
+		// tri
+		Collections.sort(CalquesManager.getListCalques());
+		// refresh mvc
+		parent.refreshMVC();
 	}
 	
 	

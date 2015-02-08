@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import CoreCalques.Calque;
+import CoreCalques.CalquesManager;
 import CorePanelCenter.panelCenter;
 
 import com.jgoodies.forms.layout.FormLayout;
@@ -69,11 +70,10 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(32dlu;default)"),
-				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("left:max(32dlu;default)"),
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
+				ColumnSpec.decode("left:max(70dlu;default)"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
@@ -106,51 +106,51 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 		cTypeCalque = new JComboBox();
 		
 		cTypeCalque.setModel(new DefaultComboBoxModel(new String[] {"statique", "physique", "dynamique"}));
-		add(cTypeCalque, "6, 4, fill, default");
+		add(cTypeCalque, "5, 4, fill, default");
+		
+		lblNewLabel = new JLabel("Layer");
+		add(lblNewLabel, "2, 6");
+		
+		cLayer = new JComboBox();
+		cLayer.setModel(new DefaultComboBoxModel(new String[] {"background_level02", "background_level01", "middleground", "foreground_level01", "foreground_level02"}));
+		add(cLayer, "5, 6, fill, default");
 		
 		lblNewLabel_7 = new JLabel("masse");
-		add(lblNewLabel_7, "2, 6");
+		add(lblNewLabel_7, "2, 8");
 		
 		tMasse = new JTextField();
 		
 		
-		add(tMasse, "6, 6, fill, default");
+		add(tMasse, "5, 8, fill, default");
 		tMasse.setColumns(10);
 		
 		lblNewLabel_8 = new JLabel("danger");
-		add(lblNewLabel_8, "2, 8");
+		add(lblNewLabel_8, "2, 10");
 		
 		cDanger = new JComboBox();
 		cDanger.setModel(new DefaultComboBoxModel(new String[] {"false", "true"}));
-		add(cDanger, "6, 8, fill, default");
+		add(cDanger, "5, 10, fill, default");
 		
 		lblNewLabel_9 = new JLabel("speed");
-		add(lblNewLabel_9, "2, 10");
+		add(lblNewLabel_9, "2, 12");
 		
 		tSpeed = new JTextField();
-		add(tSpeed, "6, 10, fill, default");
+		add(tSpeed, "5, 12, fill, default");
 		tSpeed.setColumns(10);
 		
 		lblNewLabel_10 = new JLabel("target X");
-		add(lblNewLabel_10, "2, 12");
+		add(lblNewLabel_10, "2, 14");
 		
 		tTargetX = new JTextField();
-		add(tTargetX, "6, 12, fill, default");
+		add(tTargetX, "5, 14, fill, default");
 		tTargetX.setColumns(10);
 		
 		lblNewLabel_11 = new JLabel("target Y");
-		add(lblNewLabel_11, "2, 14");
+		add(lblNewLabel_11, "2, 16");
 		
 		tTargetY = new JTextField();
-		add(tTargetY, "6, 14, fill, default");
+		add(tTargetY, "5, 16, fill, default");
 		tTargetY.setColumns(10);
-		
-		lblNewLabel = new JLabel("Layer");
-		add(lblNewLabel, "2, 16");
-		
-		cLayer = new JComboBox();
-		cLayer.setModel(new DefaultComboBoxModel(new String[] {"background_level02", "background_level01", "middleground", "foreground_level01", "foreground_level02"}));
-		add(cLayer, "6, 16, fill, default");
 		
 		
 		// listener
@@ -209,7 +209,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 			currentCalque.setLayer(this.cLayer.getSelectedIndex());
 			
 			// il faut retrier la liste
-			panelCenter.sortCalques();
+			CalquesManager.sortCalques();
 			
 		}
 	}

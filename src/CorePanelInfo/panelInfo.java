@@ -256,11 +256,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 					{
 						Calque calque = new Calque(text,data.getFile());
 						// insert du calque
-						panelCenter.insertCalque(calque);
-						//insert du nom du calque dans la listeCalque
-						DefaultListModel model = (DefaultListModel) listCalques.getModel();
-						model.addElement(calque);
-						listCalques.setModel(model);
+						CalquesManager.insertNewCalque(calque);
 					}
 					else
 					{
@@ -303,25 +299,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 			{
 				
 				
-				// on veut renomer le calque
-				   PopupFactory factory = PopupFactory.getSharedInstance();
-				   rename = new JTextField();
-				   rename.setColumns(16);
-				   rename.setActionCommand("POPUPTEXTFIELD");
-				   rename.addKeyListener(this);
-				   // on passe le nom du calque selectionné
-				   if(currentCalqueSelected != null)
-				   {
-					   rename.setText(currentCalqueSelected.toString()); rename.setColumns(16);
-					   rename.setEnabled(true);
-					   rename.setEditable(true);
-					   pop = factory.getPopup(this, rename, this.getX(),arg0.getYOnScreen());
-					   pop.show();
-					   // désactivé la possibilité de changer de calque
-					   listCalques.setEnabled(false);
-					   
-					   
-				   }
+				
 				
 				  
 				   

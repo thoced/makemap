@@ -104,6 +104,10 @@ public class ObstaclesManager implements Drawable
 	 */
 	public static void setCurrentObstacle(Obstacle currentObstacle) {
 		ObstaclesManager.currentObstacle = currentObstacle;
+		
+		// refresh
+		
+		parent.refreshMVC();
 	}
 
 	
