@@ -37,6 +37,7 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 
 import CoreCalques.Calque;
+import CoreCalques.CalquesManager;
 import CoreObstacles.ObstaclesManager;
 import CorePanelCenter.panelCenter;
 import CorePanelViewer.panelViewer;
@@ -53,7 +54,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 {
 	
 	// JList des calques
-	private JList listCalques;
+	private JListCalques listCalques;
 	// JList des obstacles
 	private JListObstacles listObstacles;
 	// panel des aperçus
@@ -90,9 +91,11 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		tabbedPaneUp = new JTabbedPane(JTabbedPane.TOP);
 		
 		// ajout du tab listcalques
-		listCalques = new JList();
+		listCalques = new JListCalques();
 		JScrollPane scrollPaneCalques = new JScrollPane(listCalques);
 		tabbedPaneUp.add("Calques", scrollPaneCalques);
+		// attachement mvc de listCalques
+		CalquesManager.attachMVC(listCalques);
 	
 		// ajout du tab listObstacles
 		listObstacles = new JListObstacles();
