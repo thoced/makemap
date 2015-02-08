@@ -24,6 +24,49 @@ public class Obstacle implements Drawable
 	// VertexArray
 	private VertexArray vectors;
 	
+	// name de l'obstacle
+	private String name;
+	
+	// is Obstacle Selected
+	private boolean isSelected = false;
+	
+	
+	
+	/**
+	 * @return the isSelected
+	 */
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	/**
+	 * @param isSelected the isSelected to set
+	 */
+	public void setSelected(boolean isSelected)
+	{
+		this.isSelected = isSelected;
+		
+		if(this.isSelected)
+		{
+			// l'obstacle est selectionné, on le rend blanc
+			this.releaseVectors();
+		}
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Obstacle()
 	{
 		// Instance de la liste des points
@@ -106,6 +149,11 @@ public class Obstacle implements Drawable
 			// ajout dans le vectors
 			vectors.add(v);
 		}
+	}
+	
+	public String toString()
+	{
+		return this.getName();
 	}
 	
 	
