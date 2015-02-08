@@ -15,17 +15,18 @@ import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
 import CorePanelCenter.panelCenter;
 
-public class JListObstacles extends JList implements IObstacleMVC, MouseListener
+public class JListObstacles extends JList implements IObstacleMVC, MouseListener, KeyListener
 {
 	public  JListObstacles()
 	{
 		super();
-		
+		// listener
 		this.addMouseListener(this);
+		this.addKeyListener(this);
 	}
 	
 	@Override
-	public void updateMVC(List<Obstacle> list) 
+	public void updateObstacleMVC(List<Obstacle> list) 
 	{
 		// TODO Auto-generated method stub
 		DefaultListModel model = new DefaultListModel();
@@ -48,6 +49,11 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 		// on défini l'obstacle comme étant selected
 		o.setSelected(true);
 		// on précise au manager d'obstacle que l'obstacle est selectionné
+		
+		// on spécifie à l'ancien objet obstacle selectionné, qu'il ne l'est plus
+		if(ObstaclesManager.getCurrentObstacle() != null)
+			ObstaclesManager.getCurrentObstacle().setSelected(false);
+		// on spécifie le nouvelle obstacle selectionné
 		ObstaclesManager.setCurrentObstacle(o);
 		
 		// on rafraichit
@@ -74,6 +80,31 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		// en appuyant sur la touche delete, on supprime 
+		if(e.getKeyCode() == KeyEvent.VK_DELETE)
+		{
+			// on supprime l'objet obstacle selectionné
+			if(this.getSelectedValue() != null)
+				ObstaclesManager.deleteObstacle((Obstacle)this.getSelectedValue());
+			
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

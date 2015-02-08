@@ -62,12 +62,26 @@ public class ObstaclesManager implements Drawable
 		return o;
 	}
 	
+	public static void deleteObstacle(Obstacle obj)
+	{
+		// si l'obstacle est celui qui est selectionné, 
+		if(parent.getCurrentObstacle() == obj)
+		{
+			obj.setSelected(false);
+			parent.setCurrentObstacle(null);
+		}
+		// suppression de l'obstacle
+		parent.listObstacles.remove(obj);
+		// appel MVC
+		parent.refreshMVC();
+	}
+	
 	public void refreshMVC()
 	{
 		// rappel des mvc
 		for(IObstacleMVC o : this.listMVC)
 		{
-			o.updateMVC(this.listObstacles);
+			o.updateObstacleMVC(this.listObstacles);
 		}
 			
 	}
