@@ -69,15 +69,23 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 			// création du menu
 			JMenuItem duplic = new JMenuItem("Dupliquer");
 			JMenuItem rename = new JMenuItem("Renommer");
+			JMenuItem up = new JMenuItem("Remonter (Up)");
+			JMenuItem down = new JMenuItem("Descendre (Down)");
 			// listener
 			duplic.addActionListener(this);
 			rename.addActionListener(this);
+			up.addActionListener(this);
+			down.addActionListener(this);
 			// action command
 			duplic.setActionCommand("DUPLIC");
 			rename.setActionCommand("RENAME");
+			up.setActionCommand("UP");
+			down.setActionCommand("DOWN");
 			// ajout 
 			 bar.add(duplic);
 			 bar.add(rename);
+			 bar.add(up);
+			 bar.add(down);
 			 // Affichage du popupmenu
 			 bar.show(this, e.getX() , e.getY());
 			 
@@ -191,6 +199,20 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 				}
 			}
 		}
+		else if(arg0.getActionCommand() == "UP")
+		{
+			// on remonte le calque
+			if(this.getSelectedValue() != null)
+				CalquesManager.upCalque((Calque)this.getSelectedValue());
+		}
+		else if(arg0.getActionCommand() == "DOWN")
+		{
+			if(this.getSelectedValue() != null)
+				CalquesManager.downCalque((Calque)this.getSelectedValue());
+		}
+			
+		
+		
 		
 	}
 
