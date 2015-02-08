@@ -36,8 +36,8 @@ import javax.swing.event.ListSelectionEvent;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
 
+import CoreCalques.Calque;
 import CoreObstacles.ObstaclesManager;
-import CorePanelCenter.Calque;
 import CorePanelCenter.panelCenter;
 import CorePanelViewer.panelViewer;
 import CoreTexturesManager.TexturesManager;

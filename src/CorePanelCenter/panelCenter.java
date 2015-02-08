@@ -34,6 +34,7 @@ import org.jsfml.window.ContextActivationException;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
+import CoreCalques.Calque;
 import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;

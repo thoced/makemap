@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import CorePanelCenter.Calque;
+import CoreCalques.Calque;
 import CorePanelCenter.panelCenter;
 
 import com.jgoodies.forms.layout.FormLayout;
