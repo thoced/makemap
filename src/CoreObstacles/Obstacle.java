@@ -51,6 +51,11 @@ public class Obstacle implements Drawable
 			// l'obstacle est selectionné, on le rend blanc
 			this.releaseVectors();
 		}
+		else
+		{
+			// on refixe l'objet car il n'est plus selectionné
+			this.setFixObstalce();
+		}
 	}
 
 	/**
