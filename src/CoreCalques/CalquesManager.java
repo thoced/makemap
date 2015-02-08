@@ -114,7 +114,7 @@ public class CalquesManager implements Drawable
 		parent.refreshMVC();
 	}
 	
-	public static void upCalques(Calque c)
+	public static void upCalque(Calque c)
 	{
 		// remonte la priorité du calque
 		// on obtient l'indice du calque dans la liste
@@ -125,12 +125,17 @@ public class CalquesManager implements Drawable
 			
 			if(current == c)
 			{
-				// si il s'agit du même on le place plus haut
-				// on supprime la calque
-				parent.listCalques.remove(i);
 				// on l'ajoute en indice -1 si l'indice n'est pas le 0
 				if(i!=0)
+				{
+					// si il s'agit du même on le place plus haut
+					// on remonte le calque
+					parent.listCalques.remove(current);
 					parent.listCalques.add(i-1,current);
+				
+					
+				}
+				break;
 				
 			}
 				
@@ -138,6 +143,40 @@ public class CalquesManager implements Drawable
 		
 		// on appel les mvc
 		parent.refreshMVC();
+	}
+	
+	public static void downCalque(Calque c)
+	{
+		// descend la priorité du calque
+				// on obtient l'indice du calque dans la liste
+				for(int i=0;i<parent.listCalques.size();i++)
+				{
+					// on récupère le calque
+					Calque current = parent.listCalques.get(i);
+					
+					if(current == c)
+					{
+						
+						// on supprime et ajoute si ce n'est pas le dernier
+						if(i != parent.listCalques.size() - 1)
+						{
+							// si il s'agit du même on le place plus bas
+							// on supprime la calque
+							// on remonte le calque
+							parent.listCalques.remove(current);
+							parent.listCalques.add(i+1,current);
+							
+							
+						}
+						break;
+							
+						
+					}
+						
+				}
+				
+				// on appel les mvc
+				parent.refreshMVC();
 	}
 	
 	
