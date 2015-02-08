@@ -114,6 +114,32 @@ public class CalquesManager implements Drawable
 		parent.refreshMVC();
 	}
 	
+	public static void upCalques(Calque c)
+	{
+		// remonte la priorité du calque
+		// on obtient l'indice du calque dans la liste
+		for(int i=0;i<parent.listCalques.size();i++)
+		{
+			// on récupère le calque
+			Calque current = parent.listCalques.get(i);
+			
+			if(current == c)
+			{
+				// si il s'agit du même on le place plus haut
+				// on supprime la calque
+				parent.listCalques.remove(i);
+				// on l'ajoute en indice -1 si l'indice n'est pas le 0
+				if(i!=0)
+					parent.listCalques.add(i-1,current);
+				
+			}
+				
+		}
+		
+		// on appel les mvc
+		parent.refreshMVC();
+	}
+	
 	
 	
 	
