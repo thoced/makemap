@@ -121,8 +121,20 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 		// touche de delete
 		if(arg0.getKeyCode() == KeyEvent.VK_DELETE)
 		{
+			if(this.getSelectedValue() != null)
+				CalquesManager.deleteCalque((Calque)this.getSelectedValue());
+		}
+		else if(arg0.getKeyCode() == KeyEvent.VK_A)
+		{
+			// touche plus pour remonter un objet dans la liste
+			if(this.getSelectedValue() != null)
+				CalquesManager.upCalque((Calque)this.getSelectedValue());
+		}
+		else if(arg0.getKeyCode() == KeyEvent.VK_Q)
+		{
+			// touche plus pour remonter un objet dans la liste
 				if(this.getSelectedValue() != null)
-			CalquesManager.deleteCalque((Calque)this.getSelectedValue());
+					CalquesManager.downCalque((Calque)this.getSelectedValue());
 		}
 		
 	}
