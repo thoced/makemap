@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface IObstacleMVC 
 {
-	public void updateMVC(List<Obstacle> list);
+	public void updateObstacleMVC(List<Obstacle> list);
 }
