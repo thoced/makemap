@@ -51,6 +51,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JScrollBar;
 
 import java.awt.BorderLayout;
+import java.awt.event.InputEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.AdjustmentListener;
@@ -196,12 +197,6 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		// Obstacle Manager
 		obstaclesManager = new ObstaclesManager();
 		obstaclesManager.attachMVC(this);
-		
-	
-		
-		
-		
-		
 		
 	}
 	
@@ -358,33 +353,40 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
 		
-		if(this.isSnapGrid)
-		{
-			// Si on a activé le snap grid
-			
-			int x = (int) (posWorld.x / this.size) * this.size;
-			int y = (int) (posWorld.y / this.size) * this.size;
-			posWorld = new Vector2f(x,y);
-				
-		}
+		int modifier = e.getModifiers();
+		int buttonMask = (modifier & InputEvent.BUTTON1_MASK);
 		
-		if(this.isManagerObstacle)
-		{
-			// drag dans la mode obstacle
-			if(ObstaclesManager.getCurrentObstacle() != null)
+		
+			if(this.isSnapGrid)
 			{
-				ObstaclesManager.getCurrentObstacle().dragPoint(posWorld);
-				this.repaint();
+				// Si on a activé le snap grid
+				
+				int x = (int) (posWorld.x / this.size) * this.size;
+				int y = (int) (posWorld.y / this.size) * this.size;
+				posWorld = new Vector2f(x,y);
+					
 			}
-		}
-		else
-		{
-			// drag dans le mode calque
-			if(panelInfo.getCurrentCalqueSelected() != null)
-				panelInfo.getCurrentCalqueSelected().mousePosition(Vector2f.sub(posWorld, posDiff));
-		}
 		
-	
+			if(buttonMask == InputEvent.BUTTON1_MASK)
+			{
+			
+				if(this.isManagerObstacle)
+				{
+					// drag dans la mode obstacle
+					if(ObstaclesManager.getCurrentObstacle() != null)
+					{
+						ObstaclesManager.getCurrentObstacle().dragPoint(posWorld);
+						this.repaint();
+					}
+				}
+				else
+				{
+					// drag dans le mode calque
+					if(panelInfo.getCurrentCalqueSelected() != null)
+						panelInfo.getCurrentCalqueSelected().mousePosition(Vector2f.sub(posWorld, posDiff));
+				}
+		
+			}
 		
 		
 		// 
@@ -491,26 +493,19 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 						CalquesManager.getCurrentCalque().setSelected(true);
 						PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
 						this.repaintCalques();
-						
-
-						
-							
+		
 					}
 				
 				
 			}
-			/*
+			
 			if(!isOneCalqueSelected)
 			{
-				// aucun calque n'est selectionné, on deselectionne tous
+				// si aucun selectionné, on deselectionne tout
 				if(CalquesManager.getCurrentCalque() != null)
-				{
 					CalquesManager.getCurrentCalque().setSelected(false);
-					CalquesManager.setCurrentCalque(null);
-					panelInfo.deselectAllCalque();
-				}
 			}
-				*/
+					
 			
 		}
 		
@@ -536,8 +531,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		// deselection de tous les calques
 		if(e.getButton() == MouseEvent.BUTTON3)
 		{
-			if(panelInfo.getCurrentCalqueSelected() != null)
-				panelInfo.getCurrentCalqueSelected().setSelected(false);
+			
 		}
 		
 		// reaffichage
