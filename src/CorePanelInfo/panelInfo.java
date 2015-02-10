@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.TextureCreationException;
+import org.jsfml.system.Vector2f;
 
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
