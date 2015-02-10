@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -13,12 +15,16 @@ import javax.json.JsonWriter;
 import javax.json.spi.JsonProvider;
 import javax.swing.JOptionPane;
 
+import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2f;
+
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
 import CoreInfo.InfoMap;
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
 import CoreObstacles.PointObstacle;
+import CoreTexturesManager.TexturesManager;
 
 public class IOManager 
 {
@@ -29,7 +35,7 @@ public class IOManager
 	
 	// 
 	
-	public static void readMap(File file) throws FileNotFoundException
+	public static void readMap(File file) throws IOException
 	{
 		// creatin du inputstream
 		FileInputStream fis = new FileInputStream(file);
@@ -46,14 +52,85 @@ public class IOManager
 		if(objMap.containsKey("height_map"))
 			InfoMap.setHeightMap(objMap.getInt("height_map"));
 		
+		// extract des calques
+		if(objMap.containsKey("calques"))
+		{
+			extractAllCalques(objMap.getJsonArray("calques"));
+		}
+		
 		
 		
 	}
 	
-	public static void extractAllCalques(JsonObject map)
+	public static void extractAllCalques(JsonArray calques) throws IOException
 	{
+		// on boucle dans la liste des calques
+		for(int i=0;i<calques.size();i++)
+		{
+			// on récupère un calque
+			JsonObject calque = calques.getJsonObject(i);
+			String virtualName = null;
+			String path = null;
+			String typeCalque = null;
+			float x = 0,y = 0;
+			int layer = 0;
+			float speed = 0;
+			float masse = 0;
+			float targetX = 0,targetY = 0;
+			
+			// virtual name
+			if(calque.containsKey("virtual_name"))
+				virtualName = calque.getString("virtual_name");
+			// path
+			if(calque.containsKey("path"))
+				path = calque.getString("path");
+			// type de calque
+			if(calque.containsKey("type_calque"))
+				typeCalque = calque.getString("type_calque");
+			// x et y
+			if(calque.containsKey("x") && calque.containsKey("y"))
+			{
+				x = (float) calque.getJsonNumber("x").doubleValue();
+				y = (float) calque.getJsonNumber("y").doubleValue();
+			}
+			// layer
+			if(calque.containsKey("layer"))
+				layer = calque.getInt("layer");
+			// vitesse
+			if(calque.containsKey("speed"))
+				speed = (float) calque.getJsonNumber("speed").doubleValue();
+			// masse
+			if(calque.containsKey("masse"))
+				masse = (float) calque.getJsonNumber("masse").doubleValue();
+			// targetX et targetY
+			if(calque.containsKey("targetX") && calque.containsKey("targetY"))
+			{
+				targetX = (float) calque.getJsonNumber("targetX").doubleValue();
+				targetY = (float) calque.getJsonNumber("targetY").doubleValue();
+			}
+			
+			// on créer le calque
+			
+			File file = new File(path);
+			Texture text = TexturesManager.GetTextureByName(file);
+			Calque c = new Calque(text, file);
+			
+			// on initialise
+			c.setLayer(layer);
+			c.setMasse(masse);
+			c.setVirtualName(virtualName);
+			c.setSpeed(speed);
+			c.setType_calque(typeCalque);
+			c.setTargetX(targetX);
+			c.setTargetY(targetY);
+			c.getSprite().setPosition(new Vector2f(x,y));
 		
+			// ajout dans le manager calque
+			CalquesManager.insertNewCalque(c);
+		
+		}
 	}
+	
 	
 	public static void writeMap(File file) throws FileNotFoundException
 	{
