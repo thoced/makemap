@@ -492,9 +492,9 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			boolean isOneCalqueSelected = false;
 			
-			for(Calque c : CalquesManager.getListCalques())
+			for(int i=0;i<CalquesManager.getListCalques().size();i++)
 			{   
-		
+					Calque c = CalquesManager.getListCalques().get(i);
 					isOneCalqueSelected = c.selected(posWorld);
 					
 					if(isOneCalqueSelected)
@@ -503,6 +503,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 						CalquesManager.setCurrentCalque(c);
 						//CalquesManager.getCurrentCalque().setSelected(true);
 						PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
+						CalquesManager.getListCalques().set(i, c);
 						this.repaintCalques();
 		
 					}
@@ -510,12 +511,12 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			
 			}
 			
-			if(!isOneCalqueSelected)
+			/*if(!isOneCalqueSelected)
 			{
 				// si aucun selectionné, on deselectionne tout
 				if(CalquesManager.getCurrentCalque() != null)
 					CalquesManager.getCurrentCalque().setSelected(false);
-			}
+			}*/
 					
 			
 		}
