@@ -499,14 +499,15 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					
 					if(isOneCalqueSelected)
 					{
+						c.setSelected(true);
 						CalquesManager.setCurrentCalque(c);
-						CalquesManager.getCurrentCalque().setSelected(true);
+						//CalquesManager.getCurrentCalque().setSelected(true);
 						PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
 						this.repaintCalques();
 		
 					}
 				
-				
+			
 			}
 			
 			if(!isOneCalqueSelected)
