@@ -113,6 +113,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	private Font font;
 	// Text
 	private Text text;
+	// vecteur différence pour la positin start du glissview
+	private Vector2f diffGlissView;
 	
 	// private 
 	private static panelCenter parent;
@@ -354,8 +356,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
 		
 		int modifier = e.getModifiers();
-		int buttonMask = (modifier & InputEvent.BUTTON1_MASK);
-		
+		int button1Mask = (modifier & InputEvent.BUTTON1_MASK);
+		int button3Mask = (modifier & InputEvent.BUTTON3_MASK);
 		
 			if(this.isSnapGrid)
 			{
@@ -367,7 +369,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					
 			}
 		
-			if(buttonMask == InputEvent.BUTTON1_MASK)
+			if(button1Mask == InputEvent.BUTTON1_MASK)
 			{
 			
 				if(this.isManagerObstacle)
@@ -376,16 +378,24 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					if(ObstaclesManager.getCurrentObstacle() != null)
 					{
 						ObstaclesManager.getCurrentObstacle().dragPoint(posWorld);
-						this.repaint();
+						//this.repaint();
 					}
 				}
 				else
 				{
 					// drag dans le mode calque
-					if(panelInfo.getCurrentCalqueSelected() != null)
-						panelInfo.getCurrentCalqueSelected().mousePosition(Vector2f.sub(posWorld, posDiff));
+					if(CalquesManager.getCurrentCalque() != null)
+						CalquesManager.getCurrentCalque().mousePosition(Vector2f.sub(posWorld, posDiff));
 				}
 		
+			}
+			
+			// glissview
+			if(button3Mask == InputEvent.BUTTON3_MASK)
+			{
+				
+				Vector2f diff = Vector2f.sub(posWorld, diffGlissView);
+				v.setCenter(Vector2f.neg(diff));
 			}
 		
 		
@@ -514,10 +524,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			posStart = posWorld;
 			// on calque le vecteur diff entre le posStart et la position du calque
-			if(panelInfo.getCurrentCalqueSelected() != null)
+			if(CalquesManager.getCurrentCalque() != null)
 			{
 				// valeur a soustraire sur le calque lors du déplacement
-				posDiff = Vector2f.sub(posStart, panelInfo.getCurrentCalqueSelected().getSprite().getPosition());
+				posDiff = Vector2f.sub(posStart, CalquesManager.getCurrentCalque().getSprite().getPosition());
 				// valeur modifié pour calquer sur la grille
 				if(this.isSnapGrid)
 				{
@@ -528,10 +538,11 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			}
 		}
 		
-		// deselection de tous les calques
+		// glissView
 		if(e.getButton() == MouseEvent.BUTTON3)
 		{
-			
+			// initialisation du diffglissview
+			diffGlissView = Vector2f.sub(v.getCenter(),posWorld);
 		}
 		
 		// reaffichage
