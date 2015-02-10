@@ -53,6 +53,44 @@ public class Calque implements java.lang.Comparable,Cloneable
 		this.virtualName = name;
 	}
 
+	
+	
+	/**
+	 * @return the fileTexture
+	 */
+	public Texture getFileTexture() {
+		return fileTexture;
+	}
+
+
+
+	/**
+	 * @param fileTexture the fileTexture to set
+	 */
+	public void setFileTexture(Texture fileTexture) {
+		this.fileTexture = fileTexture;
+	}
+
+
+
+	/**
+	 * @return the nameFileCalque
+	 */
+	public File getNameFileCalque() {
+		return nameFileCalque;
+	}
+
+
+
+	/**
+	 * @param nameFileCalque the nameFileCalque to set
+	 */
+	public void setNameFileCalque(File nameFileCalque) {
+		this.nameFileCalque = nameFileCalque;
+	}
+
+
+
 	/**
 	 * @return the layer
 	 */
