@@ -3,6 +3,7 @@ package makemap;
 import java.awt.Color;
 import java.awt.Dialog;
 
+import CoreIO.IOManager;
 import CorePanelCenter.panelCenter;
 import CorePanelInfo.panelInfo;
 import CorePanelViewer.panelViewer;
@@ -31,8 +32,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JToggleButton;
@@ -71,6 +74,8 @@ public class mainProgram implements KeyListener,ActionListener{
 	private JCheckBox cGridView;
 	private JCheckBox cSnapGrid;
 	private JToggleButton buttonObstacle;
+	private JMenuItem mSave;
+	private JMenuItem mImport;
 
 	/**
 	 * Launch the application.
@@ -196,6 +201,18 @@ public class mainProgram implements KeyListener,ActionListener{
 				frame.dispose();
 			}
 		});
+		
+		mSave = new JMenuItem("Sauver");
+		mSave.setActionCommand("SAVE");
+		mSave.addActionListener(this);
+		
+		mImport = new JMenuItem("Charger");
+		mImport.setActionCommand("READ");
+		mImport.addActionListener(this);
+		menuFichier.add(mImport);
+		menuFichier.add(mSave);
+		
+		
 		menuFichier.add(mFermer);
 		
 		
@@ -228,6 +245,44 @@ public class mainProgram implements KeyListener,ActionListener{
 		if(arg0.getActionCommand() == "BUTTON_OBSTACLE")
 		{
 			pCenter.setObstacleManager(buttonObstacle.isSelected());
+		}
+		
+		if(arg0.getActionCommand() == "SAVE")
+		{
+			// ouverture de la boite de dialogue d'enregistrement
+			JFileChooser chooser = new JFileChooser();
+			int result = chooser.showSaveDialog(frame);
+			if(result == JFileChooser.APPROVE_OPTION)
+			{
+				try 
+				{
+					// enregistrement
+					IOManager.writeMap(chooser.getSelectedFile());
+					
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
+		if(arg0.getActionCommand() == "READ")
+		{
+			// ouverture de la boite d'ouverture de dialogue
+			JFileChooser chooser = new JFileChooser();
+			int result = chooser.showOpenDialog(frame);
+			if(result == JFileChooser.APPROVE_OPTION)
+			{
+				try 
+				{
+					IOManager.readMap(chooser.getSelectedFile());
+					
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		

@@ -2,41 +2,39 @@ package CoreInfo;
 
 public class InfoMap 
 {
-	private int widthMap;
+	private static int widthMap;
 	
-	private int heightMap;
+	private static int heightMap;
+
 
 	/**
 	 * @return the widthMap
 	 */
-	public int getWidthMap() {
+	public static int getWidthMap() {
 		return widthMap;
 	}
 
 	/**
 	 * @param widthMap the widthMap to set
 	 */
-	public void setWidthMap(int widthMap) {
-		this.widthMap = widthMap;
+	public static void setWidthMap(int widthMap) {
+		InfoMap.widthMap = widthMap;
 	}
 
 	/**
 	 * @return the heightMap
 	 */
-	public int getHeightMap() {
+	public static int getHeightMap() {
 		return heightMap;
 	}
 
 	/**
 	 * @param heightMap the heightMap to set
 	 */
-	public void setHeightMap(int heightMap) {
-		this.heightMap = heightMap;
+	public static void setHeightMap(int heightMap) {
+		InfoMap.heightMap = heightMap;
 	}
 
-	/**
-	 * @return the width_map
-	 */
 	
 	
 	

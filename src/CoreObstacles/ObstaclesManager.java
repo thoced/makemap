@@ -9,7 +9,7 @@ import org.jsfml.graphics.RenderTarget;
 
 public class ObstaclesManager implements Drawable
 {
-	private List<Obstacle> listObstacles;
+	private static List<Obstacle> listObstacles;
 	
 	// list du MVC attach
 	private static List<IObstacleMVC> listMVC = new ArrayList();
@@ -110,6 +110,21 @@ public class ObstaclesManager implements Drawable
 		parent.refreshMVC();
 	}
 
+	/**
+	 * @return the listObstacles
+	 */
+	public static List<Obstacle> getListObstacles() {
+		return listObstacles;
+	}
+
+	/**
+	 * @param listObstacles the listObstacles to set
+	 */
+	public static void setListObstacles(List<Obstacle> listObstacles) {
+		listObstacles = listObstacles;
+	}
+
+	
 	
 	
 	

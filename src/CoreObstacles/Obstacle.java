@@ -16,7 +16,7 @@ import org.jsfml.system.Vector2f;
 public class Obstacle implements Drawable
 {
 
-	private List<PointObstacle> listPoints;
+	private static List<PointObstacle> listPoints;
 	
 	// point selected
 	private PointObstacle currentPointSelected = null;
@@ -32,6 +32,20 @@ public class Obstacle implements Drawable
 	
 	
 	
+	/**
+	 * @return the listPoints
+	 */
+	public static List<PointObstacle> getListPoints() {
+		return listPoints;
+	}
+
+	/**
+	 * @param listPoints the listPoints to set
+	 */
+	public static void setListPoints(List<PointObstacle> listPoints) {
+		Obstacle.listPoints = listPoints;
+	}
+
 	/**
 	 * @return the isSelected
 	 */
