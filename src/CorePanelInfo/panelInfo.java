@@ -280,7 +280,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		if(arg0.getSource() == listCalques)
 		{
 			// gestion des évenement sur la liste des calques
-			if(arg0.getButton() == MouseEvent.BUTTON1)
+			/*if(arg0.getButton() == MouseEvent.BUTTON1)
 			{
 				// si il y a déja un calque selectionné, on le déselectionne
 				if(currentCalqueSelected != null)
@@ -306,7 +306,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 				  
 				   
 				  
-			}
+			}*/
 		}
 	}
 	
