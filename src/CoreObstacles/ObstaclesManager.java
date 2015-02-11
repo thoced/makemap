@@ -38,7 +38,7 @@ public class ObstaclesManager implements Drawable
 	public void draw(RenderTarget render, RenderStates state)
 	{
 		// TODO Auto-generated method stub
-		for(Obstacle o : listObstacles)
+		for(Obstacle o : this.listObstacles)
 		{
 			render.draw(o,state);
 		}
@@ -48,13 +48,13 @@ public class ObstaclesManager implements Drawable
 	{
 		// création d'un nouvelle objet obstacle
 		Obstacle o = new Obstacle();
+		// ajout de l'obstacle dans la liste des obstacles
+		parent.listObstacles.add(o);
 		// on specifie le currentObstacle
-		parent.currentObstacle = o;
+		parent.setCurrentObstacle(o);
 		// créatin du nom de l'obstacle
 		o.setName("obstacle " + String.valueOf(parent.nameCpt));
 		parent.nameCpt++;
-		// ajout de l'obstacle dans la liste des obstacles
-		parent.listObstacles.add(o);
 		// update des mvc
 		parent.refreshMVC();
 		// retour de l'obstalce
@@ -81,7 +81,7 @@ public class ObstaclesManager implements Drawable
 		// rappel des mvc
 		for(IObstacleMVC o : this.listMVC)
 		{
-			o.updateObstacleMVC(this.listObstacles);
+			o.updateObstacleMVC(parent.listObstacles);
 		}
 			
 	}
@@ -96,14 +96,14 @@ public class ObstaclesManager implements Drawable
 	 * @return the currentObstacle
 	 */
 	public static Obstacle getCurrentObstacle() {
-		return currentObstacle;
+		return parent.currentObstacle;
 	}
 
 	/**
 	 * @param currentObstacle the currentObstacle to set
 	 */
 	public static void setCurrentObstacle(Obstacle currentObstacle) {
-		ObstaclesManager.currentObstacle = currentObstacle;
+		parent.currentObstacle = currentObstacle;
 		
 		// refresh
 		
@@ -114,14 +114,14 @@ public class ObstaclesManager implements Drawable
 	 * @return the listObstacles
 	 */
 	public static List<Obstacle> getListObstacles() {
-		return listObstacles;
+		return parent.listObstacles;
 	}
 
 	/**
 	 * @param listObstacles the listObstacles to set
 	 */
 	public static void setListObstacles(List<Obstacle> listObstacles) {
-		listObstacles = listObstacles;
+		parent.listObstacles = listObstacles;
 	}
 
 	

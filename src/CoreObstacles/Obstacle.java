@@ -30,20 +30,22 @@ public class Obstacle implements Drawable
 	// is Obstacle Selected
 	private boolean isSelected = false;
 	
+	private static Obstacle parent;
+	
 	
 	
 	/**
 	 * @return the listPoints
 	 */
 	public static List<PointObstacle> getListPoints() {
-		return listPoints;
+		return parent.listPoints;
 	}
 
 	/**
 	 * @param listPoints the listPoints to set
 	 */
 	public static void setListPoints(List<PointObstacle> listPoints) {
-		Obstacle.listPoints = listPoints;
+		parent.listPoints = listPoints;
 	}
 
 	/**
@@ -92,6 +94,8 @@ public class Obstacle implements Drawable
 		listPoints = new ArrayList<PointObstacle>();
 		// Instance du vectors
 		vectors = new VertexArray(PrimitiveType.LINE_STRIP);
+		
+		parent = this;
 	}
 	
 	@Override

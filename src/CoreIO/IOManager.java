@@ -59,6 +59,12 @@ public class IOManager
 		{
 			extractAllCalques(objMap.getJsonArray("calques"));
 		}
+		// extract des obstacles
+		if(objMap.containsKey("obstacles"))
+		{
+			extractAllObstacles(objMap.getJsonArray("obstacles"));
+		}
+		
 		
 		
 		
@@ -117,8 +123,14 @@ public class IOManager
 			
 			// on créer le calque
 			// on crée d'abord un un chemin total sur base du répertoire de texture
-			String tt = DataManager.directoryTextures.getAbsolutePath() + "/" + path;
-			JOptionPane.showMessageDialog(null, tt);
+			String tt = null;
+			String os = System.getProperty("os.name");
+			
+			if(os.equals("Linux"))
+				tt = DataManager.directoryTextures.getAbsolutePath() + "/" + path;
+			else
+				tt = DataManager.directoryTextures.getAbsolutePath() + "\\" + path;
+				
 			File file = new File(tt);
 			Texture text = TexturesManager.GetTextureByName(file);
 			Calque c = new Calque(text, file);
@@ -138,6 +150,49 @@ public class IOManager
 			CalquesManager.insertNewCalque(c);
 		
 		}
+	}
+	
+	public static void extractAllObstacles(JsonArray obstacles)
+	{
+		// on boucle dans la liste des obstacles
+	
+		for(int i=0;i<obstacles.size();i++)
+		{
+			// oh récupère un obsacle
+			JsonObject obstacle = obstacles.getJsonObject(i);
+			
+			String name = obstacle.getString("name_obstacle");
+			
+			// on récupère l'array des obstacles
+			JsonArray points = obstacle.getJsonArray("list_points");
+			
+			// on créer un objet Obstacle
+			ObstaclesManager.setCurrentObstacle(ObstaclesManager.createNewObstacle());
+			
+			// on boucle dans la liste des points
+			for(int j=0;j<points.size();j++)
+			{
+				JsonObject point = points.getJsonObject(j);
+				
+				// on récupère les x,y
+				float x = (float) point.getJsonNumber("x").doubleValue();
+				float y = (float) point.getJsonNumber("y").doubleValue();
+				
+				// ajout du point
+				ObstaclesManager.getCurrentObstacle().insertPoint(new Vector2f(x,y));
+				
+			}
+			
+			// ajout du nom
+			ObstaclesManager.getCurrentObstacle().setName(name);
+			// fix obstacle
+			ObstaclesManager.getCurrentObstacle().setFixObstalce();
+			// ajout dans le manager
+			ObstaclesManager.setCurrentObstacle(null);
+			
+		}
+		
+		
 	}
 	
 	

@@ -54,15 +54,14 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 		{
 		
 			Obstacle o = (Obstacle)this.getSelectedValue();
-			// on défini l'obstacle comme étant selected
-			o.setSelected(true);
 			// on précise au manager d'obstacle que l'obstacle est selectionné
-			
 			// on spécifie à l'ancien objet obstacle selectionné, qu'il ne l'est plus
 			if(ObstaclesManager.getCurrentObstacle() != null)
 				ObstaclesManager.getCurrentObstacle().setSelected(false);
+			
 			// on spécifie le nouvelle obstacle selectionné
 			ObstaclesManager.setCurrentObstacle(o);
+			ObstaclesManager.getCurrentObstacle().setSelected(true);
 		}
 		
 		// on rafraichit

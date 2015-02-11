@@ -8,6 +8,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Hashtable;
 
+import javax.swing.JOptionPane;
+
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTexture;
 import org.jsfml.graphics.Texture;
@@ -50,6 +52,9 @@ public class TexturesManager
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
+				JOptionPane.showMessageDialog(null, e.getMessage());
+				
 				return null;
 			}
 		}
