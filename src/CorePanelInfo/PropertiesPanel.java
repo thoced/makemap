@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
+import CoreCalques.ICalqueMVC;
 import CorePanelCenter.panelCenter;
 
 import com.jgoodies.forms.layout.FormLayout;
@@ -32,12 +33,13 @@ import org.jsfml.system.Vector2f;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Collections;
+import java.util.List;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public  class PropertiesPanel extends JPanel implements FocusListener
+public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 {
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
@@ -58,7 +60,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 	private static PropertiesPanel parent;
 	
 	// calque
-	private static Calque currentCalque;
+	private static Calque backCalqueSelected;
 	private JLabel lblNewLabel;
 	private JComboBox cLayer;
 	
@@ -160,6 +162,9 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 			c.addFocusListener(this);	
 		}
 		
+		// attachement au CalquesManager
+		CalquesManager.attachMVC(this);
+		
 	}
 	
 	
@@ -170,20 +175,21 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 		// on sauvegarde d'abord ce qui a déja été modifié sur le currentCalque
 		parent.saveInfo();
 		
-		currentCalque = currentCalqueSelected;
+		//currentCalque = currentCalqueSelected;
 		
-		if(currentCalque!=null)
+		if(currentCalqueSelected!=null)
 		{
 			// on modifie les propriété en fonction du calque selectionné
-			parent.cTypeCalque.setSelectedItem(currentCalque.getType_calque());
-			parent.cDanger.setSelectedItem(currentCalque.isDanger() == true ? "true" : "false");
-			parent.tMasse.setText(String.valueOf(currentCalque.getMasse()));
-			parent.tSpeed.setText(String.valueOf(currentCalque.getSpeed()));
-			parent.tTargetX.setText(String.valueOf(currentCalque.getTargetX()));
-			parent.tTargetY.setText(String.valueOf(currentCalque.getTargetY()));
-			parent.cLayer.setSelectedIndex(currentCalque.getLayer());
+			parent.cTypeCalque.setSelectedItem(currentCalqueSelected.getType_calque());
+			parent.cDanger.setSelectedItem(currentCalqueSelected.isDanger() == true ? "true" : "false");
+			parent.tMasse.setText(String.valueOf(currentCalqueSelected.getMasse()));
+			parent.tSpeed.setText(String.valueOf(currentCalqueSelected.getSpeed()));
+			parent.tTargetX.setText(String.valueOf(currentCalqueSelected.getTargetX()));
+			parent.tTargetY.setText(String.valueOf(currentCalqueSelected.getTargetY()));
+			parent.cLayer.setSelectedIndex(currentCalqueSelected.getLayer());
 			
-			
+			// backCalque
+			backCalqueSelected = currentCalqueSelected;
 			
 		}
 	}
@@ -197,19 +203,19 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 
 	public void saveInfo()
 	{
-		if(currentCalque != null)
+		if(backCalqueSelected != null)
 		{
 			// on update les modidications
-			currentCalque.setType_calque((String)this.cTypeCalque.getSelectedItem());
-			currentCalque.setDanger(this.cDanger.getSelectedItem() == "true" ? true : false);
-			currentCalque.setMasse(Float.parseFloat(this.tMasse.getText()));
-			currentCalque.setSpeed(Float.parseFloat(this.tSpeed.getText()));
-			currentCalque.setTargetX(Float.parseFloat(this.tTargetX.getText()));
-			currentCalque.setTargetY(Float.parseFloat(this.tTargetY.getText()));
-			currentCalque.setLayer(this.cLayer.getSelectedIndex());
+			backCalqueSelected.setType_calque((String)this.cTypeCalque.getSelectedItem());
+			backCalqueSelected.setDanger(this.cDanger.getSelectedItem() == "true" ? true : false);
+			backCalqueSelected.setMasse(Float.parseFloat(this.tMasse.getText()));
+			backCalqueSelected.setSpeed(Float.parseFloat(this.tSpeed.getText()));
+			backCalqueSelected.setTargetX(Float.parseFloat(this.tTargetX.getText()));
+			backCalqueSelected.setTargetY(Float.parseFloat(this.tTargetY.getText()));
+			backCalqueSelected.setLayer(this.cLayer.getSelectedIndex());
 			
 			// il faut retrier la liste
-			CalquesManager.sortCalques();
+			//CalquesManager.sortCalques();
 			
 		}
 	}
@@ -218,7 +224,18 @@ public  class PropertiesPanel extends JPanel implements FocusListener
 	public void focusLost(FocusEvent arg0)
 	{
 		// TODO Auto-generated method stub
+		//this.saveInfo();
+	}
+
+
+
+	@Override
+	public void updateCalqueMVC(List<Calque> list)
+	{
+		// on enregistre le backCalqueSelected
 		this.saveInfo();
+		// on applique le nouveau calqu selectionné
+		this.setCalque(CalquesManager.getCurrentCalque());
 	}
 
 
