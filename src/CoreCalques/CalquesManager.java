@@ -64,6 +64,8 @@ public class CalquesManager implements Drawable
 	public static void setCurrentCalque(Calque currentCalque)
 	{
 		CalquesManager.currentCalque = currentCalque;
+		// on trie
+		parent.sortCalques();
 		// refresh mvc
 		parent.refreshMVC();
 	}
@@ -111,7 +113,7 @@ public class CalquesManager implements Drawable
 		// tri
 		Collections.sort(CalquesManager.getListCalques());
 		// refresh mvc
-		parent.refreshMVC();
+		//parent.refreshMVC();
 	}
 	
 	public static void upCalque(Calque c)
