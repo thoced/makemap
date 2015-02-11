@@ -15,6 +15,8 @@ import javax.json.JsonWriter;
 import javax.json.spi.JsonProvider;
 import javax.swing.JOptionPane;
 
+import makemap.DataManager;
+
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 
@@ -77,6 +79,7 @@ public class IOManager
 			float speed = 0;
 			float masse = 0;
 			float targetX = 0,targetY = 0;
+			boolean danger = false;
 			
 			// virtual name
 			if(calque.containsKey("virtual_name"))
@@ -108,10 +111,15 @@ public class IOManager
 				targetX = (float) calque.getJsonNumber("targetX").doubleValue();
 				targetY = (float) calque.getJsonNumber("targetY").doubleValue();
 			}
+			// danger
+			if(calque.containsKey("danger"))
+				danger = calque.getBoolean("danger");
 			
 			// on créer le calque
-			
-			File file = new File(path);
+			// on crée d'abord un un chemin total sur base du répertoire de texture
+			String tt = DataManager.directoryTextures.getAbsolutePath() + "/" + path;
+			JOptionPane.showMessageDialog(null, tt);
+			File file = new File(tt);
 			Texture text = TexturesManager.GetTextureByName(file);
 			Calque c = new Calque(text, file);
 			
@@ -124,6 +132,7 @@ public class IOManager
 			c.setTargetX(targetX);
 			c.setTargetY(targetY);
 			c.getSprite().setPosition(new Vector2f(x,y));
+			c.setDanger(danger);
 		
 			// ajout dans le manager calque
 			CalquesManager.insertNewCalque(c);
@@ -178,7 +187,7 @@ public class IOManager
 			// ajout du nom
 			objCalque.add("virtual_name", c.getVirtualName());
 			// ajout du path
-			objCalque.add("path", c.getNameFileCalque().getAbsolutePath());
+			objCalque.add("path", c.getNameFileCalque().getName());
 			// type de calque
 			objCalque.add("type_calque", c.getType_calque());
 			// position
@@ -193,6 +202,8 @@ public class IOManager
 			// targetX et targetY
 			objCalque.add("targetX",c.getTargetX());
 			objCalque.add("targetY", c.getTargetY());
+			// danger
+			objCalque.add("danger",c.isDanger());
 			
 			// on ajoute dans le array
 			arrayCalques.add(objCalque);

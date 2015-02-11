@@ -352,6 +352,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	{
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
+		
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
 		
@@ -395,7 +396,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			{
 				
 				Vector2f diff = Vector2f.sub(posWorld, diffGlissView);
-				v.setCenter(Vector2f.neg(diff));
+				v.setCenter(diff);
 			}
 		
 		
@@ -492,9 +493,9 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			boolean isOneCalqueSelected = false;
 			
-			for(int i=0;i<CalquesManager.getListCalques().size();i++)
+			for(Calque c : CalquesManager.getListCalques())
 			{   
-					Calque c = CalquesManager.getListCalques().get(i);
+
 					isOneCalqueSelected = c.selected(posWorld);
 					
 					if(isOneCalqueSelected)
@@ -502,8 +503,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 						c.setSelected(true);
 						CalquesManager.setCurrentCalque(c);
 						//CalquesManager.getCurrentCalque().setSelected(true);
-						PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
-						CalquesManager.getListCalques().set(i, c);
+						//PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
 						this.repaintCalques();
 		
 					}
@@ -544,7 +544,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		if(e.getButton() == MouseEvent.BUTTON3)
 		{
 			// initialisation du diffglissview
-			diffGlissView = Vector2f.sub(v.getCenter(),posWorld);
+			diffGlissView = Vector2f.sub(posWorld,v.getCenter());
 		}
 		
 		// reaffichage

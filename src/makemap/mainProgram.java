@@ -36,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JToggleButton;
@@ -269,6 +270,26 @@ public class mainProgram implements KeyListener,ActionListener{
 		
 		if(arg0.getActionCommand() == "READ")
 		{
+			// si il n'y a pas encore de repertoire texture sélectionné, on force la sélection
+			
+			if(DataManager.directoryTextures == null)
+			{
+				// ouverture du message
+				JOptionPane.showMessageDialog(frame, "Aucun répertoire de texture n'a été sélectionné, veuillez le sélectionner");
+				// ouverture de la boite de dialogue propriété
+				diaProperties dia = new diaProperties(frame,"Propriétés",true);
+				dia.setVisible(true);
+				// si le répertoire n'est toujours pas sélectionné, on ouvre pas la boite de dialogue d'ouverture de fichier
+				if(DataManager.directoryTextures == null)
+				{
+					JOptionPane.showMessageDialog(frame, "Aucun répertoire de texture sélectionné, impossible d'ouvrir de fichier");
+					return;
+				}
+				
+				pInfo.loadTextures(DataManager.directoryTextures);
+				
+			}
+			
 			// ouverture de la boite d'ouverture de dialogue
 			JFileChooser chooser = new JFileChooser();
 			int result = chooser.showOpenDialog(frame);

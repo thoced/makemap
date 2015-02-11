@@ -8,7 +8,7 @@ public class DataManager
 {
 	public static CorePanelCenter.panelCenter panelCenter;
 	
-	public static File directoryTextures;
+	public static File directoryTextures = null;
 	
 	public static int widthMap;
 	

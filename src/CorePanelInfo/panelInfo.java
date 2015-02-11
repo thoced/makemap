@@ -99,6 +99,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		// attachement mvc de listCalques
 		CalquesManager.attachMVC(listCalques);
 	
+	
 		// ajout du tab listObstacles
 		listObstacles = new JListObstacles();
 		JScrollPane scrollPaneObstacles = new JScrollPane(listObstacles);
@@ -172,7 +173,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		parent.listCalques.setSelectedValue(currentCalqueSelected, true);
 		parent.currentCalqueSelected = currentCalqueSelected;
 		parent.currentCalqueSelected.setSelected(true);
-		PropertiesPanel.setCalque(currentCalqueSelected);
+	//	PropertiesPanel.setCalque(currentCalqueSelected);
 		
 	}
 	
