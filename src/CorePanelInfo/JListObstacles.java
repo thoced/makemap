@@ -37,6 +37,8 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 		// on recrée la liste
 		for(Obstacle o : list)
 			model.addElement(o);
+		
+	
 		// on replace le default list model
 		this.setModel(model);
 		// si un currentObstacle est selectionné
