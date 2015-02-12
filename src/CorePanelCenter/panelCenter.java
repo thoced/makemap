@@ -478,8 +478,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				// il s'agit de la gestion des obstacles
 				if(ObstaclesManager.getCurrentObstacle() == null)
 				{
+					// création de l'obstacle
+					Obstacle ob = new Obstacle();
 					// il s'agit d'un nouvelle obstacle
-					ObstaclesManager.setCurrentObstacle(ObstaclesManager.createNewObstacle());
+					ObstaclesManager.insertObstacle(ob);
 					// c'est le premier clic, on va positionner le premier point
 					ObstaclesManager.getCurrentObstacle().insertPoint(posWorld);
 				}
