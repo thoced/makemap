@@ -33,6 +33,8 @@ public class CalquesManager implements Drawable
 	{
 		// ajout du calque dans la liste
 		parent.listCalques.add(nc);
+		// on tire
+		parent.sortCalques();
 		// refresh mvc
 		parent.refreshMVC();
 		
@@ -75,7 +77,7 @@ public class CalquesManager implements Drawable
 	{
 		// TODO Auto-generated method stub
 		for(Calque c : this.listCalques)
-			render.draw(c.getSprite(),state);
+			c.draw(render, state);
 		
 	}
 
