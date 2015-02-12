@@ -51,7 +51,28 @@ public class Calque implements Drawable,java.lang.Comparable,Cloneable
 	
 	private int layer = 2; // middleground	
 	
+	private boolean lightMap = false; 	
 	
+	
+	
+	/**
+	 * @return the lightMap
+	 */
+	public boolean isLightMap() {
+		return lightMap;
+	}
+
+
+
+	/**
+	 * @param lightMap the lightMap to set
+	 */
+	public void setLightMap(boolean lightMap) {
+		this.lightMap = lightMap;
+	}
+
+
+
 	public void rename(String name)
 	{
 		this.virtualName = name;
@@ -344,9 +365,14 @@ public class Calque implements Drawable,java.lang.Comparable,Cloneable
 	public void draw(RenderTarget render, RenderStates state) {
 		// TODO Auto-generated method stub
 		
-		
-		RenderStates s = new RenderStates(BlendMode.ADD);
-		render.draw(this.getSprite(),s);
+		RenderStates st;
+		if(this.isLightMap())
+		{
+			st = new RenderStates(BlendMode.ADD);
+			render.draw(this.getSprite(),st);
+		}
+		else
+			render.draw(this.getSprite());
 	}
 
 	
