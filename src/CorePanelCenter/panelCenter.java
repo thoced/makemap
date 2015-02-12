@@ -76,7 +76,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	// Shape
 	private RectangleShape shape;
 	
-	private View v;
+	private static View v;
 	private float zoom = 1f;
 	private int   levelZoom = 0;
 	private Sprite sprite;
@@ -202,8 +202,30 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		
 	}
 	
+	
 
 	
+
+
+
+
+	/**
+	 * @return the v
+	 */
+	public static View getV() {
+		return v;
+	}
+
+
+
+	/**
+	 * @param v the v to set
+	 */
+	public static void setV(View v) {
+		panelCenter.v = v;
+	}
+
+
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
