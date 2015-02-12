@@ -39,6 +39,7 @@ import java.awt.event.InputMethodEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JCheckBox;
+import javax.swing.JSlider;
 
 public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 {
@@ -66,6 +67,8 @@ public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 	private JComboBox cLayer;
 	private JLabel lblNewLabel_1;
 	private JCheckBox cLight;
+	private JLabel lblNewLabel_2;
+	private JSlider sliderAlpha;
 	
 	public PropertiesPanel()
 	{
@@ -174,6 +177,17 @@ public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 		cLight = new JCheckBox("Calque maplight");
 		add(cLight, "5, 18");
 		
+		lblNewLabel_2 = new JLabel("Alpha");
+		add(lblNewLabel_2, "2, 20");
+		
+		sliderAlpha = new JSlider();
+		sliderAlpha.setSnapToTicks(true);
+		sliderAlpha.setPaintTicks(true);
+		sliderAlpha.setMaximum(255);
+		sliderAlpha.setMinimum(0);
+		sliderAlpha.setValue(255);
+		add(sliderAlpha, "5, 20");
+		
 	}
 	
 	
@@ -197,6 +211,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 			parent.tTargetY.setText(String.valueOf(currentCalqueSelected.getTargetY()));
 			parent.cLayer.setSelectedIndex(currentCalqueSelected.getLayer());
 			parent.cLight.setSelected(currentCalqueSelected.isLightMap());
+			parent.sliderAlpha.setValue(currentCalqueSelected.getAlpha());
 			
 			// backCalque
 			backCalqueSelected = currentCalqueSelected;
@@ -224,7 +239,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 			backCalqueSelected.setTargetY(Float.parseFloat(this.tTargetY.getText()));
 			backCalqueSelected.setLayer(this.cLayer.getSelectedIndex());
 			backCalqueSelected.setLightMap(this.cLight.isSelected());
-			
+			backCalqueSelected.setAlpha(this.sliderAlpha.getValue());
 			// il faut retrier la liste
 			//CalquesManager.sortCalques();
 			

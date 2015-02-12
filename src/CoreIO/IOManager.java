@@ -86,6 +86,8 @@ public class IOManager
 			float masse = 0;
 			float targetX = 0,targetY = 0;
 			boolean danger = false;
+			boolean lightmap = false;
+			int alpha = 255;
 			
 			// virtual name
 			if(calque.containsKey("virtual_name"))
@@ -120,6 +122,13 @@ public class IOManager
 			// danger
 			if(calque.containsKey("danger"))
 				danger = calque.getBoolean("danger");
+			// lightmap
+			if(calque.containsKey("lightmap"))
+				lightmap = calque.getBoolean("lightmap");
+			// alpha
+			if(calque.containsKey("alpha"))
+				alpha = calque.getInt("alpha");
+				
 			
 			// on créer le calque
 			// on crée d'abord un un chemin total sur base du répertoire de texture
@@ -145,6 +154,8 @@ public class IOManager
 			c.setTargetY(targetY);
 			c.getSprite().setPosition(new Vector2f(x,y));
 			c.setDanger(danger);
+			c.setLightMap(lightmap);
+			c.setAlpha(alpha);
 		
 			// ajout dans le manager calque
 			CalquesManager.insertNewCalque(c);
@@ -259,6 +270,10 @@ public class IOManager
 			objCalque.add("targetY", c.getTargetY());
 			// danger
 			objCalque.add("danger",c.isDanger());
+			// lightmap
+			objCalque.add("lightmap",c.isLightMap());
+			// alpha
+			objCalque.add("alpha", c.getAlpha());
 			
 			// on ajoute dans le array
 			arrayCalques.add(objCalque);

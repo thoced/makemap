@@ -53,8 +53,28 @@ public class Calque implements Drawable,java.lang.Comparable,Cloneable
 	
 	private boolean lightMap = false; 	
 	
+	private int alpha = 255;
 	
 	
+	
+	/**
+	 * @return the alpha
+	 */
+	public int getAlpha() {
+		return alpha;
+	}
+
+
+
+	/**
+	 * @param alpha the alpha to set
+	 */
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
+	}
+
+
+
 	/**
 	 * @return the lightMap
 	 */
@@ -365,6 +385,10 @@ public class Calque implements Drawable,java.lang.Comparable,Cloneable
 	public void draw(RenderTarget render, RenderStates state) {
 		// TODO Auto-generated method stub
 		
+		// modif du transparence du sprite
+		Color color = new Color(255,255,255,this.alpha);
+		this.getSprite().setColor(color);
+		// creation du renderstate
 		RenderStates st;
 		if(this.isLightMap())
 		{

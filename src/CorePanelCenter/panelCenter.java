@@ -127,7 +127,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 		
-		this.setBackground(Color.GRAY);
+		this.setBackground(Color.WHITE);
 		// set double buffered
 		this.setDoubleBuffered(true);
 		// layout
