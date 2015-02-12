@@ -48,7 +48,7 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 		{
 			if(layer != c.getLayer())
 			{
-				model.addElement("----------");
+				model.addElement("-----------------------");
 				layer = c.getLayer();
 			}
 			model.addElement(c);

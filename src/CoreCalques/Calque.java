@@ -10,6 +10,7 @@ import java.util.Comparator;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import org.jsfml.graphics.BlendMode;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderStates;
@@ -342,7 +343,10 @@ public class Calque implements Drawable,java.lang.Comparable,Cloneable
 	@Override
 	public void draw(RenderTarget render, RenderStates state) {
 		// TODO Auto-generated method stub
-		render.draw(this.getSprite());
+		
+		
+		RenderStates s = new RenderStates(BlendMode.ADD);
+		render.draw(this.getSprite(),s);
 	}
 
 	
