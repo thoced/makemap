@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.Drawable;
+import org.jsfml.graphics.RenderStates;
+import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
@@ -18,7 +21,7 @@ import org.jsfml.system.Vector2i;
 
 import CorePanelInfo.panelInfo;
 
-public class Calque implements java.lang.Comparable,Cloneable
+public class Calque implements Drawable,java.lang.Comparable,Cloneable
 {
 	// fichier de la texture corresondante
 	private Texture fileTexture;
@@ -29,7 +32,7 @@ public class Calque implements java.lang.Comparable,Cloneable
 	// selected
 	private boolean isSelected = false;
 	// virtual name
-	private String virtualName;
+	protected String virtualName;
 	
 	// proprietés
 	
@@ -202,6 +205,11 @@ public class Calque implements java.lang.Comparable,Cloneable
 	public void setVirtualName(String virtualName) {
 		this.virtualName = virtualName;
 	}
+	
+	public Calque()
+	{
+		
+	}
 
 	public Calque(Texture texture,File nameFile) throws IOException
 	{
@@ -327,6 +335,14 @@ public class Calque implements java.lang.Comparable,Cloneable
 		
 		return clone;
 		
+	}
+
+
+
+	@Override
+	public void draw(RenderTarget render, RenderStates state) {
+		// TODO Auto-generated method stub
+		render.draw(this.getSprite());
 	}
 
 	

@@ -262,6 +262,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 						calque.getSprite().setPosition(panelCenter.getV().getCenter());
 						// insert du calque
 						CalquesManager.insertNewCalque(calque);
+					
 						
 					}
 					else
