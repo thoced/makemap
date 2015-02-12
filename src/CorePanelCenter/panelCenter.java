@@ -524,23 +524,34 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					
 					if(isOneCalqueSelected)
 					{
+						// on spécifie a l'ancien calque selectionné qu'il ne l'est plus
+						if(CalquesManager.getCurrentCalque() != null)
+							CalquesManager.getCurrentCalque().setSelected(false);
+						// on spécifie au nouveau calque selectionné qu'il l'est
 						c.setSelected(true);
+						// on spécifie au manager le nouveau calque sélectionné
 						CalquesManager.setCurrentCalque(c);
 						//CalquesManager.getCurrentCalque().setSelected(true);
 						//PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
 						this.repaintCalques();
+						
+						// break;7
+						break;
 		
 					}
 				
 			
 			}
 			
-			/*if(!isOneCalqueSelected)
+			if(!isOneCalqueSelected)
 			{
 				// si aucun selectionné, on deselectionne tout
 				if(CalquesManager.getCurrentCalque() != null)
+				{
 					CalquesManager.getCurrentCalque().setSelected(false);
-			}*/
+					CalquesManager.setCurrentCalque(null);
+				}
+			}
 					
 			
 		}
