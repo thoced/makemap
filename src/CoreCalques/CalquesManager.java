@@ -31,6 +31,13 @@ public class CalquesManager implements Drawable
 	
 	public static void insertNewCalque(Calque nc)
 	{
+		// on spécifie au calque qu'il est directment selectionné
+		nc.setSelected(true);
+		// on précise a l'ancien calque selectionné qu'il ne l'est plus
+		if(parent.getCurrentCalque() != null)
+			parent.getCurrentCalque().setSelected(false);
+		// on specifie au manager le calque selectionné
+		parent.setCurrentCalque(nc);
 		// ajout du calque dans la liste
 		parent.listCalques.add(nc);
 		// on tire
