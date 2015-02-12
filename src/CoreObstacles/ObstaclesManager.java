@@ -44,6 +44,19 @@ public class ObstaclesManager implements Drawable
 		}
 	}
 	
+	public static void insertObstacle(Obstacle o)
+	{
+		// ajojut dans la liste des obstacles
+		parent.listObstacles.add(o);
+		// on spécifie au manager l'obstacle current
+		parent.setCurrentObstacle(o);
+		// on créer le nom de l'obstacle
+		o.setName("obstacle " + String.valueOf(parent.nameCpt));
+		parent.nameCpt++;
+		// on appel les mvc
+		parent.refreshMVC();
+	}
+	
 	public static Obstacle createNewObstacle()
 	{
 		// création d'un nouvelle objet obstacle
