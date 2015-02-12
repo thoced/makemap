@@ -43,8 +43,18 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 		// clear
 		model.clear();
 		// on ajoute la liste des calques
+		int layer = 2; // middlelayer
 		for(Calque c : list)
+		{
+			if(layer != c.getLayer())
+			{
+				model.addElement("----------");
+				layer = c.getLayer();
+			}
 			model.addElement(c);
+			
+			
+		}
 		// on place le model dans le jlist
 		this.setModel(model);
 		
