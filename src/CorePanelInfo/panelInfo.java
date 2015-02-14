@@ -39,6 +39,7 @@ import org.jsfml.system.Vector2f;
 
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
+import CoreManager.Manager;
 import CoreObstacles.ObstaclesManager;
 import CorePanelCenter.panelCenter;
 import CorePanelViewer.panelViewer;
@@ -105,7 +106,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		JScrollPane scrollPaneObstacles = new JScrollPane(listObstacles);
 		tabbedPaneUp.add("Obstacles", scrollPaneObstacles);
 		// attachement mvc de listObstacles
-		ObstaclesManager.attachMVC(listObstacles);
+		Manager.getObstaclesManager().attachMVC(listObstacles);
 		
 		add(tabbedPaneUp);
 		

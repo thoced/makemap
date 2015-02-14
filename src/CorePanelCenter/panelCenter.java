@@ -37,9 +37,10 @@ import org.jsfml.window.event.Event;
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
 import CoreCalques.ICalqueMVC;
+import CoreManager.Manager;
 import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
-import CoreObstacles.ObstaclesManager;
+
 import CorePanelInfo.PropertiesPanel;
 import CorePanelInfo.panelInfo;
 import CoreTexturesManager.TexturesManager;
@@ -104,7 +105,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	// Calque manager
 	private CalquesManager calquesManager;
 	// si c'est un obstacle
-	private ObstaclesManager obstaclesManager;
+	//private Manager.getObstaclesManager() Manager.getObstaclesManager();
 	
 	
 	private  boolean isManagerObstacle = false;
@@ -197,8 +198,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		calquesManager = new CalquesManager();
 		calquesManager.attachMVC(this);
 		// Obstacle Manager
-		obstaclesManager = new ObstaclesManager();
-		obstaclesManager.attachMVC(this);
+		
+		Manager.getObstaclesManager().attachMVC(this);
 		
 	}
 	
@@ -242,7 +243,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		// dessin des calques
 		render.draw(calquesManager);
 		// dessin des obstacles
-		render.draw(obstaclesManager);
+		render.draw(Manager.getObstaclesManager());
 		
 		render.display();
 		
@@ -298,10 +299,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	public  void setObstacleManager(boolean active)
 	{
 		parent.isManagerObstacle = active;
-		if(!active && ObstaclesManager.getCurrentObstacle() != null)
+		if(!active && Manager.getObstaclesManager().getCurrentObstacle() != null)
 		{
-			ObstaclesManager.getCurrentObstacle().setFixObstalce();
-			ObstaclesManager.setCurrentObstacle(null);
+			Manager.getObstaclesManager().fixObstacle();
+			Manager.getObstaclesManager().setCurrentObstacle(null);
 			this.repaintCalques();
 		}
 	}
@@ -398,9 +399,9 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				if(this.isManagerObstacle)
 				{
 					// drag dans la mode obstacle
-					if(ObstaclesManager.getCurrentObstacle() != null)
+					if(Manager.getObstaclesManager().getCurrentObstacle() != null)
 					{
-						ObstaclesManager.getCurrentObstacle().dragPoint(posWorld);
+						Manager.getObstaclesManager().getCurrentObstacle().dragPoint(posWorld);
 						//this.repaint();
 					}
 				}
@@ -475,36 +476,37 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			if(e.getButton() == MouseEvent.BUTTON1)
 			{
+				
+				
 				// il s'agit de la gestion des obstacles
-				if(ObstaclesManager.getCurrentObstacle() == null)
+				if(Manager.getObstaclesManager().getCurrentObstacle() == null)
 				{
-					// création de l'obstacle
-					Obstacle ob = new Obstacle();
+					Obstacle oo = new Obstacle("super");
 					// il s'agit d'un nouvelle obstacle
-					ObstaclesManager.insertObstacle(ob);
+					Manager.getObstaclesManager().insertObstacle(oo);
 					// c'est le premier clic, on va positionner le premier point
-					ObstaclesManager.getCurrentObstacle().insertPoint(posWorld);
+					Manager.getObstaclesManager().getCurrentObstacle().insertPoint(posWorld);
 				}
 				else
 				{
 					// on insère le point dans un obstacle déja instancié
-					ObstaclesManager.getCurrentObstacle().insertPoint(posWorld);
+					Manager.getObstaclesManager().getCurrentObstacle().insertPoint(posWorld);
 				}
 			}
 			
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{
-				if(ObstaclesManager.getCurrentObstacle() != null)
+				if(Manager.getObstaclesManager().getCurrentObstacle() != null)
 				{
 					// on selectionne un point d'un obstacle si on est dessus
-					ObstaclesManager.getCurrentObstacle().hitPoint(posWorld);
+					Manager.getObstaclesManager().getCurrentObstacle().hitPoint(posWorld);
 				}
 			}
 			
 			if(e.getButton() == MouseEvent.BUTTON2)
 			{
 				// on utilise le clic de la molette pour fixer l'objet obstacle
-				ObstaclesManager.fixObstacle();
+				Manager.getObstaclesManager().fixObstacle();
 			}
 			
 			this.repaint();

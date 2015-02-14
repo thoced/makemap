@@ -11,9 +11,8 @@ import org.jsfml.graphics.Vertex;
 import org.jsfml.graphics.VertexArray;
 import org.jsfml.system.Vector2f;
 
-public class Obstacle implements Drawable 
+public class myTest implements Drawable
 {
-
 	private List<PointObstacle> listPoints;
 	
 	// point selected
@@ -28,7 +27,7 @@ public class Obstacle implements Drawable
 	// is Obstacle Selected
 	private boolean isSelected = false;
 	
-	public Obstacle(String name)
+	public myTest(String name)
 	{
 		// instance de la liste des points
 		listPoints = new ArrayList<PointObstacle>();
@@ -70,7 +69,7 @@ public class Obstacle implements Drawable
 
 	
 	public void setName(String name) {
-		this.name = name;
+		name = name;
 	}
 
 	
@@ -108,19 +107,6 @@ public class Obstacle implements Drawable
 		}
 	}
 	
-	public void hitPoint(Vector2f pos)
-	{
-		
-	}
-	
-	
-	public void dragPoint(Vector2f pos)
-	{
-		
-	}
-	
-
-
 	@Override
 	public void draw(RenderTarget render, RenderStates state) {
 		// TODO Auto-generated method stub
@@ -129,6 +115,6 @@ public class Obstacle implements Drawable
 					render.draw(this.vectors, state);
 		
 	}
-	
+
 	
 }

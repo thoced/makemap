@@ -23,6 +23,7 @@ import org.jsfml.system.Vector2f;
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
 import CoreInfo.InfoMap;
+import CoreManager.Manager;
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
 import CoreObstacles.PointObstacle;
@@ -178,8 +179,8 @@ public class IOManager
 			JsonArray points = obstacle.getJsonArray("list_points");
 			
 			// on créer un objet Obstacle
-			Obstacle obs = new Obstacle();
-			ObstaclesManager.insertObstacle(obs);
+			Obstacle obs = new Obstacle("super");
+			Manager.getObstaclesManager().insertObstacle(obs);
 			
 			// on boucle dans la liste des points
 			for(int j=0;j<points.size();j++)
@@ -191,14 +192,14 @@ public class IOManager
 				float y = (float) point.getJsonNumber("y").doubleValue();
 				
 				// ajout du point
-				ObstaclesManager.getCurrentObstacle().insertPoint(new Vector2f(x,y));
+				Manager.getObstaclesManager().getCurrentObstacle().insertPoint(new Vector2f(x,y));
 				
 			}
 			
 			// ajout du nom
-			ObstaclesManager.getCurrentObstacle().setName(name);
+			Manager.getObstaclesManager().getCurrentObstacle().setName(name);
 			// fix obstacle
-			ObstaclesManager.fixObstacle();
+			Manager.getObstaclesManager().fixObstacle();
 	
 		}
 		
@@ -289,7 +290,7 @@ public class IOManager
 		JsonArrayBuilder arrayObstacles = JsonProvider.provider().createArrayBuilder();
 		
 		// ajout des obstacles
-		for(Obstacle o : ObstaclesManager.getListObstacles())
+		for(Obstacle o : Manager.getObstaclesManager().getListObstacles())
 		{
 			// création d'un objet pour l'obstacle
 			JsonObjectBuilder objObstacle = JsonProvider.provider().createObjectBuilder();

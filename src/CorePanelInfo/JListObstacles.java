@@ -11,6 +11,7 @@ import javax.swing.JList;
 import javax.swing.ListModel;
 
 import CoreCalques.CalquesManager;
+import CoreManager.Manager;
 import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
 import CoreObstacles.ObstaclesManager;
@@ -54,14 +55,14 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 			// on récupère l'obstacle sélectionné
 			Obstacle obs = (Obstacle) this.getSelectedValue();
 			// on précise au manager l'obstacle sélectionné
-			ObstaclesManager.setCurrentObstacle(obs);
+			Manager.getObstaclesManager().setCurrentObstacle(obs);
 		}
 		
 		// on rafraichit
 		//panelCenter.repaintCalques();
 		// si un currentCalques est selectionné
-		if(ObstaclesManager.getCurrentObstacle() != null)
-			this.setSelectedValue(ObstaclesManager.getCurrentObstacle(), false);
+		if(Manager.getObstaclesManager().getCurrentObstacle() != null)
+			this.setSelectedValue(Manager.getObstaclesManager().getCurrentObstacle(), false);
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 		{
 			// on supprime l'objet obstacle selectionné
 			if(this.getSelectedValue() != null)
-				ObstaclesManager.deleteObstacle((Obstacle)this.getSelectedValue());
+				Manager.getObstaclesManager().deleteObstacle((Obstacle)this.getSelectedValue());
 			
 		}
 	}

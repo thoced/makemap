@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Dialog;
 
 import CoreIO.IOManager;
+import CoreManager.Manager;
+import CoreObstacles.Obstacle;
+import CoreObstacles.myTest;
 import CorePanelCenter.panelCenter;
 import CorePanelInfo.panelInfo;
 import CorePanelViewer.panelViewer;
@@ -77,6 +80,10 @@ public class mainProgram implements KeyListener,ActionListener{
 	private JToggleButton buttonObstacle;
 	private JMenuItem mSave;
 	private JMenuItem mImport;
+	
+	// Manager
+	Manager manager;
+	
 
 	/**
 	 * Launch the application.
@@ -110,7 +117,13 @@ public class mainProgram implements KeyListener,ActionListener{
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize()
+	{
+		
+		// instance du manager
+		manager = new Manager();
+			
+		
 		frame = new JFrame();
 		frame.setSize(1024, 768);
 		frame.getContentPane().setBackground(Color.GRAY);

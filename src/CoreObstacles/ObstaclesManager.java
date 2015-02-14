@@ -9,26 +9,26 @@ import org.jsfml.graphics.RenderTarget;
 
 public class ObstaclesManager implements Drawable
 {
-	private static List<Obstacle> listObstacles;
+	private  List<Obstacle> listObstacles;
 	
 	// list du MVC attach
-	private static List<IObstacleMVC> listMVC;
+	private  List<IObstacleMVC> listMVC;
 	
 	// parent
-	private static ObstaclesManager parent;
+	private  ObstaclesManager parent;
 	
 	// cpt des noms
 	private int nameCpt = 0;
 	
 	// currentObstacle selectionné
-	private static Obstacle currentObstacle = null;
+	private  Obstacle currentObstacle = null;
 	
 	
 	
 	public ObstaclesManager()
 	{
 		// instance du parent pour le static
-		parent = this;
+		
 		// instance de la liste des obstacles
 		listObstacles = new ArrayList<Obstacle>();
 		// instance de la liste des MVC
@@ -47,39 +47,39 @@ public class ObstaclesManager implements Drawable
 		}
 	}
 	
-	public static void insertObstacle(Obstacle o)
+	public  void insertObstacle(Obstacle o)
 	{
 		// on donne un nom à l'obstacle
 		o.setName("obstacle");
 		// on précise au manager l'obstacle current
 		// on insère l'obstacle dans la liste
-		parent.listObstacles.add(o);
+		listObstacles.add(o);
 		
-		parent.setCurrentObstacle(o);
+		setCurrentObstacle(o);
 		
 		// on appel la liste des mvc
-		parent.refreshMVC();
+		refreshMVC();
 	}
 	
-	public static void fixObstacle()
+	public  void fixObstacle()
 	{
 		// on fix l'obstacle en cours
-		parent.setCurrentObstacle(null);
+		setCurrentObstacle(null);
 	}
 	
 	
 	
-	public static void deleteObstacle(Obstacle obj)
+	public  void deleteObstacle(Obstacle obj)
 	{
 		// si l'obstacle est celui qui est selectionné, 
-		if(obj != null && parent.getCurrentObstacle() == obj)
+		if(obj != null && this.getCurrentObstacle() == obj)
 		{
 			// on supprime la référence de l'obstacle dans la liste
-			parent.listObstacles.remove(obj);
+			listObstacles.remove(obj);
 			// on précise au manager qu'il n'y a plus d'obstacle current
-			parent.setCurrentObstacle(null);
+			setCurrentObstacle(null);
 			// on appel la liste des mvc
-			parent.refreshMVC();
+			refreshMVC();
 		}
 		
 	}
@@ -94,44 +94,44 @@ public class ObstaclesManager implements Drawable
 			
 	}
 	
-	public static void attachMVC(IObstacleMVC mvc)
+	public  void attachMVC(IObstacleMVC mvc)
 	{
 		// on attache un mvc
 		if(mvc != null)
-			parent.listMVC.add(mvc);
+			listMVC.add(mvc);
 	}
 
 	/**
 	 * @return the currentObstacle
 	 */
-	public static Obstacle getCurrentObstacle() {
-		return parent.currentObstacle;
+	public  Obstacle getCurrentObstacle() {
+		return currentObstacle;
 	}
 
 	/**
 	 * @param currentObstacle the currentObstacle to set
 	 */
-	public static void setCurrentObstacle(Obstacle currentObstacle) 
+	public  void setCurrentObstacle(Obstacle newCurrent) 
 	{
-		if(currentObstacle == null)
+		if(newCurrent == null)
 		{	// on va déselectionné l'obstacle précédent
-			if(parent.currentObstacle != null)
-				parent.currentObstacle.setSelected(false);
+			if(this.currentObstacle != null)
+				this.currentObstacle.setSelected(false);
 			
-			parent.currentObstacle = null;
-			parent.refreshMVC();
+			this.currentObstacle = null;
+			refreshMVC();
 		}
 		else
 		{
-			if(parent.currentObstacle != null)
-				parent.currentObstacle.setSelected(false);
+			if(this.currentObstacle != null)
+				this.currentObstacle.setSelected(false);
 		
 			// le nouvelle obstacle est spécifié au manager
-			parent.currentObstacle = currentObstacle;
+			currentObstacle = newCurrent;
 			// on spécifie à l'obstacle qu'il est selectionné
-			parent.currentObstacle.setSelected(true);
+			currentObstacle.setSelected(true);
 			
-			parent.refreshMVC();
+			refreshMVC();
 		}
 			
 	}
@@ -139,15 +139,15 @@ public class ObstaclesManager implements Drawable
 	/**
 	 * @return the listObstacles
 	 */
-	public static List<Obstacle> getListObstacles() {
-		return parent.listObstacles;
+	public  List<Obstacle> getListObstacles() {
+		return listObstacles;
 	}
 
 	/**
 	 * @param listObstacles the listObstacles to set
 	 */
-	public static void setListObstacles(List<Obstacle> listObstacles) {
-		parent.listObstacles = listObstacles;
+	public  void setListObstacles(List<Obstacle> listObstacles) {
+		listObstacles = listObstacles;
 	}
 
 	
