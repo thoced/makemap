@@ -41,9 +41,6 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 	
 		// on replace le default list model
 		this.setModel(model);
-		// si un currentObstacle est selectionné
-			if(ObstaclesManager.getCurrentObstacle() != null)
-				this.setSelectedValue(ObstaclesManager.getCurrentObstacle(), false);
 		
 	}
 
@@ -54,20 +51,17 @@ public class JListObstacles extends JList implements IObstacleMVC, MouseListener
 		
 		if(arg0.getButton() == MouseEvent.BUTTON1)
 		{
-		
-			Obstacle o = (Obstacle)this.getSelectedValue();
-			// on précise au manager d'obstacle que l'obstacle est selectionné
-			// on spécifie à l'ancien objet obstacle selectionné, qu'il ne l'est plus
-			if(ObstaclesManager.getCurrentObstacle() != null)
-				ObstaclesManager.getCurrentObstacle().setSelected(false);
-			
-			// on spécifie le nouvelle obstacle selectionné
-			ObstaclesManager.setCurrentObstacle(o);
-			ObstaclesManager.getCurrentObstacle().setSelected(true);
+			// on récupère l'obstacle sélectionné
+			Obstacle obs = (Obstacle) this.getSelectedValue();
+			// on précise au manager l'obstacle sélectionné
+			ObstaclesManager.setCurrentObstacle(obs);
 		}
 		
 		// on rafraichit
 		//panelCenter.repaintCalques();
+		// si un currentCalques est selectionné
+		if(ObstaclesManager.getCurrentObstacle() != null)
+			this.setSelectedValue(ObstaclesManager.getCurrentObstacle(), false);
 	}
 
 	@Override

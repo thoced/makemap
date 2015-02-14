@@ -52,7 +52,7 @@ public class Obstacle implements Drawable
 	 * @return the isSelected
 	 */
 	public boolean isSelected() {
-		return isSelected;
+		return parent.isSelected;
 	}
 
 	/**
@@ -60,123 +60,98 @@ public class Obstacle implements Drawable
 	 */
 	public void setSelected(boolean isSelected)
 	{
+		// spécifie à l'obstacle qu'il est selectionné ou pas
 		this.isSelected = isSelected;
+		// on recrée le vectorArray
+		releaseVectors();
 		
-		if(this.isSelected)
-		{
-			// l'obstacle est selectionné, on le rend blanc
-			this.releaseVectors();
-		}
-		else
-		{
-			// on refixe l'objet car il n'est plus selectionné
-			this.setFixObstalce();
-		}
 	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return parent.name;
 	}
 
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
-		this.name = name;
+		parent.name = name;
 	}
 
 	public Obstacle()
 	{
-		// Instance de la liste des points
-		listPoints = new ArrayList<PointObstacle>();
-		// Instance du vectors
-		vectors = new VertexArray(PrimitiveType.LINE_STRIP);
-		
+		// parent statique
 		parent = this;
+		// instance de la liste des points
+		listPoints = new ArrayList<PointObstacle>();
+		// instance du vertexarray
+		vectors = new VertexArray(PrimitiveType.LINE_STRIP);
 	}
 	
 	@Override
 	public void draw(RenderTarget render, RenderStates state) 
 	{
-		// TODO Auto-generated method stub
-		render.draw(vectors,state);
-		
+		// on affiche l'obstacle
+		if(parent.vectors != null)
+			render.draw(parent.vectors, state);
 	}
 	
 	public void insertPoint(Vector2f p)
 	{
-		// ajout du point
-		PointObstacle point = new PointObstacle(p);
-		// ajout
-		listPoints.add(point);
-		 
-		// release vectors
-		this.releaseVectors();
+		// on vérifie si le parametre n'est pas null
+		if(p != null)
+		{
+			// instance du point
+			PointObstacle point = new PointObstacle(p);
+			// ajout dans la liste des points
+			parent.listPoints.add(point);
+			// on recrée le vectors
+			parent.releaseVectors();
+		}
 	
 	}
 	
 	private void releaseVectors()
 	{
-		// mise à zero du nouveau vectors (vertexarray)
-				vectors.clear();
-				// création du vertex array
-				for(PointObstacle po : listPoints)
-				{
-					Vertex v = new Vertex(po.getPoint(),Color.WHITE);
-					// ajout dans le vectors
-					vectors.add(v);
-				}
+		// on vide le vectors array
+		vectors.clear();
+		// on boucle dans la liste des points et on crée les vertex
+		for(PointObstacle point : this.listPoints)
+		{
+			Vertex v;
+			// si l'obstacle est selectionné alors celui-ci est en bleu
+			if(this.isSelected())
+				 v = new Vertex(point.getPoint(),org.jsfml.graphics.Color.BLUE);
+			else
+				 v = new Vertex(point.getPoint(),org.jsfml.graphics.Color.WHITE);
+			// ajout dans le vectors array
+			vectors.add(v);
+			
+		}
 	}
 	
 	public void hitPoint(Vector2f pos)
 	{
-		// on bouge le point si il est dans le hit
-			boolean isSelected = false;
-			for(PointObstacle p: listPoints)
-			{
-				if(p.getHitBoxPoint().contains(pos))
-				{
-					currentPointSelected = p;
-					isSelected = true;
-				}
-					
-			}
-			
-			if(!isSelected)
-			{
-				// rien n'a été selectionné, on met à null le current
-				currentPointSelected = null;
-			}
+		
 	}
 	
 	
 	public void dragPoint(Vector2f pos)
 	{
-		if(currentPointSelected != null)
-			currentPointSelected.setPoint(pos);
 		
-		// on modifie 
-		this.releaseVectors();
 	}
 	
 	public void setFixObstalce()
 	{
-		vectors.clear();
-		// création du vertex array
-		for(PointObstacle po : listPoints)
-		{
-			Vertex v = new Vertex(po.getPoint(),Color.BLUE);
-			// ajout dans le vectors
-			vectors.add(v);
-		}
+		
 	}
 	
 	public String toString()
 	{
-		return this.getName();
+		return parent.getName();
 	}
 	
 	

@@ -53,7 +53,7 @@ public class IOManager
 		// heightmap
 		if(objMap.containsKey("height_map"))
 			InfoMap.setHeightMap(objMap.getInt("height_map"));
-		
+	
 		// extract des calques
 		if(objMap.containsKey("calques"))
 		{
@@ -178,7 +178,8 @@ public class IOManager
 			JsonArray points = obstacle.getJsonArray("list_points");
 			
 			// on créer un objet Obstacle
-			ObstaclesManager.setCurrentObstacle(ObstaclesManager.createNewObstacle());
+			Obstacle obs = new Obstacle();
+			ObstaclesManager.insertObstacle(obs);
 			
 			// on boucle dans la liste des points
 			for(int j=0;j<points.size();j++)
@@ -197,10 +198,8 @@ public class IOManager
 			// ajout du nom
 			ObstaclesManager.getCurrentObstacle().setName(name);
 			// fix obstacle
-			ObstaclesManager.getCurrentObstacle().setFixObstalce();
-			// ajout dans le manager
-			ObstaclesManager.setCurrentObstacle(null);
-			
+			ObstaclesManager.fixObstacle();
+	
 		}
 		
 		

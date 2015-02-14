@@ -12,7 +12,7 @@ public class ObstaclesManager implements Drawable
 	private static List<Obstacle> listObstacles;
 	
 	// list du MVC attach
-	private static List<IObstacleMVC> listMVC = new ArrayList();
+	private static List<IObstacleMVC> listMVC;
 	
 	// parent
 	private static ObstaclesManager parent;
@@ -27,82 +27,78 @@ public class ObstaclesManager implements Drawable
 	
 	public ObstaclesManager()
 	{
-		// parent
+		// instance du parent pour le static
 		parent = this;
-		// instance
+		// instance de la liste des obstacles
 		listObstacles = new ArrayList<Obstacle>();
+		// instance de la liste des MVC
+		listMVC = new ArrayList<IObstacleMVC>();
+	
 		
 	}
 
 	@Override
 	public void draw(RenderTarget render, RenderStates state)
 	{
-		// TODO Auto-generated method stub
-		for(Obstacle o : this.listObstacles)
+		// on boucle sur les obstacles
+		for(Obstacle obs : listObstacles)
 		{
-			render.draw(o,state);
+			obs.draw(render, state);
 		}
 	}
 	
 	public static void insertObstacle(Obstacle o)
 	{
-		// ajojut dans la liste des obstacles
+		// on donne un nom à l'obstacle
+		o.setName("obstacle");
+		// on précise au manager l'obstacle current
+		// on insère l'obstacle dans la liste
 		parent.listObstacles.add(o);
-		// on spécifie au manager l'obstacle current
+		
 		parent.setCurrentObstacle(o);
-		// on créer le nom de l'obstacle
-		o.setName("obstacle " + String.valueOf(parent.nameCpt));
-		parent.nameCpt++;
-		// on appel les mvc
+		
+		// on appel la liste des mvc
 		parent.refreshMVC();
 	}
 	
-	public static Obstacle createNewObstacle()
+	public static void fixObstacle()
 	{
-		// création d'un nouvelle objet obstacle
-		Obstacle o = new Obstacle();
-		// ajout de l'obstacle dans la liste des obstacles
-		parent.listObstacles.add(o);
-		// on specifie le currentObstacle
-		parent.setCurrentObstacle(o);
-		// créatin du nom de l'obstacle
-		o.setName("obstacle " + String.valueOf(parent.nameCpt));
-		parent.nameCpt++;
-		// update des mvc
-		parent.refreshMVC();
-		// retour de l'obstalce
-		
-		return o;
+		// on fix l'obstacle en cours
+		parent.setCurrentObstacle(null);
 	}
+	
+	
 	
 	public static void deleteObstacle(Obstacle obj)
 	{
 		// si l'obstacle est celui qui est selectionné, 
-		if(parent.getCurrentObstacle() == obj)
+		if(obj != null && parent.getCurrentObstacle() == obj)
 		{
-			obj.setSelected(false);
+			// on supprime la référence de l'obstacle dans la liste
+			parent.listObstacles.remove(obj);
+			// on précise au manager qu'il n'y a plus d'obstacle current
 			parent.setCurrentObstacle(null);
+			// on appel la liste des mvc
+			parent.refreshMVC();
 		}
-		// suppression de l'obstacle
-		parent.listObstacles.remove(obj);
-		// appel MVC
-		parent.refreshMVC();
+		
 	}
 	
 	public void refreshMVC()
 	{
-		// rappel des mvc
-		for(IObstacleMVC o : this.listMVC)
+		// on appels les mvc attachés
+		for(IObstacleMVC mvc : this.listMVC)
 		{
-			o.updateObstacleMVC(parent.listObstacles);
+			mvc.updateObstacleMVC(listObstacles);
 		}
 			
 	}
 	
-	public static void attachMVC(IObstacleMVC obj)
+	public static void attachMVC(IObstacleMVC mvc)
 	{
-		// attach un objet mvc
-		parent.listMVC.add(obj);
+		// on attache un mvc
+		if(mvc != null)
+			parent.listMVC.add(mvc);
 	}
 
 	/**
@@ -115,12 +111,29 @@ public class ObstaclesManager implements Drawable
 	/**
 	 * @param currentObstacle the currentObstacle to set
 	 */
-	public static void setCurrentObstacle(Obstacle currentObstacle) {
-		parent.currentObstacle = currentObstacle;
+	public static void setCurrentObstacle(Obstacle currentObstacle) 
+	{
+		if(currentObstacle == null)
+		{	// on va déselectionné l'obstacle précédent
+			if(parent.currentObstacle != null)
+				parent.currentObstacle.setSelected(false);
+			
+			parent.currentObstacle = null;
+			parent.refreshMVC();
+		}
+		else
+		{
+			if(parent.currentObstacle != null)
+				parent.currentObstacle.setSelected(false);
 		
-		// refresh
-		
-		parent.refreshMVC();
+			// le nouvelle obstacle est spécifié au manager
+			parent.currentObstacle = currentObstacle;
+			// on spécifie à l'obstacle qu'il est selectionné
+			parent.currentObstacle.setSelected(true);
+			
+			parent.refreshMVC();
+		}
+			
 	}
 
 	/**

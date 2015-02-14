@@ -127,7 +127,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 		
-		this.setBackground(Color.WHITE);
+		this.setBackground(Color.GRAY);
 		// set double buffered
 		this.setDoubleBuffered(true);
 		// layout
@@ -504,8 +504,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			if(e.getButton() == MouseEvent.BUTTON2)
 			{
 				// on utilise le clic de la molette pour fixer l'objet obstacle
-				ObstaclesManager.getCurrentObstacle().setFixObstalce();
-				ObstaclesManager.setCurrentObstacle(null);
+				ObstaclesManager.fixObstacle();
 			}
 			
 			this.repaint();
@@ -740,7 +739,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	public void updateObstacleMVC(List<Obstacle> list) 
 	{
 		// TODO Auto-generated method stub
-		this.repaintCalques();
+		parent.repaintCalques();
 		
 	}
 
@@ -750,7 +749,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	public void updateCalqueMVC(List<Calque> list)
 	{
 		// TODO Auto-generated method stub
-		this.repaintCalques();
+		parent.repaintCalques();
 	}
 
 
