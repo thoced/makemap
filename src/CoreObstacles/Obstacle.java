@@ -3,6 +3,8 @@ package CoreObstacles;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsfml.graphics.CircleShape;
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.PrimitiveType;
 import org.jsfml.graphics.RenderStates;
@@ -135,8 +137,27 @@ public class Obstacle implements Drawable
 	public void draw(RenderTarget render, RenderStates state) {
 		// TODO Auto-generated method stub
 		// on affiche l'obstacle
+		
+	
 				if(this.vectors != null)
 					render.draw(this.vectors, state);
+				
+				// affichage des cercles sur les sommets
+				for(Vertex v : this.vectors)
+				{
+					CircleShape shape = new CircleShape();
+					shape.setPosition(v.position);
+					shape.setRadius(4f);
+					shape.setOrigin(2f,2f);
+					if(this.isSelected())
+						shape.setFillColor(Color.BLUE);
+					else
+						shape.setFillColor(Color.WHITE);
+					
+					render.draw(shape,state);
+				}
+				
+				
 		
 	}
 	
