@@ -387,13 +387,28 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			if(button1Mask == InputEvent.BUTTON1_MASK)
 			{
 			
+				
 				if(this.isManagerObstacle)
 				{
-					// drag dans la mode obstacle
-					if(Manager.getObstaclesManager().getCurrentObstacle() != null)
+					
+					if(!e.isControlDown())
 					{
-						Manager.getObstaclesManager().getCurrentObstacle().dragPoint(posWorld);
-						//this.repaint();
+						
+						// drag dans la mode obstacle
+						if(Manager.getObstaclesManager().getCurrentObstacle() != null)
+						{
+							Manager.getObstaclesManager().getCurrentObstacle().dragPoint(posWorld);
+							//this.repaint();
+						}
+					}
+					else
+					{
+						// drag sommets des obstacles
+						if(Manager.getObstaclesManager().getCurrentObstacle() != null)
+						{
+							Obstacle o = Manager.getObstaclesManager().getCurrentObstacle();
+							o.dragPoint(posWorld);
+						}
 					}
 				}
 				else
@@ -404,6 +419,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				}
 		
 			}
+			
 			
 			// glissview
 			if(button3Mask == InputEvent.BUTTON3_MASK)
@@ -467,7 +483,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		
 		if(this.isManagerObstacle)
 		{
-			if(e.getButton() == MouseEvent.BUTTON1)
+			if(!e.isControlDown() && e.getButton() == MouseEvent.BUTTON1)
 			{
 				
 				
@@ -486,6 +502,16 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					Manager.getObstaclesManager().getCurrentObstacle().insertPoint(posWorld);
 				}
 			}
+			else if(e.isControlDown() && e.getButton() == MouseEvent.BUTTON1)
+			{
+				// drag des position de l'obstacle
+				if(Manager.getObstaclesManager().getCurrentObstacle() != null)
+				{
+					Obstacle o = Manager.getObstaclesManager().getCurrentObstacle();
+					o.hitPoint(posWorld);
+				}
+			}
+				
 			
 			if(e.getButton() == MouseEvent.BUTTON3)
 			{

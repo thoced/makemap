@@ -128,7 +128,13 @@ public class Obstacle implements Drawable
 	{
 		// on drag le point selectionné
 		if(this.currentPointSelected != null)
+		{
 			this.currentPointSelected.setPoint(pos);
+			// on recrée le vecteur
+			this.releaseVectors();
+		}
+		
+		
 	}
 	
 
