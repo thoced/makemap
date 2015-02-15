@@ -14,7 +14,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import org.jsfml.graphics.Font;
 import org.jsfml.graphics.Image;
@@ -39,7 +41,6 @@ import CoreCalques.ICalqueMVC;
 import CoreManager.Manager;
 import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
-
 import CorePanelInfo.PropertiesPanel;
 import CorePanelInfo.panelInfo;
 import CoreTexturesManager.TexturesManager;
@@ -51,6 +52,8 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JScrollBar;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
@@ -63,7 +66,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
-public class panelCenter extends JPanel implements KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener,ICalqueMVC,IObstacleMVC
+public class panelCenter extends JPanel implements ActionListener,KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener,ICalqueMVC,IObstacleMVC
 {
 	/**
 	 * 
@@ -118,6 +121,11 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	
 	// private 
 	private static panelCenter parent;
+	
+	// popupMenu pour les points obstacles
+	private JPopupMenu menuPopup;
+	// copie position
+	private Vector2f posCurrent;
 	
 	// private list des calques
 	//private List<Calque> listCalques = new ArrayList<Calque>();
@@ -369,6 +377,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
+		posCurrent = new Vector2f(posWorld.x,posWorld.y);
 		
 		int modifier = e.getModifiers();
 		int button1Mask = (modifier & InputEvent.BUTTON1_MASK);
@@ -468,6 +477,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		// clic droit
 		Vector2i posPanel = new Vector2i(e.getX(),e.getY());
 		Vector2f posWorld = render.mapPixelToCoords(posPanel);
+		posCurrent = new Vector2f(posWorld.x,posWorld.y);
 		
 		if(this.isSnapGrid)
 		{
@@ -475,8 +485,6 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			
 			float x = (int) (posWorld.x / this.size) * this.size;
 			float y = (int) (posWorld.y / this.size) * this.size;
-			
-			
 			posWorld = new Vector2f(x,y);
 				
 		}
@@ -508,12 +516,13 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				if(Manager.getObstaclesManager().getCurrentObstacle() != null)
 				{
 					Obstacle o = Manager.getObstaclesManager().getCurrentObstacle();
-					o.hitPoint(posWorld);
+					o.hitPoint(posCurrent);
+					
 				}
 			}
 				
 			
-			if(e.getButton() == MouseEvent.BUTTON3)
+			if(!e.isControlDown() && e.getButton() == MouseEvent.BUTTON3)
 			{
 				if(Manager.getObstaclesManager().getCurrentObstacle() != null)
 				{
@@ -521,6 +530,18 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					Manager.getObstaclesManager().getCurrentObstacle().hitPoint(posWorld);
 				}
 			}
+			else if(e.isControlDown() && e.getButton() == MouseEvent.BUTTON3)
+			{
+				// c'est le clic droit pour pouvoir ouvrir un menu permettant de supprimer les node
+				menuPopup = new JPopupMenu();
+				JMenuItem itemDelete = new JMenuItem("Delete");
+				menuPopup.add(itemDelete);
+				itemDelete.setActionCommand("DELETE_POINT");
+				itemDelete.addActionListener(this);
+				menuPopup.show(this, e.getX(), e.getY());
+			}
+			
+			
 			
 			if(e.getButton() == MouseEvent.BUTTON2)
 			{
@@ -771,6 +792,21 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	{
 		// TODO Auto-generated method stub
 		parent.repaintCalques();
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		// TODO Auto-generated method stub
+		if(e.getActionCommand().equals("DELETE_POINT"))
+		{
+			// suppression d'un point si un obstacle est selectionné
+			if(Manager.getObstaclesManager().getCurrentObstacle() != null)
+				Manager.getObstaclesManager().getCurrentObstacle().deletePoint(posCurrent);
+			
+			this.repaintCalques();
+		}
 	}
 
 

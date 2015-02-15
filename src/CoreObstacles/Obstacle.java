@@ -110,6 +110,29 @@ public class Obstacle implements Drawable
 		}
 	}
 	
+	public void deletePoint(Vector2f pos)
+	{
+		// on boucle dans la liste des points
+		for(PointObstacle point : this.listPoints)
+			{
+				if(point.getHitBoxPoint().contains(pos))
+				{
+					// un point est sélectionné
+					this.currentPointSelected = point;
+					break;
+					
+				}
+			}
+		
+		// on supprime le poinkt
+		this.listPoints.remove(this.currentPointSelected);
+		
+		// on recrée le vecteur
+		this.releaseVectors();
+		
+		// on appel les mvc
+	}
+	
 	public void hitPoint(Vector2f pos)
 	{
 		// on boucle dans la liste des points
@@ -154,7 +177,7 @@ public class Obstacle implements Drawable
 					CircleShape shape = new CircleShape();
 					shape.setPosition(v.position);
 					shape.setRadius(4f);
-					shape.setOrigin(2f,2f);
+					shape.setOrigin(4f,4f);
 					if(this.isSelected())
 						shape.setFillColor(Color.BLUE);
 					else
