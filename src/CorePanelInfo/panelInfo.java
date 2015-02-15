@@ -98,7 +98,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		tabbedPaneUp.add("Calques", scrollPaneCalques);
 		
 		// attachement mvc de listCalques
-		CalquesManager.attachMVC(listCalques);
+		Manager.getCalquesManager().attachMVC(listCalques);
 	
 	
 		// ajout du tab listObstacles
@@ -262,7 +262,7 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 						// on modifie la position
 						calque.getSprite().setPosition(panelCenter.getV().getCenter());
 						// insert du calque
-						CalquesManager.insertNewCalque(calque);
+						Manager.getCalquesManager().insertNewCalque(calque);
 					
 						
 					}

@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
 import CoreCalques.ICalqueMVC;
+import CoreManager.Manager;
 import CorePanelCenter.panelCenter;
 
 import com.jgoodies.forms.layout.FormLayout;
@@ -38,6 +39,7 @@ import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+
 import javax.swing.JCheckBox;
 import javax.swing.JSlider;
 
@@ -169,7 +171,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 		}
 		
 		// attachement au CalquesManager
-		CalquesManager.attachMVC(this);
+		Manager.getCalquesManager().attachMVC(this);
 		
 		lblNewLabel_1 = new JLabel("Light");
 		add(lblNewLabel_1, "2, 18");
@@ -261,7 +263,7 @@ public  class PropertiesPanel extends JPanel implements FocusListener,ICalqueMVC
 		// on enregistre le backCalqueSelected
 		this.saveInfo();
 		// on applique le nouveau calqu selectionné
-		this.setCalque(CalquesManager.getCurrentCalque());
+		this.setCalque(Manager.getCalquesManager().getCurrentCalque());
 	}
 
 

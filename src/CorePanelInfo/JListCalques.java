@@ -20,7 +20,9 @@ import javax.swing.PopupFactory;
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
 import CoreCalques.ICalqueMVC;
+import CoreManager.Manager;
 import CorePanelCenter.panelCenter;
+
 import javax.swing.ListSelectionModel;
 
 public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyListener,ActionListener
@@ -59,8 +61,8 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 		this.setModel(model);
 		
 		// si un currentCalques est selectionné
-		if(CalquesManager.getCurrentCalque() != null)
-			this.setSelectedValue(CalquesManager.getCurrentCalque(), false);
+		if(Manager.getCalquesManager().getCurrentCalque() != null)
+			this.setSelectedValue(Manager.getCalquesManager().getCurrentCalque(), false);
 		
 	}
 	@Override
@@ -105,12 +107,12 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 			// on receptionne l'objet calque selectionne
 			Calque c = (Calque) this.getSelectedValue();
 			// on deselectionne le calque déja selectionné, si il y en a un
-			if(CalquesManager.getCurrentCalque() != null)
-				CalquesManager.getCurrentCalque().setSelected(false);
+			if(Manager.getCalquesManager().getCurrentCalque() != null)
+				Manager.getCalquesManager().getCurrentCalque().setSelected(false);
 			// on précise qu'il est selectionné
 			c.setSelected(true);
 			// on specifie au CalquesManager l'objet selectionné
-			CalquesManager.setCurrentCalque(c);
+			Manager.getCalquesManager().setCurrentCalque(c);
 		}
 	}
 	@Override
@@ -140,19 +142,19 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 		if(arg0.getKeyCode() == KeyEvent.VK_DELETE)
 		{
 			if(this.getSelectedValue() != null)
-				CalquesManager.deleteCalque((Calque)this.getSelectedValue());
+				Manager.getCalquesManager().deleteCalque((Calque)this.getSelectedValue());
 		}
 		else if(arg0.getKeyCode() == KeyEvent.VK_P)
 		{
 			// touche plus pour remonter un objet dans la liste
 			if(this.getSelectedValue() != null)
-				CalquesManager.upCalque((Calque)this.getSelectedValue());
+				Manager.getCalquesManager().upCalque((Calque)this.getSelectedValue());
 		}
 		else if(arg0.getKeyCode() == KeyEvent.VK_M)
 		{
 			// touche plus pour descendre un objet dans la liste
 				if(this.getSelectedValue() != null)
-					CalquesManager.downCalque((Calque)this.getSelectedValue());
+					Manager.getCalquesManager().downCalque((Calque)this.getSelectedValue());
 		}
 		
 	}
@@ -182,7 +184,7 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 				{
 					Calque newCalque = (Calque) c.clone();
 					// on ajoute dans le CalquesManager
-					CalquesManager.insertNewCalque(newCalque);
+					Manager.getCalquesManager().insertNewCalque(newCalque);
 				} catch (CloneNotSupportedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -213,12 +215,12 @@ public class JListCalques extends JList implements ICalqueMVC,MouseListener,KeyL
 		{
 			// on remonte le calque
 			if(this.getSelectedValue() != null)
-				CalquesManager.upCalque((Calque)this.getSelectedValue());
+				Manager.getCalquesManager().upCalque((Calque)this.getSelectedValue());
 		}
 		else if(arg0.getActionCommand() == "DOWN")
 		{
 			if(this.getSelectedValue() != null)
-				CalquesManager.downCalque((Calque)this.getSelectedValue());
+				Manager.getCalquesManager().downCalque((Calque)this.getSelectedValue());
 		}
 			
 		

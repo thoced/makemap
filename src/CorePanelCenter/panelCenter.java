@@ -35,7 +35,6 @@ import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 import CoreCalques.Calque;
-import CoreCalques.CalquesManager;
 import CoreCalques.ICalqueMVC;
 import CoreManager.Manager;
 import CoreObstacles.IObstacleMVC;
@@ -103,7 +102,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	private Calque currentCalque;
 	
 	// Calque manager
-	private CalquesManager calquesManager;
+	//private CalquesManager calquesManager;
 	// si c'est un obstacle
 	//private Manager.getObstaclesManager() Manager.getObstaclesManager();
 	
@@ -193,23 +192,15 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		font.loadFromStream(panelCenter.class.getResourceAsStream("/Fonts/ManilaSansReg.otf"));
 		// text
 		text = new Text();
-		
 		// Calques manager
-		calquesManager = new CalquesManager();
-		calquesManager.attachMVC(this);
+		//calquesManager = new CalquesManager();
+		Manager.getCalquesManager().attachMVC(this);
 		// Obstacle Manager
-		
 		Manager.getObstaclesManager().attachMVC(this);
 		
 	}
 	
 	
-
-	
-
-
-
-
 	/**
 	 * @return the v
 	 */
@@ -241,7 +232,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			render.draw(grid);
 		}
 		// dessin des calques
-		render.draw(calquesManager);
+		render.draw(Manager.getCalquesManager());
 		// dessin des obstacles
 		render.draw(Manager.getObstaclesManager());
 		
@@ -258,17 +249,17 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 	public static void sortCalques()
 	{
 		// tri
-		Collections.sort(parent.calquesManager.getListCalques());
+		Collections.sort(Manager.getCalquesManager().getListCalques());
 		// repaint
 		parent.repaint();
 		// on rafraichit également la liste des calques
-		panelInfo.refreshListCalque(parent.calquesManager.getListCalques());
+		panelInfo.refreshListCalque(Manager.getCalquesManager().getListCalques());
 	}
 	
 	public static void insertCalque(Calque calque)
 	{
 		// ajout du calque
-		CalquesManager.insertNewCalque(calque);
+		Manager.getCalquesManager().insertNewCalque(calque);
 		// on trie le calque
 		sortCalques();
 		// affichage
@@ -408,8 +399,8 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 				else
 				{
 					// drag dans le mode calque
-					if(CalquesManager.getCurrentCalque() != null)
-						CalquesManager.getCurrentCalque().mousePosition(Vector2f.sub(posWorld, posDiff));
+					if(Manager.getCalquesManager().getCurrentCalque() != null)
+						Manager.getCalquesManager().getCurrentCalque().mousePosition(Vector2f.sub(posWorld, posDiff));
 				}
 		
 			}
@@ -520,7 +511,7 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			boolean isOneCalqueSelected = false;
 			
-			for(Calque c : CalquesManager.getListCalques())
+			for(Calque c : Manager.getCalquesManager().getListCalques())
 			{   
 
 					isOneCalqueSelected = c.selected(posWorld);
@@ -528,12 +519,12 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 					if(isOneCalqueSelected)
 					{
 						// on spécifie a l'ancien calque selectionné qu'il ne l'est plus
-						if(CalquesManager.getCurrentCalque() != null)
-							CalquesManager.getCurrentCalque().setSelected(false);
+						if(Manager.getCalquesManager().getCurrentCalque() != null)
+							Manager.getCalquesManager().getCurrentCalque().setSelected(false);
 						// on spécifie au nouveau calque selectionné qu'il l'est
 						c.setSelected(true);
 						// on spécifie au manager le nouveau calque sélectionné
-						CalquesManager.setCurrentCalque(c);
+						Manager.getCalquesManager().setCurrentCalque(c);
 						//CalquesManager.getCurrentCalque().setSelected(true);
 						//PropertiesPanel.setCalque(CalquesManager.getCurrentCalque());
 						this.repaintCalques();
@@ -549,10 +540,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 			if(!isOneCalqueSelected)
 			{
 				// si aucun selectionné, on deselectionne tout
-				if(CalquesManager.getCurrentCalque() != null)
+				if(Manager.getCalquesManager().getCurrentCalque() != null)
 				{
-					CalquesManager.getCurrentCalque().setSelected(false);
-					CalquesManager.setCurrentCalque(null);
+					Manager.getCalquesManager().getCurrentCalque().setSelected(false);
+					Manager.getCalquesManager().setCurrentCalque(null);
 				}
 			}
 					
@@ -564,10 +555,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			posStart = posWorld;
 			// on calque le vecteur diff entre le posStart et la position du calque
-			if(CalquesManager.getCurrentCalque() != null)
+			if(Manager.getCalquesManager().getCurrentCalque() != null)
 			{
 				// valeur a soustraire sur le calque lors du déplacement
-				posDiff = Vector2f.sub(posStart, CalquesManager.getCurrentCalque().getSprite().getPosition());
+				posDiff = Vector2f.sub(posStart, Manager.getCalquesManager().getCurrentCalque().getSprite().getPosition());
 				// valeur modifié pour calquer sur la grille
 				if(this.isSnapGrid)
 				{

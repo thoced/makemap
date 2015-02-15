@@ -13,44 +13,42 @@ import CoreObstacles.Obstacle;
 public class CalquesManager implements Drawable
 {
 	// list des calques
-	private static List<Calque> listCalques = new ArrayList();
+	private  List<Calque> listCalques = new ArrayList();
 	// list des referecens mvc
-	private static List<ICalqueMVC> listMVC = new ArrayList();
+	private  List<ICalqueMVC> listMVC = new ArrayList();
 	
 	// currentCalque
-	private static Calque currentCalque;
+	private  Calque currentCalque;
 	
-	// parent
-	private static CalquesManager parent;
+	
 	
 	public CalquesManager()
 	{
-		// parent
-		parent = this;
+		
 	}
 	
-	public static void insertNewCalque(Calque nc)
+	public  void insertNewCalque(Calque nc)
 	{
 		// on spécifie au calque qu'il est directment selectionné
 		nc.setSelected(true);
 		// on précise a l'ancien calque selectionné qu'il ne l'est plus
-		if(parent.getCurrentCalque() != null)
-			parent.getCurrentCalque().setSelected(false);
+		if(this.getCurrentCalque() != null)
+			this.getCurrentCalque().setSelected(false);
 		// on specifie au manager le calque selectionné
-		parent.setCurrentCalque(nc);
+		this.setCurrentCalque(nc);
 		// ajout du calque dans la liste
-		parent.listCalques.add(nc);
+		this.listCalques.add(nc);
 		// on tire
-		parent.sortCalques();
+		this.sortCalques();
 		// refresh mvc
-		parent.refreshMVC();
+		this.refreshMVC();
 		
 	}
 	
-	public static void attachMVC(ICalqueMVC mvc)
+	public  void attachMVC(ICalqueMVC mvc)
 	{
 		// ajout dans la liste mvc
-		parent.listMVC.add(mvc);
+		this.listMVC.add(mvc);
 	}
 	
 	public void refreshMVC()
@@ -63,20 +61,20 @@ public class CalquesManager implements Drawable
 	/**
 	 * @return the currentCalque
 	 */
-	public static Calque getCurrentCalque() {
-		return CalquesManager.currentCalque;
+	public  Calque getCurrentCalque() {
+		return this.currentCalque;
 	}
 
 	/**
 	 * @param currentCalque the currentCalque to set
 	 */
-	public static void setCurrentCalque(Calque currentCalque)
+	public  void setCurrentCalque(Calque currentCalque)
 	{
-		CalquesManager.currentCalque = currentCalque;
+		this.currentCalque = currentCalque;
 		// on trie
-		parent.sortCalques();
+		this.sortCalques();
 		// refresh mvc
-		parent.refreshMVC();
+		this.refreshMVC();
 	}
 
 	@Override
@@ -91,48 +89,48 @@ public class CalquesManager implements Drawable
 	/**
 	 * @return the listCalques
 	 */
-	public static List<Calque> getListCalques() {
-		return CalquesManager.listCalques;
+	public  List<Calque> getListCalques() {
+		return this.listCalques;
 	}
 
 	/**selected
 	 * @param listCalques the listCalques to set
 	 */
-	public static void setListCalques(List<Calque> listCalques) {
-		CalquesManager.listCalques = listCalques;
+	public  void setListCalques(List<Calque> listCalques) {
+		this.listCalques = listCalques;
 	}
 	
-	public static void deleteCalque(Calque obj)
+	public  void deleteCalque(Calque obj)
 	{
 		// si l'obstacle est celui qui est selectionné, 
-		if(parent.getCurrentCalque() == obj)
+		if(this.getCurrentCalque() == obj)
 		{
 			obj.setSelected(false);
-			parent.setCurrentCalque(null);
+			this.setCurrentCalque(null);
 		}
 		// suppression de l'obstacle
-		parent.listCalques.remove(obj);
+		this.listCalques.remove(obj);
 		// appel MVC
-		parent.refreshMVC();
+		this.refreshMVC();
 	}
 	
 	
-	public static void sortCalques()
+	public  void sortCalques()
 	{
 		// tri
-		Collections.sort(CalquesManager.getListCalques());
+		Collections.sort(this.getListCalques());
 		// refresh mvc
 		//parent.refreshMVC();
 	}
 	
-	public static void upCalque(Calque c)
+	public  void upCalque(Calque c)
 	{
 		// remonte la priorité du calque
 		// on obtient l'indice du calque dans la liste
-		for(int i=0;i<parent.listCalques.size();i++)
+		for(int i=0;i<this.listCalques.size();i++)
 		{
 			// on récupère le calque
-			Calque current = parent.listCalques.get(i);
+			Calque current = this.listCalques.get(i);
 			
 			if(current == c)
 			{
@@ -141,8 +139,8 @@ public class CalquesManager implements Drawable
 				{
 					// si il s'agit du même on le place plus haut
 					// on remonte le calque
-					parent.listCalques.remove(current);
-					parent.listCalques.add(i-1,current);
+					this.listCalques.remove(current);
+					this.listCalques.add(i-1,current);
 				
 					
 				}
@@ -153,29 +151,29 @@ public class CalquesManager implements Drawable
 		}
 		
 		// on appel les mvc
-		parent.refreshMVC();
+		this.refreshMVC();
 	}
 	
-	public static void downCalque(Calque c)
+	public  void downCalque(Calque c)
 	{
 		// descend la priorité du calque
 				// on obtient l'indice du calque dans la liste
-				for(int i=0;i<parent.listCalques.size();i++)
+				for(int i=0;i<this.listCalques.size();i++)
 				{
 					// on récupère le calque
-					Calque current = parent.listCalques.get(i);
+					Calque current = this.listCalques.get(i);
 					
 					if(current == c)
 					{
 						
 						// on supprime et ajoute si ce n'est pas le dernier
-						if(i != parent.listCalques.size() - 1)
+						if(i != this.listCalques.size() - 1)
 						{
 							// si il s'agit du même on le place plus bas
 							// on supprime la calque
 							// on remonte le calque
-							parent.listCalques.remove(current);
-							parent.listCalques.add(i+1,current);
+							this.listCalques.remove(current);
+							this.listCalques.add(i+1,current);
 							
 							
 						}
@@ -187,7 +185,7 @@ public class CalquesManager implements Drawable
 				}
 				
 				// on appel les mvc
-				parent.refreshMVC();
+				this.refreshMVC();
 	}
 	
 	

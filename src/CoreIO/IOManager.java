@@ -159,7 +159,7 @@ public class IOManager
 			c.setAlpha(alpha);
 		
 			// ajout dans le manager calque
-			CalquesManager.insertNewCalque(c);
+			Manager.getCalquesManager().insertNewCalque(c);
 		
 		}
 	}
@@ -247,7 +247,7 @@ public class IOManager
 		JsonArrayBuilder arrayCalques = JsonProvider.provider().createArrayBuilder();
 		
 		// ajout des calques
-		for(Calque c : CalquesManager.getListCalques())
+		for(Calque c : Manager.getCalquesManager().getListCalques())
 		{
 			JsonObjectBuilder objCalque = JsonProvider.provider().createObjectBuilder();
 			// ajout du nom
