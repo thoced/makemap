@@ -110,13 +110,23 @@ public class Obstacle implements Drawable
 	
 	public void hitPoint(Vector2f pos)
 	{
-		
+		// on boucle dans la liste des points
+		for(PointObstacle point : this.listPoints)
+		{
+			if(point.getHitBoxPoint().contains(pos))
+			{
+				// un point est sélectionné
+				this.currentPointSelected = point;
+			}
+		}
 	}
 	
 	
 	public void dragPoint(Vector2f pos)
 	{
-		
+		// on drag le point selectionné
+		if(this.currentPointSelected != null)
+			this.currentPointSelected.setPoint(pos);
 	}
 	
 

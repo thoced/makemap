@@ -466,8 +466,10 @@ public class panelCenter extends JPanel implements KeyListener,MouseWheelListene
 		{
 			// Si on a activé le snap grid
 			
-			int x = (int) (posWorld.x / this.size) * this.size;
-			int y = (int) (posWorld.y / this.size) * this.size;
+			float x = (int) (posWorld.x / this.size) * this.size;
+			float y = (int) (posWorld.y / this.size) * this.size;
+			
+			
 			posWorld = new Vector2f(x,y);
 				
 		}
