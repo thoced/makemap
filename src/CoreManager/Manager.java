@@ -1,6 +1,7 @@
 package CoreManager;
 
 import CoreCalques.CalquesManager;
+import CoreEntities.EntitiesManager;
 import CoreObstacles.*;
 
 public class Manager 
@@ -9,6 +10,8 @@ public class Manager
 	private static ObstaclesManager obstaclesManager;
 	// calques manager
 	private static CalquesManager calquesManager;
+	// entities manager
+	private static EntitiesManager entitiesManager;
 	
 	public Manager()
 	{
@@ -16,10 +19,28 @@ public class Manager
 		Manager.obstaclesManager = new ObstaclesManager();
 		
 		Manager.calquesManager = new CalquesManager();
+		
+		Manager.entitiesManager = new EntitiesManager();
 	}
 
 	
-	
+	/**
+	 * @return the entitiesManager
+	 */
+	public static EntitiesManager getEntitiesManager() {
+		return entitiesManager;
+	}
+
+	/**
+	 * @param entitiesManager the entitiesManager to set
+	 */
+	public static void setEntitiesManager(EntitiesManager entitiesManager) {
+		Manager.entitiesManager = entitiesManager;
+	}
+
+
+
+
 	/**
 	 * @return the calquesManager
 	 */
