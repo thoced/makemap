@@ -59,6 +59,8 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 	private JListCalques listCalques;
 	// JList des obstacles
 	private JListObstacles listObstacles;
+	// JList des entities
+	private JListEntities listEntities;
 	// panel des aperçus
 	private panelViewer pViewer;
 	// JList des textures disponibles
@@ -109,6 +111,13 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		Manager.getObstaclesManager().attachMVC(listObstacles);
 		
 		add(tabbedPaneUp);
+		
+		// ajout du tab listEntities
+		listEntities = new JListEntities();
+		JScrollPane scrollPaneEntities = new JScrollPane(listEntities);
+		tabbedPaneUp.add("Entities",scrollPaneEntities);
+		// attachement au mvc des entities
+		Manager.getEntitiesManager().attachMVC(listEntities);
 		
 		// ajout du model pour le calque
 		DefaultListModel modelCalque = new DefaultListModel();
