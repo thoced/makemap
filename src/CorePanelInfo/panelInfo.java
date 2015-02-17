@@ -158,8 +158,6 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		
 		tabbedPane.add("Info Entities",scrollPaneEntitiesProperties);
 		
-		
-		
 		// listener
 		listTextures.addMouseListener(this);
 		
@@ -168,11 +166,20 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 	}
 	public static void setPanelProperties(JPanel panel)
 	{
-		panelInfo.tabbedPane.remove(panelInfo.scrollPaneEntitiesProperties);
-		panelInfo.scrollPaneEntitiesProperties = new JScrollPane(panel);
-		panelInfo.tabbedPane.add("Info Entities", panelInfo.scrollPaneEntitiesProperties);
-		
-		panelInfo.tabbedPane.setSelectedComponent(panelInfo.scrollPaneEntitiesProperties);
+		if(panel != null)
+		{
+			// si panel n'est pas null, on ajoute le nouveau panel
+			panelInfo.tabbedPane.remove(panelInfo.scrollPaneEntitiesProperties);
+			panelInfo.scrollPaneEntitiesProperties = new JScrollPane(panel);
+			panelInfo.tabbedPane.add("Info Entities", panelInfo.scrollPaneEntitiesProperties);
+			panelInfo.tabbedPane.setSelectedComponent(panelInfo.scrollPaneEntitiesProperties);
+		}
+		else
+		{
+			// si il est null c'est qu'il faut tout simplement enlever le scroll
+			panelInfo.scrollPaneEntitiesProperties.removeAll();
+			//panelInfo.tabbedPane.remove(panelInfo.scrollPaneEntitiesProperties);
+		}
 		
 	}
 	

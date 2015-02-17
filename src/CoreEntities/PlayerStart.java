@@ -39,8 +39,9 @@ public class PlayerStart extends EntitiesBase
 	/**
 	 * @return the typePlayer
 	 */
-	public String getTypePlayer() {
-		return typePlayer;
+	public String getTypePlayer()
+	{
+		return ((PanelPlayerStart)this.panelEntitiesProperties).getcType().getSelectedItem().toString();
 	}
 
 	/**
@@ -48,6 +49,8 @@ public class PlayerStart extends EntitiesBase
 	 */
 	public void setTypePlayer(String typePlayer) {
 		this.typePlayer = typePlayer;
+		
+		((PanelPlayerStart)this.panelEntitiesProperties).getcType().setSelectedItem(this.typePlayer);
 	}
 	
 	

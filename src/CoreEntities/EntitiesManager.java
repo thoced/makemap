@@ -44,7 +44,13 @@ public class EntitiesManager implements Drawable
 		this.listEntities = listEntities;
 	}
 
-
+	public void deleteEntities(EntitiesBase del)
+	{
+		// suppresion dans la liste
+		this.listEntities.remove(del);
+		// appel des mvc
+		this.refreshMVC();
+	}
 
 	public  void attachMVC(IEntitiesMVC mvc)
 	{

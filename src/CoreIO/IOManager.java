@@ -11,6 +11,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+import javax.json.JsonString;
 import javax.json.JsonWriter;
 import javax.json.spi.JsonProvider;
 import javax.swing.JOptionPane;
@@ -22,6 +23,8 @@ import org.jsfml.system.Vector2f;
 
 import CoreCalques.Calque;
 import CoreCalques.CalquesManager;
+import CoreEntities.EntitiesBase;
+import CoreEntities.PlayerStart;
 import CoreInfo.InfoMap;
 import CoreManager.Manager;
 import CoreObstacles.Obstacle;
@@ -65,7 +68,11 @@ public class IOManager
 		{
 			extractAllObstacles(objMap.getJsonArray("obstacles"));
 		}
-		
+		// extract des entitites
+		if(objMap.containsKey("entities"))
+		{
+			extractAllEntities(objMap.getJsonArray("entities"));
+		}
 		
 		
 		
@@ -206,6 +213,43 @@ public class IOManager
 		
 	}
 	
+	public static void extractAllEntities(JsonArray entities)
+	{
+		// on boucle sur la liste des entities
+		for(int i=0;i<entities.size();i++)
+		{
+			// on récupère l'entities
+			JsonObject ent = entities.getJsonObject(i);
+			//
+			
+			if(!ent.containsKey("type_entities"))return;
+			if(!ent.containsKey("x"))return;
+			if(!ent.containsKey("y"))return;
+			if(!ent.containsKey("type"))return;
+		
+			switch(ent.getString("type_entities"))
+			{
+				case "PLAYERSTART" :
+				{
+					float x = (float) ent.getJsonNumber("x").doubleValue();
+					float y = (float) ent.getJsonNumber("y").doubleValue();
+					String type = ent.getString("type");
+					PlayerStart ps = new PlayerStart();
+					ps.setPosxStart(x);
+					ps.setPosyStart(y);
+					ps.setTypePlayer(type);
+					// ajout dans le manager
+					Manager.getEntitiesManager().insertEntities(ps);
+					break;
+					
+				}
+									 
+					
+					
+			}
+		}
+	}
+	
 	
 	public static void writeMap(File file) throws FileNotFoundException
 	{
@@ -231,6 +275,8 @@ public class IOManager
 		insertAllCalques(objectBuilder);
 		// insert des obstacles
 		insertAllObstacles(objectBuilder);
+		// insert des entities
+		insertAllEntities(objectBuilder);
 		// build()
 		JsonObject objWrite = objectBuilder.build();
 		// enregistre
@@ -318,6 +364,34 @@ public class IOManager
 		
 		// on ajoute l'array des obstacles dans le builderobjectmap
 		builderObjectMap.add("obstacles", arrayObstacles);
+	}
+	
+	private static void insertAllEntities(JsonObjectBuilder builderObjectMap)
+	{
+		// création du jsonarray contenant l'ensemble des entités
+		JsonArrayBuilder arrayEntities =  JsonProvider.provider().createArrayBuilder();
+		
+		// on boucle sur la liste des entities
+		for(EntitiesBase entities : Manager.getEntitiesManager().getListEntities())
+		{
+			// on crée l'objet entities
+			JsonObjectBuilder objEntities = JsonProvider.provider().createObjectBuilder();
+			
+			if(entities.getClass() == PlayerStart.class)
+			{
+				// c'est un player start à enregistrer
+				objEntities.add("type_entities", "PLAYERSTART");
+				// on enregistre le type de player start
+				objEntities.add("type", ((PlayerStart)entities).getTypePlayer());
+				// on enregistre les positions
+				objEntities.add("x", entities.getPosxStart());
+				objEntities.add("y",entities.getPosyStart());
+				// ajout dans le jsonarray
+				arrayEntities.add(objEntities);
+			}
+		}
+		// ajout de l'array dans le fichier général
+		builderObjectMap.add("entities", arrayEntities);
 	}
 
 }

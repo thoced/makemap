@@ -11,8 +11,12 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Window.Type;
 import CoreEntities.PlayerStart.MYTYPE;
 import java.lang.ProcessBuilder.Redirect;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
-public class PanelPlayerStart extends JPanel {
+public class PanelPlayerStart extends JPanel 
+{
+	private JComboBox cType;
 	public PanelPlayerStart() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -30,9 +34,29 @@ public class PanelPlayerStart extends JPanel {
 		JLabel lblType = new JLabel("Type");
 		add(lblType, "4, 4, right, default");
 		
-		JComboBox cType = new JComboBox();
-		cType.setModel(new DefaultComboBoxModel(MYTYPE.values()));
+		cType = new JComboBox();
+		cType.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) 
+			{
+				
+			}
+		});
+		cType.setModel(new DefaultComboBoxModel(new String[] {"SMALL_ROBOT", "BIG_ROBOT"}));
 		add(cType, "6, 4, fill, default");
 	}
+	/**
+	 * @return the cType
+	 */
+	public JComboBox getcType() {
+		return cType;
+	}
+	/**
+	 * @param cType the cType to set
+	 */
+	public void setcType(JComboBox cType) {
+		this.cType = cType;
+	}
+	
+	
 
 }

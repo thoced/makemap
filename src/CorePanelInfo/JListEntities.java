@@ -1,5 +1,7 @@
 package CorePanelInfo;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -11,11 +13,14 @@ import CoreEntities.EntitiesBase;
 import CoreEntities.IEntitiesMVC;
 import CoreManager.Manager;
 
-public class JListEntities extends JList implements IEntitiesMVC,MouseListener
+public class JListEntities extends JList implements IEntitiesMVC,MouseListener,KeyListener
 {
 	public JListEntities()
 	{
+		// ajout mouse listener
 		this.addMouseListener(this);
+		// ajout keylistener
+		this.addKeyListener(this);
 	}
 	
 	@Override
@@ -34,11 +39,14 @@ public class JListEntities extends JList implements IEntitiesMVC,MouseListener
 		
 		// on place la sélection
 		if(Manager.getEntitiesManager().getCurrentEntities() != null)
-		this.setSelectedValue(Manager.getEntitiesManager().getCurrentEntities(), false);
-		
-		// on spécifie le panel
+		{
+			this.setSelectedValue(Manager.getEntitiesManager().getCurrentEntities(), false);
+			// on spécifie le panel
 			panelInfo.setPanelProperties(Manager.getEntitiesManager().getCurrentEntities().getPanelEntitiesProperties());
+			
+		}
 		
+	
 	}
 
 	@Override
@@ -82,6 +90,36 @@ public class JListEntities extends JList implements IEntitiesMVC,MouseListener
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) 
+	{
+		// TODO Auto-generated method stub
+		if(arg0.getKeyCode() == KeyEvent.VK_DELETE)
+		{
+			if(Manager.getEntitiesManager().getCurrentEntities() != null)
+			{	
+				
+				// suppresion de l'entities
+				Manager.getEntitiesManager().deleteEntities(Manager.getEntitiesManager().getCurrentEntities());
+				// suppresion du panel
+				panelInfo.setPanelProperties(null);
+			}
+			
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
