@@ -38,6 +38,8 @@ import org.jsfml.window.event.Event;
 
 import CoreCalques.Calque;
 import CoreCalques.ICalqueMVC;
+import CoreEntities.EntitiesBase;
+import CoreEntities.IEntitiesMVC;
 import CoreManager.Manager;
 import CoreObstacles.IObstacleMVC;
 import CoreObstacles.Obstacle;
@@ -66,7 +68,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
-public class panelCenter extends JPanel implements ActionListener,KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener,ICalqueMVC,IObstacleMVC
+public class panelCenter extends JPanel implements ActionListener,KeyListener,MouseWheelListener,MouseListener,MouseMotionListener,ComponentListener,AdjustmentListener,ICalqueMVC,IObstacleMVC,IEntitiesMVC
 {
 	/**
 	 * 
@@ -205,6 +207,8 @@ public class panelCenter extends JPanel implements ActionListener,KeyListener,Mo
 		Manager.getCalquesManager().attachMVC(this);
 		// Obstacle Manager
 		Manager.getObstaclesManager().attachMVC(this);
+		// Entités Manager attachement
+		Manager.getEntitiesManager().attachMVC(this);
 		
 	}
 	
@@ -243,6 +247,8 @@ public class panelCenter extends JPanel implements ActionListener,KeyListener,Mo
 		render.draw(Manager.getCalquesManager());
 		// dessin des obstacles
 		render.draw(Manager.getObstaclesManager());
+		// dessin des entités
+		render.draw(Manager.getEntitiesManager());
 		
 		render.display();
 		
@@ -425,6 +431,9 @@ public class panelCenter extends JPanel implements ActionListener,KeyListener,Mo
 					// drag dans le mode calque
 					if(Manager.getCalquesManager().getCurrentCalque() != null)
 						Manager.getCalquesManager().getCurrentCalque().mousePosition(Vector2f.sub(posWorld, posDiff));
+					
+					if(Manager.getEntitiesManager().getCurrentEntities() != null)
+						Manager.getEntitiesManager().getCurrentEntities().dragEntities(posWorld);
 				}
 		
 			}
@@ -582,6 +591,14 @@ public class panelCenter extends JPanel implements ActionListener,KeyListener,Mo
 					}
 				
 			
+			}
+			
+			// selection de l'entitie
+			boolean isOneEntitiesSelected = false;
+			for(EntitiesBase ent : Manager.getEntitiesManager().getListEntities())
+			{
+				ent.hitEntities(posWorld);
+							
 			}
 			
 			if(!isOneCalqueSelected)
@@ -807,6 +824,14 @@ public class panelCenter extends JPanel implements ActionListener,KeyListener,Mo
 			
 			this.repaintCalques();
 		}
+	}
+
+
+	@Override
+	public void updateEntitiesMVC(List<EntitiesBase> list) 
+	{
+		// TODO Auto-generated method stub
+		parent.repaintCalques();
 	}
 
 

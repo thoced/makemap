@@ -60,9 +60,10 @@ public class TexturesManager
 		}
 		return hashTextures.get(path.getName());
 		
-		
-		
+
 	}
+	
+	
 	
 	
 	

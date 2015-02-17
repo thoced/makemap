@@ -3,6 +3,7 @@ package makemap;
 import java.awt.Color;
 import java.awt.Dialog;
 
+import CoreEntities.PlayerStart;
 import CoreIO.IOManager;
 import CoreManager.Manager;
 import CoreObstacles.Obstacle;
@@ -83,6 +84,8 @@ public class mainProgram implements KeyListener,ActionListener{
 	
 	// Manager
 	Manager manager;
+	private JMenu menuEntities;
+	private JMenuItem mPlayerStart;
 	
 
 	/**
@@ -229,6 +232,14 @@ public class mainProgram implements KeyListener,ActionListener{
 		
 		menuFichier.add(mFermer);
 		
+		menuEntities = new JMenu("Entities");
+		menuBar.add(menuEntities);
+		
+		mPlayerStart = new JMenuItem("PlayerStart");
+		menuEntities.add(mPlayerStart);
+		mPlayerStart.setActionCommand("PLAYERSTART");
+		mPlayerStart.addActionListener(this);
+		
 		
 		
 	}
@@ -320,6 +331,17 @@ public class mainProgram implements KeyListener,ActionListener{
 					e.printStackTrace();
 				}
 			}
+		}
+		
+		if(arg0.getActionCommand().equals("PLAYERSTART"))
+		{
+			// ajout d'un player start
+			PlayerStart playerStart = new PlayerStart();
+			// on place le player start au centre de la vue
+			playerStart.setPosxStart(panelCenter.getV().getCenter().x);
+			playerStart.setPosyStart(panelCenter.getV().getCenter().y);
+			// ajout dans le manager des entities
+			Manager.getEntitiesManager().insertEntities(playerStart);
 		}
 		
 		

@@ -79,10 +79,12 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 	private  JTextField rename;
 	// popup
 	private  Popup pop;
-	private JTabbedPane tabbedPane;
+	private static JTabbedPane tabbedPane;
 	
 	// tabbedPane pour les obstacle et calques
 	private JTabbedPane tabbedPaneUp;
+	
+	private static JScrollPane scrollPaneEntitiesProperties = new JScrollPane();
 	
 	public panelInfo()
 	{
@@ -152,8 +154,9 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		
 		tabbedPane.add("Properties",scrollProperties);
 		
+		// ajout du tabbed propriétés pour les entités
 		
-		
+		tabbedPane.add("Info Entities",scrollPaneEntitiesProperties);
 		
 		
 		
@@ -161,6 +164,15 @@ public class panelInfo extends JPanel implements MouseListener,KeyListener
 		listTextures.addMouseListener(this);
 		
 		
+		
+	}
+	public static void setPanelProperties(JPanel panel)
+	{
+		panelInfo.tabbedPane.remove(panelInfo.scrollPaneEntitiesProperties);
+		panelInfo.scrollPaneEntitiesProperties = new JScrollPane(panel);
+		panelInfo.tabbedPane.add("Info Entities", panelInfo.scrollPaneEntitiesProperties);
+		
+		panelInfo.tabbedPane.setSelectedComponent(panelInfo.scrollPaneEntitiesProperties);
 		
 	}
 	
